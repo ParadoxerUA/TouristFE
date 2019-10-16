@@ -1,9 +1,26 @@
 .mdc-top-app-bar {
-  background-color: #404b69;
+  background-color: #232a33;
 }
 
 .mdc-button.mdc-button--unelevated {
-  background-color: #00818a;
+  background-color: #3f72af;
   margin-right: 30px;
   padding: 0.1rem 2rem;
+}
+
+.root__container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../assets/images/trip_background.jpg);
+  background-size: cover;
+}
+
+.wrapper-main .mdc-button.mdc-button--unelevated {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  height: 70px;
+  width: 230px;
+  font-size: 1.3rem;
+  background-color: #1fab89;
 }
