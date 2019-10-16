@@ -1,0 +1,9 @@
+.mdc-top-app-bar {
+  background-color: #404b69;
+}
+
+.mdc-button.mdc-button--unelevated {
+  background-color: #00818a;
+  margin-right: 30px;
+  padding: 0.1rem 2rem;
+}
