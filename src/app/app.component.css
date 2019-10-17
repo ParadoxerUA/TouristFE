@@ -4,11 +4,11 @@
 ================
 */
 .mdc-top-app-bar {
-  background-color: #232a33;
+  background-color: #44505f;
 }
 
 .mdc-button.mdc-button--unelevated {
-  background-color: #3f72af;
+  background-color: #5090ce;
   margin-right: 30px;
   padding: 0.1rem 2rem;
 }
@@ -32,7 +32,7 @@
   height: 70px;
   width: 230px;
   font-size: 1.3rem;
-  background-color: #1fab89;
+  background-color: #009c75;
 }
 
 /*
