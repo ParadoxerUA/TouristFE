@@ -43,7 +43,7 @@
 .main__footer {
   position: absolute;
   bottom: 1.5rem;
-  left: 1.5rem;
+  left: 50%;
 }
 
 .copyright__text {
