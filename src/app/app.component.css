@@ -21,8 +21,6 @@
 .root__container {
   width: 100vw;
   height: 100vh;
-  background-image: url(../assets/images/trip_background.jpg);
-  background-size: cover;
 }
 
 .wrapper-main .mdc-button.mdc-button--unelevated {
@@ -49,5 +47,5 @@
 .copyright__text {
   letter-spacing: 0.1rem;
   color: white;
-  font-family: Roboto;
+  font-family: Roboto, serif;
 }
