@@ -1,0 +1,14 @@
+<agm-map (mapClick)="placeMarker($event)" [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom" [zoomControl]="true" >
+    <agm-marker (markerClick)="markerClick($event)"
+                *ngFor="let marker of location.markers"
+                [(latitude)]="marker.lat"
+                [(longitude)]="marker.lng"
+                [markerDraggable]="marker.draggable">
+    </agm-marker>
+</agm-map>
+<H3>All checkpoints</H3>
+<ul>
+    <li *ngFor="let marker of location.markers">
+        {{marker.lat}} {{marker.lng}}
+    </li>
+</ul>
