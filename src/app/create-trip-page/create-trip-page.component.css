@@ -1,22 +1,29 @@
-.root__container {
+.create_trip_container{
     width: 98vw;
     height: 80vh;
-    position: relative;
-    top: 10vh;
-    margin: auto;
+    position: fixed;
+    top: 8vh;
+    /*margin: auto;*/
+    /*background-color: crimson;*/
 }
-
 .right{
-    margin-right: 30px;
+    width: 84vw;
+    float: right;
 }
-
+.left {
+    width: 14vw;
+    float: left;
+}
+.mat-form-field.mat-form-field{
+    margin-left: 40px;
+    margin-top: 20px;
+}
 .center{
     text-align: center;
-
 }
-mat-form-field{
+.mat-form-field{
     margin-right: 5px;
     margin-left: 5px;
-
 }
+
 

@@ -1,15 +1,16 @@
 <div id="container">
 
-    <div id="left">
+    <div id="left1">
         <mat-list style="display: block; width: 100%">
-            <h2 >Checkpoints</h2>
+            <h2 align="center">Checkpoints</h2>
             <mat-list-item *ngFor="let marker of location.markers">
-                <h5 mat-line> {{marker.lat | number:'2.6-6'}} {{marker.lng| number:'2.6-6'}}</h5>
+                <h5 mat-line >{{marker.order}}  --  {{marker.lat | number:'2.6-6'}} {{marker.lng| number:'2.6-6'}} </h5>
+                <a (click)="deleteMarker(marker)">X</a>
             </mat-list-item>
         </mat-list>
 
     </div>
-    <div id="right">
+    <div id="right1">
         <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
                   [(latitude)]="location.lat"
                   [(longitude)]="location.lng"
@@ -26,11 +27,13 @@
                 url: marker.selected ? './assets/images/tent_selected.svg' : './assets/images/tent.svg',
                 scaledSize: {
                     width: 25,
-                    height: 25 }      }"
+                    height: 25 }
+                    }"
             >
                 <agm-info-window [disableAutoPan]="false" #infoWindow>
                    <div>
-                        <a (click)="onClickInfoView(marker)" > Detele </a>
+                        Point {{marker.order}} <br/>
+                        <a (click)="onClickInfoView(marker)"> Detele </a>
                     </div>
                 </agm-info-window>
             </agm-marker>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 interface Marker {
+  order: number;
   lat: number;
   lng: number;
   label?: string;
@@ -22,11 +23,13 @@ interface Location {
 export class MapComponent implements OnInit {
   public selectedMarker: Marker;
   public selectedMarkerIndex = 0;
-  public infowindow ;
+  public infowindow;
   public location: Location = {
+
     lat: 50.431273,
     lng: 30.550139,
     markers: [ {
+      order: 1,
       lat: 50.431273,
       lng: 30.550139,
       selected: false,
@@ -35,6 +38,7 @@ export class MapComponent implements OnInit {
   };
   placeMarker($event) {
     const newMarker: Marker = {
+      order: (this.location.markers.length +1),
       lat: $event.coords.lat,
       lng: $event.coords.lng,
       selected: false,
@@ -57,10 +61,19 @@ export class MapComponent implements OnInit {
   }
   onClickInfoView(marker)
   {
-   this.location.markers.splice(this.location.markers.indexOf(marker), 1);
+   this.deleteMarker(marker);
    this.infowindow = null;
   }
-  onMouseOver(marker) {
+  deleteMarker(marker)
+  {
+    var deleteMarkerIndex = this.location.markers.indexOf(marker);
+    this.location.markers.splice(deleteMarkerIndex, 1);
+    for (var _i = deleteMarkerIndex; _i < this.location.markers.length; _i++) {
+      this.location.markers[_i].order--;
+      }
+  }
+
+  onMouseOver(marker){
     for (var _i = 0; _i < this.location.markers.length; _i++) {
       if (this.location.markers[_i] === marker) {
         marker.selected = true;

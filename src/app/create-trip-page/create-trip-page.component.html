@@ -1,36 +1,40 @@
-<div  class="root__container" >
+<div  class="create_trip_container" >
     <div  class="center" >
         <h1 class="mat-card-title">Create new trip: </h1>
+    </div>
+    <div class="right"><app-map></app-map>
+    </div>
+    <div class="left">
         <mat-form-field class="example-full-width">
             <input matInput placeholder="trip name" value= {{trip.name}}  [formControl]="TripName">
         </mat-form-field>
-
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date"
-                   [formControl]="StartDate">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
+                <input matInput [matDatepicker]="picker1" placeholder="Start date"
+                       [formControl]="StartDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="End date"
-                   [formControl]="EndDate">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
+                <input matInput [matDatepicker]="picker2" placeholder="End date"
+                       [formControl]="EndDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
-
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="example-full-width" appearance="fill">
             <textarea matInput
+                      #message maxlength="256"
                       placeholder="Description"
-                      value={{trip.description}}
-                      [formControl]= "TripDescription"
                       cdkTextareaAutosize
                       #autosize="cdkTextareaAutosize"
-                      cdkAutosizeMinRows="1"
-                      cdkAutosizeMaxRows="4"></textarea>
+                      cdkAutosizeMinRows="5"
+                      cdkAutosizeMaxRows="5">
+</textarea>
+            <mat-hint align="start"> </mat-hint>
+            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
         </mat-form-field>
+
     </div>
-    <app-map></app-map>
-    <button mat-raised-button style="float: right" color="primary" (click)="create_trip()">Create Trip</button>
+    <button mat-raised-button  color="primary" (click)="create_trip()">Create Trip</button>
 </div>
 
 

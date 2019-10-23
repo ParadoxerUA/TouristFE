@@ -1,20 +1,29 @@
 agm-map{
-    height:50vh;
-    width: 100vw;
+    height:80vh;
+    width: 45vw;
 }
 #container {
     height:60vh;
     width: 90vw;
 }
 
-#left {
+#left1 {
     float:left;
     height:100%;
-    width: 12vw;
+    width: 15%;
 }
 
-#right {
+#right1 {
     float:right;
     height:100%;
-    width: 78vw;
+    margin-right: 5%;
+    width: 75%;
+}
+
+.mat-list {
+margin-left: 40px;
+}
+
+a{
+    cursor: pointer;
 }
