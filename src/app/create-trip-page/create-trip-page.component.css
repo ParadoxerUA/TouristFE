@@ -1,0 +1,22 @@
+.root__container {
+    width: 98vw;
+    height: 80vh;
+    position: relative;
+    top: 10vh;
+    margin: auto;
+}
+
+.right{
+    margin-right: 30px;
+}
+
+.center{
+    text-align: center;
+
+}
+mat-form-field{
+    margin-right: 5px;
+    margin-left: 5px;
+
+}
+

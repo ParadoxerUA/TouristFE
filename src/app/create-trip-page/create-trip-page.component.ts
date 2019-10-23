@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl} from "@angular/forms";
+import {generate} from "rxjs";
 
 @Component({
   selector: 'app-create-trip-page',
@@ -18,8 +19,6 @@ export class CreateTripPageComponent implements OnInit {
   trip: Trip = {
     id: 1,
     name: 'Mountains',
-    startDate: '11/09/2019',
-    endDate: '13/09/2019',
     description: 'No dogs allowed'
   };
   constructor(
@@ -28,13 +27,18 @@ export class CreateTripPageComponent implements OnInit {
   create_trip()
   {
     alert("Not implemented yet");
-    console.log(this.TripName.value);
-    console.log(this.StartDate.value);
-    console.log(this.EndDate.value);
-    console.log(this.TripDescription.value);
-
+    var body = { trip_name : this.TripName.value,
+      start_date :  this.StartDate.value,
+      end_date : this.EndDate.value,
+      trip_description: this.TripDescription.value, checpoints : this.generate_checkpoints_list() };
+    console.log(body);
   }
   ngOnInit() {
   }
 
+  generate_checkpoints_list()
+  {
+    var checkpoints = {50.023313 : 30.233451};
+    return {here_will_be : checkpoints};
+  }
 }

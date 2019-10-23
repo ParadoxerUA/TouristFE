@@ -1,39 +1,37 @@
-<p>create-trip-page works!</p>
-<p>create-trip-page works!</p>
+<div  class="root__container" >
+    <div  class="center" >
+        <h1 class="mat-card-title">Create new trip: </h1>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="trip name" value= {{trip.name}}  [formControl]="TripName">
+        </mat-form-field>
 
-<div>
-    <h1>Create new trip: </h1>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" placeholder="Start date"
+                   [formControl]="StartDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker2" placeholder="End date"
+                   [formControl]="EndDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
 
-    <mat-form-field class="example-full-width">
-        <input matInput placeholder="trip name" value= {{trip.name}}  [formControl]="TripName">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker1" placeholder="Start date"
-               [formControl]="StartDate">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker2" placeholder="End date"
-               [formControl]="EndDate">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width">
-        <textarea matInput
-                  placeholder="Description"
-                  value={{trip.description}}
-                  [formControl]= "TripDescription"
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="4"></textarea>
-    </mat-form-field>
-
+        <mat-form-field class="example-full-width">
+            <textarea matInput
+                      placeholder="Description"
+                      value={{trip.description}}
+                      [formControl]= "TripDescription"
+                      cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="4"></textarea>
+        </mat-form-field>
+    </div>
+    <app-map></app-map>
+    <button mat-raised-button style="float: right" color="primary" (click)="create_trip()">Create Trip</button>
 </div>
-<app-map></app-map>
-<button  (click)="create_trip()" >Create Trip</button>
+
 
 

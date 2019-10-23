@@ -11,6 +11,11 @@ import {MatNativeDateModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
+import {MatButtonModule} from "@angular/material/button";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 @NgModule({
@@ -27,6 +32,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     FormsModule,
     MatDatepickerModule,
     MatInputModule,
+    MatGridListModule,
+    MatIconModule,
+    MatListModule,
+    MatButtonModule,
+    MatButtonToggleModule,
     MatNativeDateModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),

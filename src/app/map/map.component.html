@@ -1,14 +1,39 @@
-<agm-map (mapClick)="placeMarker($event)" [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom" [zoomControl]="true" >
-    <agm-marker (markerClick)="markerClick($event)"
-                *ngFor="let marker of location.markers"
-                [(latitude)]="marker.lat"
-                [(longitude)]="marker.lng"
-                [markerDraggable]="marker.draggable">
-    </agm-marker>
-</agm-map>
-<H3>All checkpoints</H3>
-<ul>
-    <li *ngFor="let marker of location.markers">
-        {{marker.lat}} {{marker.lng}}
-    </li>
-</ul>
+<div id="container">
+
+    <div id="left">
+        <mat-list style="display: block; width: 100%">
+            <h2 >Checkpoints</h2>
+            <mat-list-item *ngFor="let marker of location.markers">
+                <h5 mat-line> {{marker.lat | number:'2.6-6'}} {{marker.lng| number:'2.6-6'}}</h5>
+            </mat-list-item>
+        </mat-list>
+
+    </div>
+    <div id="right">
+        <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
+                  [(latitude)]="location.lat"
+                  [(longitude)]="location.lng"
+                  [(zoom)]="location.zoom"
+                  [zoomControl]="true" >
+            <agm-marker (markerClick)="markerClick(marker, infoWindow)"
+                        (markerRightClick)="markerRightClick(infoWindow)"
+                        (mouseOver)="onMouseOver(marker)"
+                        (mouseOut)="onMouseOut(marker)"
+                        *ngFor="let marker of location.markers"
+                        [(latitude)]="marker.lat"
+                        [(longitude)]="marker.lng"
+                        [iconUrl]="  {
+                url: marker.selected ? './assets/images/tent_selected.svg' : './assets/images/tent.svg',
+                scaledSize: {
+                    width: 25,
+                    height: 25 }      }"
+            >
+                <agm-info-window [disableAutoPan]="false" #infoWindow>
+                   <div>
+                        <a (click)="onClickInfoView(marker)" > Detele </a>
+                    </div>
+                </agm-info-window>
+            </agm-marker>
+        </agm-map>
+    </div>
+</div>
