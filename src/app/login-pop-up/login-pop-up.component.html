@@ -1,0 +1,13 @@
+<h1 mat-dialog-title align="center">Sign In</h1>
+<div mat-dialog-content class="form-container">
+  <mat-form-field>
+    <input placeholder="Email" matInput [(ngModel)]="data.email" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="Password" matInput [(ngModel)]="data.password" required>
+  </mat-form-field>
+</div>
+<mat-dialog-actions align="center">
+  <button mat-raised-button class="register" [mat-dialog-close]="data">Register</button>
+  <button mat-raised-button class="cancel" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

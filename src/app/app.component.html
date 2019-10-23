@@ -6,9 +6,19 @@
         <i class="material-icons">directions_walk</i>
       </button>
       <span class="mdc-top-app-bar__title">Tourist App</span>
+
+      <!-- TODO: delete ng-tempate tag after testing -->
+      <ng-template [ngIf]="email && password">
+        <h2> Email is: {{ email }} </h2>
+        <h2> Password is: {{ password }} </h2>
+      </ng-template>
+
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-      <button class="mdc-button mdc-button--unelevated" type="submit" name="sign_in">Sign In</button>
+      <button class="mdc-button mdc-button--unelevated"
+              type="submit"
+              name="sign_in"
+              (click)="openSignInDialog()">Sign In</button>
       <button class="mdc-button mdc-button--unelevated" type="submit" name="sign_up">Sign Up</button>
     </section>
   </div>
