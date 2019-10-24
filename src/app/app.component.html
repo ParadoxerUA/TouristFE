@@ -8,8 +8,14 @@
       <span class="mdc-top-app-bar__title">Tourist App</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-      <button class="mdc-button mdc-button--unelevated" type="submit" name="sign_in">Sign In</button>
-      <button class="mdc-button mdc-button--unelevated" type="submit" name="sign_up">Sign Up</button>
+      <button class="mdc-button mdc-button--unelevated"
+              type="submit"
+              name="sign_in"
+              (click)="openSignInDialog()">Sign In</button>
+      <button class="mdc-button mdc-button--unelevated"
+              type="submit"
+              name="sign_up"
+              (click)="openSignUpDialog()">Sign Up</button>
     </section>
   </div>
 </header>
