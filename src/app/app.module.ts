@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPopUpComponent } from './login-pop-up/login-pop-up.component';
+import { RegisterPopUpComponent } from './register-pop-up/register-pop-up.component';
 
 import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 
@@ -12,6 +13,7 @@ import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, M
   declarations: [
     AppComponent,
     LoginPopUpComponent,
+    RegisterPopUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,7 @@ import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, M
   ],
   entryComponents: [
     LoginPopUpComponent,
+    RegisterPopUpComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
