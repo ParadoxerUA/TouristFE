@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl} from "@angular/forms";
 import {generate} from "rxjs";
-// import {TripService} from "../trip.service";
+import {TripService} from "../trip.service";
 
 @Component({
   selector: 'app-create-trip-page',
@@ -17,16 +17,13 @@ export class CreateTripPageComponent implements OnInit {
 
   trip: Trip = {
     name: 'Mountains',
-    description: 'No dogs allowed',
-    startDate: 'immediately'
+    description: 'description',
+    start_date: 'immediately'
   };
-  constructor(
-    // private tripService : TripService
-    ) { }
+  constructor(private tripService : TripService) { }
 
   create_trip()
   {
-    // alert("Not implemented yet");
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, this.TripDescription.value );
     console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
