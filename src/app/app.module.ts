@@ -39,7 +39,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatButtonToggleModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
+    AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
   ],
   providers: [],
   bootstrap: [AppComponent]

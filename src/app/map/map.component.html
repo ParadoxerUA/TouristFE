@@ -28,8 +28,8 @@
                         [iconUrl]="  {
                 url: marker.selected ? './assets/images/tent_selected.svg' : './assets/images/tent.svg',
                 scaledSize: {
-                    width: 25,
-                    height: 25 }
+                    width: 40,
+                    height: 40 }
                     }"
             >
                 <agm-info-window [disableAutoPan]="false" #infoWindow>
@@ -38,6 +38,14 @@
                         <a (click)="onClickInfoView(marker)"> Detele </a>
                     </div>
                 </agm-info-window>
+
+                <agm-polyline [editable]="false"  [strokeColor]="'green'">
+                    <agm-polyline-point *ngFor="let data of  location.markers"
+                                        [latitude]="data.lat"
+                                        [longitude]="data.lng">
+                    </agm-polyline-point>
+                </agm-polyline>
+
             </agm-marker>
         </agm-map>
     </div>
