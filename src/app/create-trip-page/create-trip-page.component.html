@@ -5,6 +5,7 @@
     <div class="right"><app-map></app-map>
     </div>
     <div class="left">
+        <h2 align="center">Edit data</h2>
         <mat-form-field class="example-full-width">
             <input matInput placeholder="trip name" value= {{trip.name}}  [formControl]="TripName">
         </mat-form-field>
@@ -27,14 +28,14 @@
                       cdkTextareaAutosize
                       #autosize="cdkTextareaAutosize"
                       cdkAutosizeMinRows="5"
-                      cdkAutosizeMaxRows="5">
+                      cdkAutosizeMaxRows="15">
 </textarea>
             <mat-hint align="start"> </mat-hint>
             <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
         </mat-form-field>
 
     </div>
-    <button mat-raised-button  color="primary" (click)="create_trip()">Create Trip</button>
+    <button mat-raised-button color="primary" (click)="create_trip()" >Create Trip</button>
 </div>
 
 

@@ -1,23 +1,23 @@
 agm-map{
-    height:80vh;
-    width: 45vw;
+    height:100%;
+    width: 100%;
 }
 #container {
-    height:60vh;
-    width: 90vw;
+    height:100%;
+    width: 100%;
 }
 
 #left1 {
     float:left;
     height:100%;
-    width: 15%;
+    width: 250px;
 }
 
 #right1 {
     float:right;
     height:100%;
-    margin-right: 5%;
-    width: 75%;
+    margin-right: 30px;
+    width: calc(100% - 280px);
 }
 
 .mat-list {
@@ -26,4 +26,9 @@ margin-left: 40px;
 
 a{
     cursor: pointer;
+}
+
+.list .mat-list .mat-list-item .mat-multi-line .mat-list-item-content {
+    padding-top: 0;
+    padding-bottom: 0;
 }

@@ -1,14 +1,16 @@
 <div id="container">
 
     <div id="left1">
-        <mat-list style="display: block; width: 100%">
-            <h2 align="center">Checkpoints</h2>
+        <h2 align="center">Checkpoints</h2>
+        <mat-list>
             <mat-list-item *ngFor="let marker of location.markers">
-                <h5 mat-line >{{marker.order}}  --  {{marker.lat | number:'2.6-6'}} {{marker.lng| number:'2.6-6'}} </h5>
-                <a (click)="deleteMarker(marker)">X</a>
+                <h5 mat-line >{{marker.order}}  --  {{marker.lat | number:'2.6-6'}} <br/>
+                    {{marker.lng| number:'2.6-6'}} </h5>
+                <button mat-icon-button (click)="deleteMarker(marker)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </mat-list-item>
         </mat-list>
-
     </div>
     <div id="right1">
         <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
