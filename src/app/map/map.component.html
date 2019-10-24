@@ -1,0 +1,51 @@
+<div id="container">
+    <div id="left1">
+        <h2 align="center">Checkpoints</h2>
+        <mat-list>
+            <mat-list-item *ngFor="let marker of location.markers">
+                <h5 mat-line >{{marker.order}}  --  {{marker.lat | number:'2.6-6'}} <br/>
+                    {{marker.lng| number:'2.6-6'}} </h5>
+                <button mat-icon-button (click)="deleteMarker(marker)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div id="right1">
+        <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
+                  [(latitude)]="location.lat"
+                  [(longitude)]="location.lng"
+                  [(zoom)]="location.zoom"
+                  [zoomControl]="true" >
+            <agm-marker (markerClick)="markerClick(marker, infoWindow)"
+                        (markerRightClick)="markerRightClick(infoWindow)"
+                        (mouseOver)="onMouseOver(marker)"
+                        (mouseOut)="onMouseOut(marker)"
+                        *ngFor="let marker of location.markers"
+                        [(latitude)]="marker.lat"
+                        [(longitude)]="marker.lng"
+                        [iconUrl]="  {
+                url: marker.selected ? './assets/images/tent_selected.svg' : './assets/images/tent.svg',
+                scaledSize: {
+                    width: 40,
+                    height: 40 }
+                    }"
+            >
+                <agm-info-window [disableAutoPan]="false" #infoWindow>
+                   <div>
+                        Point {{marker.order}} <br/>
+                        <a (click)="onClickInfoView(marker)"> Detele </a>
+                    </div>
+                </agm-info-window>
+
+                <agm-polyline [editable]="false"  [strokeColor]="'green'">
+                    <agm-polyline-point *ngFor="let data of  location.markers"
+                                        [latitude]="data.lat"
+                                        [longitude]="data.lng">
+                    </agm-polyline-point>
+                </agm-polyline>
+
+            </agm-marker>
+        </agm-map>
+    </div>
+</div>

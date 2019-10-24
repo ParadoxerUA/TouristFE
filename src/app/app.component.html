@@ -6,14 +6,6 @@
         <i class="material-icons">directions_walk</i>
       </button>
       <span class="mdc-top-app-bar__title">Tourist App</span>
-
-      <!-- TODO: delete ng-tempate tag after testing -->
-      <ng-template [ngIf]="email && password">
-        <h2> Email is: {{ email }} </h2>
-        <h2> Password is: {{ password }} </h2>
-        <h2> Name: {{ firstname }} Surname: {{ lastname }} </h2>
-      </ng-template>
-
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
       <button class="mdc-button mdc-button--unelevated"
@@ -28,16 +20,13 @@
   </div>
 </header>
 
-<div class="root__container">
+
 
   <!-- Main content -->
-  <main class="wrapper-main">
-    <button class="mdc-button mdc-button--unelevated" type="submit" name="create_trip">Create Trip</button>
-  </main>
+  <router-outlet></router-outlet>
 
   <!-- Footer -->
   <footer class="main__footer">
     <small class="copyright__text">Copyright © 2019 Tourist app</small>
   </footer>
 
-</div>
