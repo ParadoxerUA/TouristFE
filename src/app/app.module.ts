@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPopUpComponent } from './login-pop-up/login-pop-up.component';
 
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule } 
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
   ],
   entryComponents: [
     LoginPopUpComponent,

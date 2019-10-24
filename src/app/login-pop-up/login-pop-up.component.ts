@@ -15,6 +15,7 @@ export interface DialogData {
 export class LoginPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
+  hide = true;
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
