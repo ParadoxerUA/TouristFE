@@ -17,6 +17,14 @@ import {MatListModule} from "@angular/material/list";
 import {MatButtonModule} from "@angular/material/button";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginPopUpComponent } from './login-pop-up/login-pop-up.component';
+import { RegisterPopUpComponent } from './register-pop-up/register-pop-up.component';
+
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -24,6 +32,8 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MainPageComponent,
     CreateTripPageComponent,
     MapComponent,
+    LoginPopUpComponent,
+    RegisterPopUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +50,17 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatNativeDateModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+  ],
+  entryComponents: [
+    LoginPopUpComponent,
+    RegisterPopUpComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
