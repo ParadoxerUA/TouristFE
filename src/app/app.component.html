@@ -11,6 +11,7 @@
       <ng-template [ngIf]="email && password">
         <h2> Email is: {{ email }} </h2>
         <h2> Password is: {{ password }} </h2>
+        <h2> Name: {{ firstname }} Surname: {{ lastname }} </h2>
       </ng-template>
 
     </section>
@@ -19,7 +20,10 @@
               type="submit"
               name="sign_in"
               (click)="openSignInDialog()">Sign In</button>
-      <button class="mdc-button mdc-button--unelevated" type="submit" name="sign_up">Sign Up</button>
+      <button class="mdc-button mdc-button--unelevated"
+              type="submit"
+              name="sign_up"
+              (click)="openSignUpDialog()">Sign Up</button>
     </section>
   </div>
 </header>
