@@ -16,22 +16,18 @@ export class CreateTripPageComponent implements OnInit {
   EndDate = new FormControl((new Date()).toISOString());
 
   trip: Trip = {
-    id: 1,
     name: 'Mountains',
-    description: 'No dogs allowed'
+    description: 'No dogs allowed',
+    startDate: 'immediately'
   };
   constructor(private tripService : TripService) { }
 
   create_trip()
   {
-    alert("Not implemented yet");
-    // this.tripService.currentTrip.name = this.TripName.value;
-    // this.tripService.currentTrip.startDate = this.StartDate.value;
-    // this.tripService.currentTrip.endDate = this.EndDate.value;
-    // this.tripService.currentTrip.description = this.TripDescription.value;
-    // this.tripService.currentTrip.description = this.TripDescription.value;
-    // console.log(this.tripService.currentTrip);
-    // this.tripService.createTrip();
+    // alert("Not implemented yet");
+    this.tripService.createTrip(this.TripName.value, this.StartDate.value,
+        this.EndDate.value, this.TripDescription.value );
+    console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
   }
   ngOnInit() {
   }
