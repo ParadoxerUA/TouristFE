@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl} from "@angular/forms";
 import {generate} from "rxjs";
+import {TripService} from "../trip.service";
 
 @Component({
   selector: 'app-create-trip-page',
@@ -9,8 +10,6 @@ import {generate} from "rxjs";
   styleUrls: ['./create-trip-page.component.css']
 })
 export class CreateTripPageComponent implements OnInit {
-
-
   TripName = new FormControl();
   TripDescription = new FormControl();
   StartDate = new FormControl((new Date()).toISOString());
@@ -21,17 +20,18 @@ export class CreateTripPageComponent implements OnInit {
     name: 'Mountains',
     description: 'No dogs allowed'
   };
-  constructor(
-      ) { }
+  constructor(private tripService : TripService) { }
 
   create_trip()
   {
     alert("Not implemented yet");
-    var body = { trip_name : this.TripName.value,
-      start_date :  this.StartDate.value,
-      end_date : this.EndDate.value,
-      trip_description: this.TripDescription.value, checpoints : this.generate_checkpoints_list() };
-    console.log(body);
+    // this.tripService.currentTrip.name = this.TripName.value;
+    // this.tripService.currentTrip.startDate = this.StartDate.value;
+    // this.tripService.currentTrip.endDate = this.EndDate.value;
+    // this.tripService.currentTrip.description = this.TripDescription.value;
+    // this.tripService.currentTrip.description = this.TripDescription.value;
+    // console.log(this.tripService.currentTrip);
+    // this.tripService.createTrip();
   }
   ngOnInit() {
   }

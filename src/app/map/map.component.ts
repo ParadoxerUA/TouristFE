@@ -62,7 +62,7 @@ export class MapComponent implements OnInit {
   onClickInfoView(marker)
   {
    this.deleteMarker(marker);
-   this.infowindow = null;
+   this.infowindow = undefined;
   }
   deleteMarker(marker)
   {
