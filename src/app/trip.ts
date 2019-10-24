@@ -1,9 +1,9 @@
 export class Trip {
   id?: number;
   name: string;
-  startDate?: string;
+  startDate: string;
   endDate?: string;
-  description: string;
+  description?: string;
   listOfPoints? : Checkpoint[];
 }
 

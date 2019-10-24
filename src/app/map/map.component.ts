@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {TripService} from "../trip.service";
+
 interface Marker {
   order: number;
   lat: number;
@@ -10,18 +12,15 @@ interface Marker {
 interface Location {
   lat: number;
   lng: number;
-  // viewport?: Object;
   zoom: number;
   markers?: Marker[];
 }
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  public selectedMarker: Marker;
   public selectedMarkerIndex = 0;
   public infowindow;
   public location: Location = {
@@ -41,8 +40,8 @@ export class MapComponent implements OnInit {
       order: (this.location.markers.length +1),
       lat: $event.coords.lat,
       lng: $event.coords.lng,
-      selected: false,
-    };
+      selected: false,};
+    this.tripService.addCheckpointToList(newMarker.lat,newMarker.lng, newMarker.order );
     this.location.markers.push(newMarker);
   }
   markerClick(marker, infoWindow) {
@@ -66,11 +65,12 @@ export class MapComponent implements OnInit {
   }
   deleteMarker(marker)
   {
-    var deleteMarkerIndex = this.location.markers.indexOf(marker);
+    const deleteMarkerIndex = this.location.markers.indexOf(marker);
     this.location.markers.splice(deleteMarkerIndex, 1);
-    for (var _i = deleteMarkerIndex; _i < this.location.markers.length; _i++) {
+    for (let _i = deleteMarkerIndex; _i < this.location.markers.length; _i++) {
       this.location.markers[_i].order--;
-      }
+    }
+    this.tripService.deleteCheckpointFromList(deleteMarkerIndex);
   }
 
   onMouseOver(marker){
@@ -85,7 +85,7 @@ export class MapComponent implements OnInit {
     marker.selected = false;
   }
 
-  constructor() { }
+  constructor(private tripService : TripService) { }
   ngOnInit() {
   }
 

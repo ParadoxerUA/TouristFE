@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
-
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -31,6 +31,7 @@ import { CreateTripPageComponent } from './create-trip-page/create-trip-page.com
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
     FormsModule,
     ReactiveFormsModule,
