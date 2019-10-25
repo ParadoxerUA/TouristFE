@@ -1,10 +1,10 @@
 <h1 mat-dialog-title align="center">Sign Up</h1>
 <div mat-dialog-content class="form-container">
   <mat-form-field>
-    <input placeholder="First Name" matInput [(ngModel)]="data.firstname" required>
+    <input placeholder="First Name" matInput [(ngModel)]="data.name" required>
   </mat-form-field>
   <mat-form-field>
-    <input placeholder="Last Name" matInput [(ngModel)]="data.lastname">
+    <input placeholder="Last Name" matInput [(ngModel)]="data.surname">
   </mat-form-field><br>
   <mat-form-field>
     <input placeholder="Email" matInput [formControl]="email" [(ngModel)]="data.email" required>
@@ -18,6 +18,6 @@
   </mat-form-field>
 </div>
 <mat-dialog-actions align="center">
-  <button mat-raised-button class="register" [mat-dialog-close]="data">Register</button>
+  <button mat-raised-button class="register" [mat-dialog-close]="data" (click)="sendCredentials()">Register</button>
   <button mat-raised-button class="cancel" mat-dialog-close>Cancel</button>
 </mat-dialog-actions>

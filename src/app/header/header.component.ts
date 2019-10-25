@@ -3,18 +3,24 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { LoginPopUpComponent } from '../login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from '../register-pop-up/register-pop-up.component';
 
+import { debug } from 'util';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  firstname: string;
-  lastname: string;
+  name: string;
+  surname: string;
   email: string;
   password: string;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+  ) { }
+
+
 
   openSignInDialog(): void {
     let dialogRef = this.dialog.open(LoginPopUpComponent, {
@@ -36,8 +42,8 @@ export class HeaderComponent implements OnInit {
     let dialogRef = this.dialog.open(RegisterPopUpComponent, {
       width: '600px',
       height: '500px',
-      data: {firstname: this.firstname,
-             lastname: this.lastname,
+      data: {name: this.name,
+             surname: this.surname,
              email: this.email,
              password: this.password}
     });
@@ -45,8 +51,8 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if (result) {
-        this.firstname = result.firstname;
-        this.lastname = result.lastname;
+        this.name = result.name;
+        this.surname = result.surname;
         this.email = result.email;
         this.password = result.password;
       }
