@@ -17,20 +17,3 @@
   font-size: 1.3rem;
   background-color: #009c75;
 }
-
-/*
-================
-    Footer
-================
-*/
-.main__footer {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-}
-
-.copyright__text {
-  letter-spacing: 0.1rem;
-  color: white;
-  font-family: Roboto, serif;
-}
