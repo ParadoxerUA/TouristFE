@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Trip, Checkpoint} from "./trip";
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+// import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class TripService {
     description: 'inside service'
   };
   // private backendUrl = 'http://localhost/be';
-  private tripUrl = '/api/trip/v1/create_trip';  // URL to web api
+  private tripUrl = '/be/api/trip/v1/create_trip';  // URL to web api
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
