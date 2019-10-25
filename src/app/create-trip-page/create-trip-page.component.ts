@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl} from "@angular/forms";
 import {generate} from "rxjs";
-import {TripService} from "../trip.service";
+import {TripService} from "../_services/trip.service";
 
 @Component({
   selector: 'app-create-trip-page',
