@@ -26,9 +26,10 @@ export class CreateTripPageComponent implements OnInit {
 
   create_trip()
   {
-    // const statdate = this.StartDate.value.setMinutes((this.StartDate.value.getMinutes() + this.StartDate.value.getTimezoneOffset()));
-    // const enddate = this.EndDate.value.setMinutes((this.EndDate.value.getMinutes() + this.EndDate.value.getTimezoneOffset()));
-    // console.log(statdate, enddate);
+    // ---- fixing timezone in mat-datepicker
+    this.StartDate.value.setMinutes((this.StartDate.value.getMinutes() - this.StartDate.value.getTimezoneOffset()));
+    this.EndDate.value.setMinutes((this.EndDate.value.getMinutes() - this.EndDate.value.getTimezoneOffset()));
+    // ---- fixing timezone in mat-datepicker
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, this.TripDescription.value );
     console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );

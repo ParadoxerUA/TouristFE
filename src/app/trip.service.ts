@@ -25,7 +25,7 @@ export class TripService {
     this.currentTrip.start_date = startDate;
     this.currentTrip.end_date = endDate;
     this.currentTrip.description = description;
-    this.currentTrip.listOfPoints = this.listOfCheckpoints;
+    this.currentTrip.points = this.listOfCheckpoints;
     this.addTrip(this.currentTrip).subscribe(g => {
       console.log(g)
     })

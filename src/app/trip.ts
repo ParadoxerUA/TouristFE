@@ -4,7 +4,7 @@ export class Trip {
   start_date: string;
   end_date?: string;
   description?: string;
-  listOfPoints? : Checkpoint[];
+  points? : Checkpoint[];
 }
 
 export class Checkpoint {
