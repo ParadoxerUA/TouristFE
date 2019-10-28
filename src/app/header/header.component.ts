@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import { LoginPopUpComponent } from '../login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from '../register-pop-up/register-pop-up.component';
 
-import { debug } from 'util';
 
 @Component({
   selector: 'app-header',

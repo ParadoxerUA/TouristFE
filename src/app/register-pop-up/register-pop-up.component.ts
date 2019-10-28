@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl, Validators} from '@angular/forms';
 
 import {UserService} from '../_services/user.service'
@@ -19,10 +19,12 @@ export interface DialogData {
 export class RegisterPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
-  hide = true;
+  submitted = false;
+  passwordHide = true
 
   sendCredentials() {
     this.userService.postCredentials(this.data).subscribe()
+    this.submitted = true
   }
 
   getErrorMessage() {
