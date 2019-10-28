@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AgmCoreModule} from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import {MaterialModule} from './material.module'
 import { LoginPopUpComponent } from './login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from './register-pop-up/register-pop-up.component';
@@ -32,7 +31,8 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
+    AgmCoreModule.forRoot({apiKey:''}),
+    // AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ
     FormsModule,
     ReactiveFormsModule,
   ],
