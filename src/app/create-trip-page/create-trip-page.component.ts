@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl} from "@angular/forms";
-import {generate} from "rxjs";
 import {TripService} from "../trip.service";
 
 @Component({
@@ -12,8 +11,11 @@ import {TripService} from "../trip.service";
 export class CreateTripPageComponent implements OnInit {
   TripName = new FormControl();
   TripDescription = new FormControl();
-  StartDate = new FormControl((new Date()).toISOString());
-  EndDate = new FormControl((new Date()).toISOString());
+  StartDate = new FormControl((new Date()));
+  EndDate = new FormControl((new Date()));
+
+  button_disabled = false;
+  today = new Date();
 
   trip: Trip = {
     name: 'Mountains',
@@ -24,13 +26,18 @@ export class CreateTripPageComponent implements OnInit {
 
   create_trip()
   {
+    // const statdate = this.StartDate.value.setMinutes((this.StartDate.value.getMinutes() + this.StartDate.value.getTimezoneOffset()));
+    // const enddate = this.EndDate.value.setMinutes((this.EndDate.value.getMinutes() + this.EndDate.value.getTimezoneOffset()));
+    // console.log(statdate, enddate);
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, this.TripDescription.value );
     console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
   }
   ngOnInit() {
   }
-
+  public onDate(event): void {
+    this.button_disabled = this.EndDate.value < this.StartDate.value;
+  }
   generate_checkpoints_list()
   {
     var checkpoints = {50.023313 : 30.233451};
