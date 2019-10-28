@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Trip, Checkpoint} from "./trip";
+import {Trip, Checkpoint} from "../trip";
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
