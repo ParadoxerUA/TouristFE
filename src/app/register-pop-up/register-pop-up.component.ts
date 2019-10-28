@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl, Validators} from '@angular/forms';
 
+import {UserService} from '../_services/user.service'
+
 export interface DialogData {
- firstname: string;
- lastname: string;
+ name: string;
+ surname: string;
  email: string;
  password: string;
 }
@@ -17,7 +19,13 @@ export interface DialogData {
 export class RegisterPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
-  hide = true;
+  submitted = false;
+  passwordHide = true
+
+  sendCredentials() {
+    this.userService.postCredentials(this.data).subscribe()
+    this.submitted = true
+  }
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
@@ -27,7 +35,9 @@ export class RegisterPopUpComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<RegisterPopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData){ }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private userService: UserService,
+    ){ }
 
   ngOnInit() {
   }

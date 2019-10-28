@@ -12,6 +12,8 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     MapComponent,
     LoginPopUpComponent,
     RegisterPopUpComponent,
+    HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     MaterialModule,

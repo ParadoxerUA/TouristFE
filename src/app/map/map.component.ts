@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {TripService} from "../trip.service";
+import {TripService} from "../_services/trip.service";
 
 interface Marker {
   order: number;

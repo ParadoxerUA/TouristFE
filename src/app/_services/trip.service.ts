@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import {Trip, Checkpoint} from "./trip";
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
-  public listOfCheckpoints : Checkpoint[] =[];
+  public listOfCheckpoints : Checkpoint[] =[ {
+    orderNumber: 1,
+    latitude: 50.431273,
+    longitude: 30.550139,
+  }];
   public currentTrip: Trip = {
     name: 'Servise trip',
     start_date: 'Right now',
@@ -46,6 +51,7 @@ export class TripService {
   }
 
    addTrip(trip: Trip): Observable<Trip> {
+    // console.log("trip in addTrip", this.http.post<Trip>(this.backendUrl+this.tripUrl, trip, this.httpOptions).pipe());
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 

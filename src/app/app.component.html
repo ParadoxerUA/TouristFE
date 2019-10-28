@@ -1,32 +1,8 @@
 <!-- Header -->
-<header class="mdc-top-app-bar">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <button class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon--unbounded">
-        <i class="material-icons">directions_walk</i>
-      </button>
-      <span class="mdc-top-app-bar__title">Tourist App</span>
-    </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-      <button class="mdc-button mdc-button--unelevated"
-              type="submit"
-              name="sign_in"
-              (click)="openSignInDialog()">Sign In</button>
-      <button class="mdc-button mdc-button--unelevated"
-              type="submit"
-              name="sign_up"
-              (click)="openSignUpDialog()">Sign Up</button>
-    </section>
-  </div>
-</header>
+<app-header></app-header>
 
+<!-- Main content -->
+<router-outlet></router-outlet>
 
-
-  <!-- Main content -->
-  <router-outlet></router-outlet>
-
-  <!-- Footer -->
-  <footer class="main__footer">
-    <small class="copyright__text">Copyright © 2019 Tourist app</small>
-  </footer>
-
+<!-- Footer -->
+<app-footer></app-footer>
