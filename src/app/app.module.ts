@@ -15,6 +15,7 @@ import { CreateTripPageComponent } from './create-trip-page/create-trip-page.com
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { FooterComponent } from './footer/footer.component';
     RegisterPopUpComponent,
     HeaderComponent,
     FooterComponent,
+    EmailConfirmationComponent,
   ],
   imports: [
     MaterialModule,
