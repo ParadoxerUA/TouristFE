@@ -24,13 +24,10 @@ export class RegisterPopUpComponent implements OnInit {
 
   sendCredentials() {
     this.userService.postCredentials(this.data)
-      .subscribe((response, err) => {
-        if(err === undefined) {
-          console.log(response)
-          this.submitted = true
-        } 
+      .subscribe((response) => {
+        console.log(response)
+        this.submitted = true
       })
-    
   }
 
   getErrorMessage() {
