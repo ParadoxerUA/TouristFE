@@ -27,7 +27,12 @@ export class MapComponent implements OnInit {
 
     lat: 50.431273,
     lng: 30.550139,
-    markers: [ ],
+    markers: [{
+      order: 1,
+      lat: 50.431273,
+      lng: 30.550139,
+      selected: false,
+    }],
     zoom: 5
   };
   placeMarker($event) {
