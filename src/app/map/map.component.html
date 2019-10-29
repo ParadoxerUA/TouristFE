@@ -1,7 +1,7 @@
 <div id="container">
     <div id="left1">
         <h2 align="center">Checkpoints</h2>
-        <mat-list>
+        <mat-list >
             <mat-list-item *ngFor="let marker of location.markers">
                 <h5 mat-line >{{marker.order}}  --  {{marker.lat | number:'2.6-6'}} <br/>
                     {{marker.lng| number:'2.6-6'}} </h5>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Trip, Checkpoint} from "./trip";
+import {Trip, Checkpoint} from "src/app/trip";
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class TripService {
   public listOfCheckpoints : Checkpoint[] =[ {
-    orderNumber: 1,
+    order_number: 1,
     latitude: 50.431273,
     longitude: 30.550139,
   }];
