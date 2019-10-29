@@ -21,7 +21,10 @@ agm-map{
 }
 
 .mat-list {
-margin-left: 40px;
+    margin-left: 40px;
+    margin-right: 20px;
+    max-height: 88.5%;
+    overflow: auto;
 }
 
 a{
