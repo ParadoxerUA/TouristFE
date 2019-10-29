@@ -23,8 +23,11 @@ export class RegisterPopUpComponent implements OnInit {
   passwordHide = true
 
   sendCredentials() {
-    this.userService.postCredentials(this.data).subscribe()
-    this.submitted = true
+    this.userService.postCredentials(this.data)
+      .subscribe((response) => {
+        console.log(response)
+        this.submitted = true
+      })
   }
 
   getErrorMessage() {
