@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
     HeaderComponent,
     FooterComponent,
     EmailConfirmationComponent,
+    UserProfileComponent,
   ],
   imports: [
     MaterialModule,
