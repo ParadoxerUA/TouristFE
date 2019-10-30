@@ -15,6 +15,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
+import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
+import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
 
 
 @NgModule({
@@ -28,6 +31,9 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
     HeaderComponent,
     FooterComponent,
     EmailConfirmationComponent,
+    TripDetailPageComponent,
+    TripItemListComponent,
+    TripUserListComponent,
   ],
   imports: [
     MaterialModule,
