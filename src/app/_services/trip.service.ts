@@ -3,6 +3,7 @@ import {Trip, Checkpoint} from "src/app/trip";
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,10 @@ export class TripService {
   // private backendUrl = 'http://localhost/be';
   private tripUrl = '/be/api/trip/v1/create_trip';  // URL to web api
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json',
+    'Authorization': this.userService.getSessionId()})
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   createTrip(name, startDate, endDate, description){
     this.currentTrip.name = name;
@@ -31,6 +33,7 @@ export class TripService {
     this.currentTrip.end_date = endDate;
     this.currentTrip.description = description;
     this.currentTrip.points = this.listOfCheckpoints;
+    console.log("New version")
     this.addTrip(this.currentTrip).subscribe(g => {
       console.log(g)
     })
