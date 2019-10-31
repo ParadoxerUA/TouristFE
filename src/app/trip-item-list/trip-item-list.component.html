@@ -1,11 +1,14 @@
 <div class="left">
-  <div class="item-form">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Item name" value="">
+  <mat-card class="input-card">
+    <mat-form-field class="item-name-width">
+      <input matInput placeholder="Item name" [(ngModel)]="name">
     </mat-form-field>
-    <button type="button" name="button">Material + button</button>
-  </div>
-  <div class="item-list">
-    <h2>Material Grid list</h2>
-  </div>
+    <mat-form-field class="example-margin">
+      <input matInput type="number" placeholder="kg" [(ngModel)]="weight">
+    </mat-form-field>
+    <mat-form-field class="example-margin">
+      <input matInput type="number" placeholder="units" [(ngModel)]="amount">
+    </mat-form-field>
+    <button mat-mini-fab (click)="addItem()">+</button>
+  </mat-card><br>
 </div>
