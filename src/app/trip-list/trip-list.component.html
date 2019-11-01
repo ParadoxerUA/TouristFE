@@ -1,0 +1,16 @@
+<div class="list-container">
+    <mat-nav-list>
+        <mat-list-item  *ngFor="let trip of trips">
+            <mat-grid-list cols="6" rowHeight="3:1" class="child-list">
+                
+                <mat-grid-tile>{{trip.admin}}</mat-grid-tile>
+                <mat-grid-tile>{{trip.name}}</mat-grid-tile>
+                <mat-grid-tile>{{trip.status}}</mat-grid-tile>
+                <mat-grid-tile>{{trip.start_date}}</mat-grid-tile>
+                <mat-grid-tile>{{trip.end_date}} </mat-grid-tile>
+                <mat-grid-tile>{{trip.participants}} </mat-grid-tile>
+                
+            </mat-grid-list>
+        </mat-list-item>
+    </mat-nav-list>
+</div>

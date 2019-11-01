@@ -18,6 +18,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
+import { TripListComponent } from './trip-list/trip-list.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { TripUserListComponent } from './trip-user-list/trip-user-list.component
     TripDetailPageComponent,
     TripItemListComponent,
     TripUserListComponent,
+    TripListComponent,
   ],
   imports: [
     MaterialModule,
