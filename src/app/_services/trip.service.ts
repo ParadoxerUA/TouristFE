@@ -19,7 +19,7 @@ export class TripService {
     start_date: 'Right now',
     description: 'inside service'
   };
-  // private backendUrl = 'http://localhost/be';
+
   private tripUrl = '/be/api/trip/v1/create_trip';  // URL to web api
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -33,7 +33,6 @@ export class TripService {
     this.currentTrip.end_date = endDate;
     this.currentTrip.description = description;
     this.currentTrip.points = this.listOfCheckpoints;
-    console.log("New version")
     this.addTrip(this.currentTrip).subscribe(g => {
       console.log(g)
     })
@@ -54,7 +53,6 @@ export class TripService {
   }
 
    addTrip(trip: Trip): Observable<Trip> {
-    // console.log("trip in addTrip", this.http.post<Trip>(this.backendUrl+this.tripUrl, trip, this.httpOptions).pipe());
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
