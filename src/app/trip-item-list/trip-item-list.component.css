@@ -24,3 +24,13 @@
   margin: 10px;
   width: 60px;
 }
+.table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.mat-table {
+  width: 100%;
+  overflow: auto;
+  max-height: 290px;
+}

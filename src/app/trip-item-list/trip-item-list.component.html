@@ -11,4 +11,25 @@
     </mat-form-field>
     <button mat-mini-fab (click)="addItem()">+</button>
   </mat-card><br>
+
+  <div class="table-container">
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="weight">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Weight </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.weight}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.amount}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
 </div>
