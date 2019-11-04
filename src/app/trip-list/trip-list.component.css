@@ -1,20 +1,11 @@
+button {
+    position: absolute;
+    right: 4vw;
+    top: 80px;
+}
 .list-container {
     position: relative;
-    top: 70px;
-}
-
-mat-grid-tile {
-    background: lightblue;
-}
-mat-list-item {
-    position: relative;;
-}
-
-.child-list {
+    top: 80px;
+    width: 70vw;
     margin: auto;
-    padding: 7px;
-    position: relative;
-    width:80%;
-    height:80%;
-    text-align: center;
 }

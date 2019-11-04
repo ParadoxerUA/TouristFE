@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from "@angular/material";
+// import { MatCard } from "@angular/material";
 
 import { TripService } from '../_services/trip.service'
 import { Trip } from '../trip'
@@ -10,7 +12,16 @@ import { Trip } from '../trip'
   styleUrls: ['./trip-list.component.css']
 })
 export class TripListComponent implements OnInit {
-  trips: Trip[]
+  trips: Trip[] = [];
+  tripsDataSource = new MatTableDataSource(this.trips);
+  displayedColumns: string[] = [
+    'admin',
+    'name',
+    'participants',
+    'status',
+    'start_date',
+    'end_date',
+  ];
 
   constructor(private tripService: TripService) { }
 
@@ -20,6 +31,9 @@ export class TripListComponent implements OnInit {
 
   getTrips(): void {
     this.tripService.getTrips()
-    .subscribe(trips => this.trips = trips)
+    .subscribe(trips => {
+      this.trips = trips;
+      this.tripsDataSource.data = this.trips;
+    })
   }
 }

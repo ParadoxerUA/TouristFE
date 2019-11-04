@@ -1,16 +1,38 @@
-<div class="list-container">
-    <mat-nav-list>
-        <mat-list-item  *ngFor="let trip of trips">
-            <mat-grid-list cols="6" rowHeight="3:1" class="child-list">
-                
-                <mat-grid-tile>{{trip.admin}}</mat-grid-tile>
-                <mat-grid-tile>{{trip.name}}</mat-grid-tile>
-                <mat-grid-tile>{{trip.status}}</mat-grid-tile>
-                <mat-grid-tile>{{trip.start_date}}</mat-grid-tile>
-                <mat-grid-tile>{{trip.end_date}} </mat-grid-tile>
-                <mat-grid-tile>{{trip.participants}} </mat-grid-tile>
-                
-            </mat-grid-list>
-        </mat-list-item>
-    </mat-nav-list>
-</div>
+<button mat-fab color="primary">New trip</button>
+<mat-card class="list-container">
+    <mat-table [dataSource]="tripsDataSource">
+
+        <ng-container matColumnDef="admin">
+          <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
+          <mat-cell *matCellDef="let trip"> {{trip.admin}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.name}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="participants">
+                <mat-header-cell *matHeaderCellDef> Participants </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.participants}} </mat-cell>
+              </ng-container>
+        
+        <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.status}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="start_date">
+                <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.start_date}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="end_date">
+                <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.end_date}} </mat-cell>
+              </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+</mat-card>
