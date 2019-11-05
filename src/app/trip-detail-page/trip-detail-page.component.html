@@ -1,5 +1,24 @@
 <div class="trip_detail_container">
-    <h1 align="center">Trip name, dates + map pop-up</h1>
+    <mat-card id="card" style="text-align: center;">
+    <mat-card-title>
+       Trip name, dates + map pop-up
+    </mat-card-title>
+
+    <mat-card-content>
+        <mat-expansion-panel style="text-align: center;">
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'" >
+                <mat-panel-title >
+                    <mat-icon>explore</mat-icon>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-trip-detail-page-map></app-trip-detail-page-map>
+        </mat-expansion-panel>
+    </mat-card-content>
+    </mat-card>
+
+
     <app-trip-item-list></app-trip-item-list>
     <app-trip-user-list></app-trip-user-list>
 </div>
