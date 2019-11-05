@@ -1,5 +1,5 @@
 .right {
-    width: calc(100% - 500px);
+    width: 60%;
     float: right;
     height: 90%;
 }
