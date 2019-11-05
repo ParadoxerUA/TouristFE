@@ -35,7 +35,6 @@ export class LoginPopUpComponent implements OnInit {
         this.userService.setSessionId(res.body.data)
         console.log(this.userService.getSessionId())
       })
-    
   }
 
   logInSocial(type: string): void {

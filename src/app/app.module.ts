@@ -20,6 +20,7 @@ import { TripItemListComponent } from './trip-item-list/trip-item-list.component
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
 import { SocialLoginModule, AuthServiceConfig, 
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
+import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
 
 const config = new AuthServiceConfig([
   {
@@ -50,6 +51,7 @@ export function provideConfig() {
     TripDetailPageComponent,
     TripItemListComponent,
     TripUserListComponent,
+    TripDetailPageMapComponent,
   ],
   imports: [
     MaterialModule,
