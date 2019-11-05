@@ -29,8 +29,8 @@
   flex-direction: column;
   width: 100%;
 }
-.mat-table {
-  width: 100%;
+
+.mat-card.main-card {
   overflow: auto;
-  max-height: 290px;
+  max-height: 70%;
 }
