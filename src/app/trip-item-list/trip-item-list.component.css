@@ -1,13 +1,36 @@
 .left {
-    width: 500px;
+    width: 40%;
     float: left;
     height: 90%;
 }
-
-.item-form {
-
+.input-card {
+  width: 90%;
+  height: 50px;
+  margin: 5px;
+  padding-top: 0px;
 }
-
-.item-list {
-
+.item-name-width {
+  width: 40%;
+  padding: 0px;
+  margin: 0px;
+}
+.mat-mini-fab {
+  background-color: green;
+  margin-left: 15px;
+  color: white;
+  font-size: 24px;
+}
+.example-margin {
+  margin: 10px;
+  width: 60px;
+}
+.table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.mat-table {
+  width: 100%;
+  overflow: auto;
+  max-height: 290px;
 }
