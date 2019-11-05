@@ -12,6 +12,7 @@ import {
     MatIconModule,
     MatListModule,
     MatButtonToggleModule,
+    MatExpansionModule,
     MatCardModule,
 } from '@angular/material';
 
@@ -25,6 +26,7 @@ import {
     MatNativeDateModule,
     MatDatepickerModule,
     MatGridListModule,
+    MatExpansionModule,
     MatIconModule,
     MatListModule,
     MatButtonToggleModule,
@@ -39,6 +41,7 @@ import {
     MatNativeDateModule,
     MatDatepickerModule,
     MatGridListModule,
+    MatExpansionModule,
     MatIconModule,
     MatListModule,
     MatButtonToggleModule,

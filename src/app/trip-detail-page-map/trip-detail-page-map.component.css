@@ -1,7 +1,15 @@
+.mat-list {
+    margin-left: 40px;
+    margin-right: 20px;
+    max-height: 230px;
+    overflow: auto;
+}
+
 agm-map{
-    height:100%;
+    height:300px;
     width: 100%;
 }
+
 #container {
     height:100%;
     width: 100%;
@@ -18,17 +26,6 @@ agm-map{
     height:100%;
     margin-right: 30px;
     width: calc(100% - 280px);
-}
-
-.mat-list {
-    margin-left: 40px;
-    margin-right: 20px;
-    max-height: 89%;
-    overflow: auto;
-}
-
-a{
-    cursor: pointer;
 }
 
 .list .mat-list .mat-list-item .mat-multi-line .mat-list-item-content {
