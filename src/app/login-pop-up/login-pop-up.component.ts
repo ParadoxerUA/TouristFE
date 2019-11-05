@@ -50,20 +50,28 @@ export class LoginPopUpComponent implements OnInit {
   
   logOut(): void {
     this.authService.signOut();
+    this.loggedIn = false;
   }
 
   constructor(
     public dialogRef: MatDialogRef<LoginPopUpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private userService: UserService, 
-    private authService: AuthService, 
-  ){ }
+    private authService: AuthService,
+  ){ 
+    this.loggedIn = false;
+  }
 
   ngOnInit() {
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);
-    });
+      if (this.loggedIn === true){
+        this.userService.userSocialLogin(this.user).subscribe(res => console.log(res))
+
+      }
+    }
+    );
   }
 
 }
