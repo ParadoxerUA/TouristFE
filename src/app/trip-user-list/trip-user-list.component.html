@@ -1,3 +1,37 @@
 <div class="right">
-  <p>trip-user-list works!</p>
+  <div class="tags">
+
+    <mat-chip-list aria-label="Tag selection">
+      <p><strong>Tags:</strong></p>
+      <mat-chip>Food</mat-chip>
+      <mat-chip>Equipment</mat-chip>
+      <mat-chip>Meds</mat-chip>
+      <!-- <button mat-mini-fab style="padding:0px"> -->
+      <mat-chip color="primary" selected>
+        <i class="material-icons">add</i>
+      </mat-chip>
+      <!-- </button> -->
+    </mat-chip-list>
+  </div>
+  <div class="breaker"></div>
+  <mat-card class="mat-card-content">
+  
+    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="3%" >
+      <mat-grid-tile *ngFor="let user of tripUsers">
+        <mat-card >
+          <button class="close" (click)="delete(user)">
+            <i class="material-icons">close</i>
+          </button>
+          <img mat-card-avatarn src="avatar.png" alt="User Avatar">
+          <mat-card-subtitle>{{user.name}}</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="user.surname" style="display: inline">{{user.surname}}</mat-card-subtitle>
+
+          <mat-card-footer style="text-align: center">
+            <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+            <p class="progress-value">10/{{user.capacity}}</p>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
 </div>
