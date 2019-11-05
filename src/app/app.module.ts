@@ -18,7 +18,18 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
+import { SocialLoginModule, AuthServiceConfig, FacebookLoginProvider } from 'angularx-social-login';
 
+const config = new AuthServiceConfig([
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider('2519387351502349')
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -46,12 +57,18 @@ import { TripUserListComponent } from './trip-user-list/trip-user-list.component
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
     FormsModule,
     ReactiveFormsModule,
+    SocialLoginModule
   ],
   entryComponents: [
     LoginPopUpComponent,
     RegisterPopUpComponent,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
