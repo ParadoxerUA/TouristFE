@@ -1,4 +1,4 @@
-<div class="right">
+
   <div class="tags">
 
     <mat-chip-list aria-label="Tag selection">
@@ -14,9 +14,9 @@
     </mat-chip-list>
   </div>
   <div class="breaker"></div>
-  <mat-card class="mat-card-content">
+  <mat-card class="mat-card-user">
   
-    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="3%" >
+    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card >
           <button class="close" (click)="delete(user)">
@@ -34,4 +34,4 @@
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card>
-</div>
+

@@ -7,7 +7,8 @@
 .mat-grid-list {
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
+  float: right;
+  width: 95%;
   justify-content: center;
   overflow: auto;
 }
@@ -38,10 +39,6 @@
     
 }
 
-::ng-deep .mat-button-wrapper{
-  line-height: 14px;
-  padding: 0;
-}
 
 .mat-card-avatar {
   display: block;
@@ -89,15 +86,7 @@ p.progress-value {
   align-self: flex-start;
 }
 
-.right {
-    width: 60%;
-    float: right;
-    height: 90%;
-    float: right;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-}
+
 
 .tags {
   display: flex;
@@ -107,14 +96,14 @@ p.progress-value {
   align-content: center;
 }
 
-.mat-card-content{
-  width: 95%;
-  height: 90%;
+.mat-card-user{
+  width: 94.7%;
+  height: 80%;
   float: right;
-  display: flex;
+  /*display: flex;*/
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: center;
+  /*justify-content: center;*/
   overflow: auto;
-  max-height: 90%;
+  /*max-height: 95%;*/
 }
