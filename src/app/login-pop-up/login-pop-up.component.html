@@ -17,7 +17,6 @@
 </mat-dialog-actions>
 
 <div align="center">
-  <button mat-raised-button *ngIf="loggedIn===true"  mat-dialog-close (click)="logOut()">LogOut</button>
   <button mat-raised-button class="facebook" *ngIf="loggedIn===false"  mat-dialog-close (click)="logInSocial('facebook')">Facebook</button>
   <button mat-raised-button class="google" *ngIf="loggedIn===false"  mat-dialog-close (click)="logInSocial('google')">Google</button>
 </div>
