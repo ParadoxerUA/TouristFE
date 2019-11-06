@@ -63,10 +63,12 @@ export class LoginPopUpComponent implements OnInit {
 
   ngOnInit() {
     this.authService.authState.subscribe((user) => {
+      
       this.user = user;
       this.loggedIn = (user != null);
       if (this.loggedIn === true){
-        this.userService.userSocialLogin(this.user).subscribe(res => console.log(res))
+        let data = {'auth_token': this.user.authToken, 'provider': this.user.provider}
+        this.userService.userSocialLogin(data).subscribe(res => console.log(res))
 
       }
     }

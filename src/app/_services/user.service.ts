@@ -28,7 +28,7 @@ export class UserService {
   
   userSocialLogin(data): Observable<any> {
     console.log(data)
-    return this.http.post(this.socialLoginUrl, data, {observe: 'response'})
+    return this.http.post(this.socialLoginUrl, data)
   } 
 
   setSessionId(sessionId) {
