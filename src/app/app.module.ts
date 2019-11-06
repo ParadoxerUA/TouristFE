@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AgmCoreModule} from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule} from './material.module'
+import { MaterialModule } from './material.module'
 import { LoginPopUpComponent } from './login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from './register-pop-up/register-pop-up.component';
 import { MapComponent } from './map/map.component';
@@ -18,13 +18,18 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
-import { SocialLoginModule, AuthServiceConfig, FacebookLoginProvider } from 'angularx-social-login';
+import { SocialLoginModule, AuthServiceConfig, 
+          FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
 
 const config = new AuthServiceConfig([
   {
     id: FacebookLoginProvider.PROVIDER_ID,
     provider: new FacebookLoginProvider('2519387351502349')
+  },
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider('199830467258-56uneddv25o5a3l1k04u045upkmek6q9.apps.googleusercontent.com')
   }
 ]);
 

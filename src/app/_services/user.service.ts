@@ -9,6 +9,7 @@ export class UserService {
   registerUrl = 'http://localhost:5000/api/user/v1/register'
   smokeUrl = 'http://localhost:5000/api/smoke/v1/smoke'
   loginUrl = 'http://localhost:5000/api/user/v1/login'
+  socialLoginUrl = '/be/api/user/v1/social_login'
   confirmationUrl = 'http://localhost:5000/api/otc/v1/reg_confirmation/'
 
   sessionId: string
@@ -25,6 +26,11 @@ export class UserService {
     return this.http.post(this.loginUrl, data, {observe: 'response'})
   }
   
+  userSocialLogin(data): Observable<any> {
+    console.log(data)
+    return this.http.post(this.socialLoginUrl, data)
+  } 
+
   setSessionId(sessionId) {
     this.sessionId = sessionId
   }
@@ -32,10 +38,8 @@ export class UserService {
   getSessionId() {
     return this.sessionId
   }
-  
-
-  
+    
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 }
