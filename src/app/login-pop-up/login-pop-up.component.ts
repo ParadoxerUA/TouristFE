@@ -31,13 +31,12 @@ export class LoginPopUpComponent implements OnInit {
         this.userService.setSessionId(res.body.data)
         console.log(this.userService.getSessionId())
       })
-    
   }
 
   constructor(
     public dialogRef: MatDialogRef<LoginPopUpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private userService: UserService,  
+    private userService: UserService,
   ){ }
 
   ngOnInit() {

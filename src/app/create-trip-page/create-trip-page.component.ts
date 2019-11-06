@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
-import {FormControl} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 import {TripService} from "../_services/trip.service";
 
 @Component({
@@ -9,18 +9,19 @@ import {TripService} from "../_services/trip.service";
   styleUrls: ['./create-trip-page.component.css']
 })
 export class CreateTripPageComponent implements OnInit {
-  TripName = new FormControl();
+  TripName = new FormControl('',[Validators.required,
+    Validators.minLength(3), Validators.maxLength(30)]);
   TripDescription = new FormControl();
   StartDate = new FormControl((new Date()));
   EndDate = new FormControl((new Date()));
 
-  button_disabled = false;
+  button_disabled = true;
   today = new Date();
 
   trip: Trip = {
-    name: 'Mountains',
-    description: 'description',
-    start_date: 'immediately'
+    name: '',
+    description: '',
+    start_date: ''
   };
   constructor(private tripService : TripService) { }
 
@@ -30,18 +31,19 @@ export class CreateTripPageComponent implements OnInit {
     this.StartDate.value.setMinutes((this.StartDate.value.getMinutes() - this.StartDate.value.getTimezoneOffset()));
     this.EndDate.value.setMinutes((this.EndDate.value.getMinutes() - this.EndDate.value.getTimezoneOffset()));
     // ---- fixing timezone in mat-datepicker
+    let tripDescription = this.TripDescription.value? this.TripDescription.value : '';// ---fix of null description
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
-        this.EndDate.value, this.TripDescription.value );
-    console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
+        this.EndDate.value, tripDescription);
+    // console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
   }
   ngOnInit() {
   }
-  public onDate(event): void {
-    this.button_disabled = this.EndDate.value < this.StartDate.value;
+   public refreshButtonState():  void {
+    let isDateInCorrect = this.EndDate.value < this.StartDate.value;
+    let isNameInCorrect = this.TripName.hasError('minlength')||
+        this.TripName.hasError('maxlength')||
+        this.TripName.hasError('required');
+    this.button_disabled = isDateInCorrect || isNameInCorrect;
   }
-  generate_checkpoints_list()
-  {
-    var checkpoints = {50.023313 : 30.233451};
-    return {here_will_be : checkpoints};
-  }
+
 }
