@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service'
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,6 @@ export class UserService {
   loginUrl = 'http://localhost:5000/api/user/v1/login'
   socialLoginUrl = '/be/api/user/v1/social_login'
   confirmationUrl = 'http://localhost:5000/api/otc/v1/reg_confirmation/'
-
-  sessionId: string
 
   uuidConfirmation(uuid) {
     return this.http.get(this.confirmationUrl + uuid)
@@ -27,19 +26,27 @@ export class UserService {
   }
   
   userSocialLogin(data): Observable<any> {
-    console.log(data)
-    return this.http.post(this.socialLoginUrl, data)
+    return this.http.post(this.socialLoginUrl, data, {observe: 'response'})
   } 
 
   setSessionId(sessionId) {
-    this.sessionId = sessionId
+    this.cookieService.set('sessionId', sessionId);
+  }
+
+  userIsAuthorized(): boolean {
+    return this.cookieService.check('sessionId');
   }
 
   getSessionId() {
-    return this.sessionId
+    return this.cookieService.get('sessionId');
+  }
+
+  deleteSessionId() {
+    this.cookieService.delete('sessionId');
   }
     
   constructor(
     private http: HttpClient,
+    private cookieService: CookieService,
   ) { }
 }
