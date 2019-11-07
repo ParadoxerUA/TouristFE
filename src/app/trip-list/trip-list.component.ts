@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
-
-import { TripService } from '../_services/trip.service'
-import { Trip } from '../trip'
-
+import { TripService } from '../_services/trip.service';
+import { Trip } from '../trip';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trip-list',
@@ -22,7 +21,7 @@ export class TripListComponent implements OnInit {
     'end_date',
   ];
 
-  constructor(private tripService: TripService) { }
+  constructor(private tripService: TripService, private router: Router) { }
 
   ngOnInit() {
     this.getTrips();
@@ -34,8 +33,16 @@ export class TripListComponent implements OnInit {
       trips.data.forEach(element => {
         this.trips.push(element as Trip);
       });
-      console.log(this.trips);
       this.tripsDataSource.data = this.trips;
     })
+  }
+  redirectToTripDetail(id): void {  
+    console.log(id);
+  }
+  redirectToCreateTrip(): void {
+    this.router.navigate(['create_trip']) 
+  }
+  isCurrentUserAdmin(admin): boolean {
+    return admin == '*';
   }
 }

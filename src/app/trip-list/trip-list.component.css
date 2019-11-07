@@ -2,10 +2,18 @@ button {
     position: absolute;
     right: 3.5vw;
     top: 80px;
+    width: 100px;
+    height: 100px;
 }
 .list-container {
     position: relative;
     top: 80px;
     width: 70vw;
     margin: auto;
+}
+mat-row:hover {
+    background: #777;
+}
+mat-row:active {
+    background: #efefef;
 }

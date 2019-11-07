@@ -1,10 +1,15 @@
-<button mat-fab color="primary">New trip</button>
+<button mat-fab color="primary" (click)="redirectToCreateTrip()">New trip</button>
 <mat-card class="list-container">
     <mat-table [dataSource]="tripsDataSource">
 
         <ng-container matColumnDef="admin">
           <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
-          <mat-cell *matCellDef="let trip"> {{trip.admin}} </mat-cell>
+          <mat-cell *matCellDef="let trip"> 
+              <div *ngIf="isCurrentUserAdmin(trip.admin);else other_content">
+                  <i class="material-icons">star</i>
+               </div>
+               <ng-template #other_content>{{trip.admin}}</ng-template>
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="name">
@@ -33,6 +38,6 @@
               </ng-container>
       
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row (click)="redirectToTripDetail(row.id)" *matRowDef="let row; columns: displayedColumns;" ></mat-row>
       </mat-table>
 </mat-card>
