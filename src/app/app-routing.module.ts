@@ -6,6 +6,7 @@ import {CreateTripPageComponent} from "./create-trip-page/create-trip-page.compo
 import {TripListComponent} from './trip-list/trip-list.component'
 import {EmailConfirmationComponent} from './email-confirmation/email-confirmation.component';
 import {TripDetailPageComponent} from './trip-detail-page/trip-detail-page.component';
+import { ErrorComponent } from './error/error.component';
 
 const routes: Routes = [
   { path: 'index', component: MainPageComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'create_trip', component: CreateTripPageComponent },
   { path: 'trip-list', component: TripListComponent },
   { path: 'email-confirmation', component: EmailConfirmationComponent },
-  { path: 'trip_detail', component: TripDetailPageComponent }
+  { path: 'trip_detail', component: TripDetailPageComponent },
+  { path: 'error', component: ErrorComponent},
 ];
 
 @NgModule({

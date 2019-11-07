@@ -25,7 +25,6 @@ export class TripListComponent implements OnInit {
   constructor(private tripService: TripService) { }
 
   ngOnInit() {
-
     this.getTrips();
   }
 
