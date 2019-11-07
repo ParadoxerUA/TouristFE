@@ -47,7 +47,6 @@ export class UserService {
   }
 
   userLogin(data): Observable<any> {
-    console.log(data);
     return this.http.post(this.loginUrl, data, {observe: 'response'})
   }
 

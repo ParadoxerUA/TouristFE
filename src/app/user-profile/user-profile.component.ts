@@ -23,9 +23,10 @@ export class UserProfileComponent implements OnInit {
   logoutUser(): void {
     this.userService.userLogout()
       .subscribe(res => {
-        console.log(res)
+        this.userService.deleteSessionId();
       });
     this.userService.deleteSessionId();
+    this.userService.setLoggedInUser(false);
     this.router.navigate(['/index']);
 
   }
