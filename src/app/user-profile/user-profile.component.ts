@@ -37,10 +37,16 @@ export class UserProfileComponent implements OnInit {
   ){ }
 
   ngOnInit() {
-      this.userService.setUserSideNav(this.userSideNav);
-      this.user = new User('','', 0, '', '');
-      this.userService.getEmittedValue()
-          .subscribe(item => this.user=item);
+    if(this.userService.userIsAuthorized()){
+      this.userService.getUserProfile().subscribe(resp => {
+        this.userService.change(resp.body);
+        this.userService.setLoggedInUser(true);
+      })
+    }
+    this.userService.setUserSideNav(this.userSideNav);
+    this.user = new User('','', 0, '', '');
+    this.userService.getEmittedValue()
+        .subscribe(item => this.user=item);
   }
 
 }

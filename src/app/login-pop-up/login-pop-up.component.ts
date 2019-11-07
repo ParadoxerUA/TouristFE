@@ -2,9 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators} from '@angular/forms';
 import { UserService } from '../_services/user.service'
-import { AuthService, FacebookLoginProvider, SocialUser, GoogleLoginProvider } from 'angularx-social-login';
-import { CookieService } from 'ngx-cookie-service';
-
+import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 
 export interface DialogData {
@@ -55,10 +53,6 @@ export class LoginPopUpComponent implements OnInit {
         this.userService.userLogin(this.data)
             .subscribe(res => {
                 this.userService.setSessionId(res.body.data);
-                this.userService.getUserProfile().subscribe(resp => {
-                    this.userService.change(resp.body);
-                    this.userService.setLoggedInUser(true);
-                })
             });
     }
   }

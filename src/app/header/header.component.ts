@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
 
 
   public getUserLoggedIn(): boolean {
-    return this.userService.getUserLoggedIn()}
+    return this.userService.userIsAuthorized()}
 
 
 

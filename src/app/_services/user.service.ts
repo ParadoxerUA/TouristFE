@@ -20,17 +20,18 @@ export class UserService {
   socialLoginUrl = '/be/api/user/v1/social_login'
   @Output() em: EventEmitter<any> = new EventEmitter();
 
-  private isUserLoggedIn: boolean = false;
-  sessionId: string;
+  // private isUserLoggedIn: boolean = false;
+  // sessionId: string;
   userSideNav: MatSidenav;
 
   public setLoggedInUser(flag) {
-    this.isUserLoggedIn= flag;
+    // this.isUserLoggedIn= flag;
   }
 
 
   public getUserLoggedIn(): boolean {
-    return this.isUserLoggedIn;
+    return this.cookieService.check('sessionId');
+    // return this.isUserLoggedIn;
   }
 
   change(user){
@@ -56,12 +57,12 @@ export class UserService {
 
 
   userLogout(): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.sessionId});
+    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
     return this.http.post(this.logoutUrl, null, {headers: header, observe: 'response'});
   }
 
   getUserProfile() {
-    let header = new HttpHeaders({'Authorization': this.sessionId});
+    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
     return this.http.get<User>(this.userProfileUrl, {headers: header, observe: 'response'});
   }
 
