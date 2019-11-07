@@ -3,6 +3,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl, Validators} from '@angular/forms';
 import {UserService} from '../_services/user.service'
 
+
 export interface DialogData {
  email: string;
  password: string;
@@ -13,11 +14,13 @@ export interface DialogData {
   templateUrl: './login-pop-up.component.html',
   styleUrls: ['./login-pop-up.component.css']
 })
+
+
 export class LoginPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
   passwordHide = true;
-  sessionId: string
+  sessionId: string;
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
@@ -26,11 +29,14 @@ export class LoginPopUpComponent implements OnInit {
   }
 
   loginUser() {
-    this.userService.userLogin(this.data)
-      .subscribe(res => {
-        this.userService.setSessionId(res.body.data)
-        console.log(this.userService.getSessionId())
-      })
+      this.userService.userLogin(this.data)
+          .subscribe(res => {
+            this.userService.setSessionId(res.body.data);
+            this.userService.getUserProfile().subscribe(resp => {
+                this.userService.change(resp.body);
+                this.userService.setLoggedInUser(true);
+            })
+          });
   }
 
   constructor(

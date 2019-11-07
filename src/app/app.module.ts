@@ -21,6 +21,8 @@ import { TripItemListComponent } from './trip-item-list/trip-item-list.component
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
 import { SocialLoginModule, AuthServiceConfig, FacebookLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
+import {UserService} from "./_services/user.service";
+
 
 
 const config = new AuthServiceConfig([
@@ -62,17 +64,19 @@ export function provideConfig() {
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
     FormsModule,
     ReactiveFormsModule,
-    SocialLoginModule
+    SocialLoginModule,
   ],
   entryComponents: [
     LoginPopUpComponent,
     RegisterPopUpComponent,
   ],
+
   providers: [
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
-    }
+    },
+      UserService
   ],
   bootstrap: [AppComponent]
 })

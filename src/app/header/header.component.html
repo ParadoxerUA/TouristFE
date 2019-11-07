@@ -7,7 +7,7 @@
       </button>
       <span class="mdc-top-app-bar__title">Tourist App</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+    <section *ngIf="!getUserLoggedIn()" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
       <button class="mdc-button mdc-button--unelevated"
               type="submit"
               name="sign_in"
@@ -17,5 +17,12 @@
               name="sign_up"
               (click)="openSignUpDialog()">Sign Up</button>
     </section>
+    <section *ngIf="getUserLoggedIn()" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+      <button (click)="clickToggle()" class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon--unbounded">
+        <i class="material-icons">account_circle</i>
+      </button>
+      <strong>{{user.name}} {{user.surname}}</strong>
+    </section>
   </div>
+  <app-user-profile></app-user-profile>
 </header>
