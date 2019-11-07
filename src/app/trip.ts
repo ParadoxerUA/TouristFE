@@ -15,3 +15,9 @@ export class Checkpoint {
   latitude: number;
   longitude: number;
 }
+
+export class Items {
+  name: string;
+  weight: number;
+  amount: number;
+}

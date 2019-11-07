@@ -12,6 +12,11 @@
   </mat-form-field>
 </div>
 <mat-dialog-actions align="center">
-  <button mat-raised-button class="register" mat-dialog-close (click)="loginUser()">Login</button>
-  <button mat-raised-button class="cancel" mat-dialog-close>Cancel</button>
+  <button mat-raised-button class="register" mat-dialog-close (click)="logInUser()">Login</button>
+  <button mat-raised-button class="cancel" mat-dialog-close>Cancel</button><br/>
 </mat-dialog-actions>
+
+<div align="center">
+  <button mat-raised-button class="facebook"  mat-dialog-close (click)="logInUser('facebook')">Facebook</button>
+  <button mat-raised-button class="google" mat-dialog-close (click)="logInUser('google')">Google</button>
+</div>

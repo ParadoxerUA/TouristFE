@@ -3,8 +3,7 @@ import {Trip, Checkpoint} from "src/app/trip";
 import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { TRIPS } from './mock-trips'
-import { UserService } from './user.service'
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +20,11 @@ export class TripService {
     description: 'inside service'
   };
   // private backendUrl = 'http://localhost/be';
-  private tripUrl = '/be/api/trip/v1/create_trip';  // URL to web api
+  private tripUrl = '/be/api/trip/v1/trip';  // URL to web api
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 
+    'Content-Type': 'application/json',
+    'Authorization': this.userService.getSessionId()})
   };
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -53,7 +54,6 @@ export class TripService {
   }
 
    addTrip(trip: Trip): Observable<Trip> {
-    // console.log("trip in addTrip", this.http.post<Trip>(this.backendUrl+this.tripUrl, trip, this.httpOptions).pipe());
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
