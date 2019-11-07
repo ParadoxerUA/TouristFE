@@ -20,9 +20,10 @@ export class TripService {
     description: 'inside service'
   };
   // private backendUrl = 'http://localhost/be';
-  private tripUrl = '/be/api/trip/v1/create_trip';  // URL to web api
+  private tripUrl = '/be/api/trip/v1/trip';  // URL to web api
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json',
+    headers: new HttpHeaders({ 
+    'Content-Type': 'application/json',
     'Authorization': this.userService.getSessionId()})
   };
   constructor(private http: HttpClient, private userService: UserService) { }

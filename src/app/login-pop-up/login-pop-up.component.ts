@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {FormControl, Validators} from '@angular/forms';
-import {UserService} from '../_services/user.service'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FormControl, Validators} from '@angular/forms';
+import { UserService } from '../_services/user.service'
 import { AuthService, FacebookLoginProvider, SocialUser, GoogleLoginProvider } from 'angularx-social-login';
+import { CookieService } from 'ngx-cookie-service';
 
 
 export interface DialogData {
@@ -19,9 +20,6 @@ export class LoginPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
   passwordHide = true;
-  sessionId: string
-  user: SocialUser;
-  loggedIn: boolean;
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
@@ -29,27 +27,25 @@ export class LoginPopUpComponent implements OnInit {
             '';
   }
 
-  loginUser() {
-    this.userService.userLogin(this.data)
-      .subscribe(res => {
-        this.userService.setSessionId(res.body.data)
-        console.log(this.userService.getSessionId())
-      })
-  }
-
-  logInSocial(type: string): void {
-    let provider;
-    if(type == "facebook"){
-      provider = FacebookLoginProvider.PROVIDER_ID
-    } else if(type == "google"){
-      provider = GoogleLoginProvider.PROVIDER_ID
+  logInUser(type?: string) {
+    if(this.userService.userIsAuthorized()){
+      return;
     }
-    this.authService.signIn(provider)
+    
+    if(type == "facebook"){
+      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    } else if(type == "google"){
+      this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    } else {
+      this.userService.userLogin(this.data)
+      .subscribe(res => {
+        this.userService.setSessionId(res.body.data);
+      })
+    }
   }
   
-  logOut(): void {
+  logOutSocial(): void {
     this.authService.signOut();
-    this.loggedIn = false;
   }
 
   constructor(
@@ -57,22 +53,17 @@ export class LoginPopUpComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private userService: UserService, 
     private authService: AuthService,
-  ){ 
-    this.loggedIn = false;
-  }
+  ){ }
 
   ngOnInit() {
     this.authService.authState.subscribe((user) => {
-      
-      this.user = user;
-      this.loggedIn = (user != null);
-      if (this.loggedIn === true){
-        let data = {'auth_token': this.user.authToken, 'provider': this.user.provider}
-        this.userService.userSocialLogin(data).subscribe(res => console.log(res))
-
+      if (user && !this.userService.userIsAuthorized()){
+        let data = {'auth_token': user.authToken, 'provider': user.provider};
+        this.userService.userSocialLogin(data).subscribe(res => {
+          this.userService.setSessionId(res.body.data);
+        })
       }
-    }
-    );
+    });
   }
 
 }

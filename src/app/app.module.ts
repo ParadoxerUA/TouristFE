@@ -21,6 +21,7 @@ import { TripUserListComponent } from './trip-user-list/trip-user-list.component
 import { SocialLoginModule, AuthServiceConfig, 
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
+import { CookieService } from 'ngx-cookie-service'
 
 const config = new AuthServiceConfig([
   {
@@ -74,7 +75,8 @@ export function provideConfig() {
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
-    }
+    },
+    CookieService,
   ],
   bootstrap: [AppComponent]
 })
