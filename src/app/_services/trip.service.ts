@@ -20,7 +20,7 @@ export class TripService {
     description: 'inside service'
   };
   // private backendUrl = 'http://localhost/be';
-  private tripUrl = '/be/api/trip/v1/trip';  // URL to web api
+  private tripUrl = 'http://localhost:5000/api/trip/v1/trip';  // URL to web api
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',

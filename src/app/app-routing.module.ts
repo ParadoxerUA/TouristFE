@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
   { path: 'create_trip', component: CreateTripPageComponent },
   { path: 'email-confirmation', component: EmailConfirmationComponent },
-  { path: 'trip_detail', component: TripDetailPageComponent }
+  { path: 'trip_detail/:trip_id', component: TripDetailPageComponent }
 ];
 
 @NgModule({
