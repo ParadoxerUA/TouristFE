@@ -33,10 +33,11 @@ export class HeaderComponent implements OnInit {
     return this.userService.getUserLoggedIn()}
 
 
+
   openSignInDialog(): void {
     let dialogRef = this.dialog.open(LoginPopUpComponent, {
       width: '600px',
-      height: '350px',
+      height: '400px',
       data: {email: this.email, password: this.password}
     });
 

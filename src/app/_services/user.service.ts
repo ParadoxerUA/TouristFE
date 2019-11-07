@@ -3,18 +3,21 @@ import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from "../user";
+import { CookieService } from 'ngx-cookie-service'
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
   registerUrl = 'http://localhost:5000/api/user/v1/register';
   smokeUrl = 'http://localhost:5000/api/smoke/v1/smoke';
   loginUrl = 'http://localhost:5000/api/user/v1/login';
   confirmationUrl = 'http://localhost:5000/api/otc/v1/reg_confirmation/';
   logoutUrl = 'http://localhost:5000/api/user/v1/logout';
   userProfileUrl = 'http://localhost:5000/api/user/v1/user-profile';
+  socialLoginUrl = '/be/api/user/v1/social_login'
   @Output() em: EventEmitter<any> = new EventEmitter();
 
   private isUserLoggedIn: boolean = false;
@@ -38,6 +41,7 @@ export class UserService {
     return this.em;
   }
 
+
   uuidConfirmation(uuid) {
     return this.http.get(this.confirmationUrl + uuid)
   }
@@ -50,6 +54,7 @@ export class UserService {
     return this.http.post(this.loginUrl, data, {observe: 'response'})
   }
 
+
   userLogout(): Observable<any> {
     let header = new HttpHeaders({'Authorization': this.sessionId});
     return this.http.post(this.logoutUrl, null, {headers: header, observe: 'response'});
@@ -60,17 +65,26 @@ export class UserService {
     return this.http.get<User>(this.userProfileUrl, {headers: header, observe: 'response'});
   }
 
+  
+  userSocialLogin(data): Observable<any> {
+    return this.http.post(this.socialLoginUrl, data, {observe: 'response'})
+  } 
+
+
   setSessionId(sessionId) {
-    this.sessionId = sessionId
+    this.cookieService.set('sessionId', sessionId);
+  }
+
+  userIsAuthorized(): boolean {
+    return this.cookieService.check('sessionId');
   }
 
   deleteSessionId() {
-    delete this.sessionId;
-    console.log(this.sessionId)
+    this.cookieService.delete('sessionId');
   }
 
   getSessionId() {
-    return this.sessionId
+    return this.cookieService.get('sessionId');
   }
 
   setUserSideNav(sideNav: MatSidenav){
@@ -83,6 +97,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
+    private cookieService: CookieService,
   ) { }
 
 
