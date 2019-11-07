@@ -16,5 +16,13 @@ export const TRIPS: Trip[] = [
       start_date: '11/11/2011',
       end_date: '11/12/2011',
       participants: 8
+    },
+    {
+      admin: 'Petya',
+      name: 'Best trip ever',
+      status: 'Closed',
+      start_date: '11/11/2011',
+      end_date: '11/12/2011',
+      participants: 8
       },
 ];

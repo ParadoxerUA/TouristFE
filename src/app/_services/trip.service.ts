@@ -4,6 +4,7 @@ import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { TRIPS } from './mock-trips'
+import { UserService } from './user.service'
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class TripService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   createTrip(name, startDate, endDate, description){
     this.currentTrip.name = name;
@@ -56,8 +57,12 @@ export class TripService {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
-  getTrips(): Observable<Trip[]> {
-    return of(TRIPS);
+  getTrips(): Observable<any> {
+    const tripListUrl: string = 'http://localhost:5000/api/trip/v1/trips_list';
+    console.log(this.userService.getSessionId())
+    return this.http.get(tripListUrl, {
+      headers: {'Authorization': this.userService.getSessionId()}
+    })
   }
 
 }

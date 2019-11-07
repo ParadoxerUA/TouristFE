@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
-// import { MatCard } from "@angular/material";
 
 import { TripService } from '../_services/trip.service'
 import { Trip } from '../trip'
@@ -26,13 +25,17 @@ export class TripListComponent implements OnInit {
   constructor(private tripService: TripService) { }
 
   ngOnInit() {
+
     this.getTrips();
   }
 
   getTrips(): void {
     this.tripService.getTrips()
     .subscribe(trips => {
-      this.trips = trips;
+      trips.data.forEach(element => {
+        this.trips.push(element as Trip);
+      });
+      console.log(this.trips);
       this.tripsDataSource.data = this.trips;
     })
   }
