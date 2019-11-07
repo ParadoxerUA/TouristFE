@@ -4,6 +4,7 @@ import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import {UserService} from "./user.service";
+import { debugUrl, prodUrl } from './config'
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,22 @@ export class TripService {
     latitude: 50.431273,
     longitude: 30.550139,
   }];
+
   public currentTrip: Trip = {
     name: 'Servise trip',
     start_date: 'Right now',
     description: 'inside service'
   };
-  // private backendUrl = 'http://localhost/be';
-  private tripUrl = '/be/api/trip/v1/trip';  // URL to web api
+
+  private baseUrl = debugUrl;
+  private tripUrl = this.baseUrl + '/trip/v1/trip';  // URL to web api
+
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',
     'Authorization': this.userService.getSessionId()})
   };
+
   constructor(private http: HttpClient, private userService: UserService) { }
 
   createTrip(name, startDate, endDate, description){
