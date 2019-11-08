@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { LoginPopUpComponent } from '../login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from '../register-pop-up/register-pop-up.component';
+import {UserService} from "../_services/user.service";
+import {User} from '../user';
 
 
 @Component({
@@ -9,15 +11,26 @@ import { RegisterPopUpComponent } from '../register-pop-up/register-pop-up.compo
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
+@Injectable({
+    providedIn: 'root',
+})
 export class HeaderComponent implements OnInit {
   name: string;
   surname: string;
   email: string;
   password: string;
+  public user: User;
 
   constructor(
     public dialog: MatDialog,
+    private userService: UserService,
+
   ) { }
+
+  public userIsAuthorized(): boolean {
+    return this.userService.userIsAuthorized()
+  }
 
   openSignInDialog(): void {
     let dialogRef = this.dialog.open(LoginPopUpComponent, {
@@ -56,7 +69,14 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+    clickToggle() {
+    this.userService.toggleUserProfile();
+    }
+
+    ngOnInit() {
+    this.user = new User('','', 0, '', '');
+    this.userService.getEmittedValue()
+          .subscribe(item => this.user=item);
   }
 
 }
