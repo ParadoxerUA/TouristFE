@@ -62,7 +62,8 @@ export class TripService {
   }
 
   getTrips(): Observable<any> {
-    const tripListUrl: string = 'http://localhost:5000/trip/v1/trips_list';
+    const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
+    console.log(tripListUrl);
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
