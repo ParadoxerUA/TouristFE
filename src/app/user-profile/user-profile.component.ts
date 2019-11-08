@@ -39,7 +39,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     if(this.userService.userIsAuthorized()){
       this.userService.getUserProfile().subscribe(resp => {
-        this.userService.change(resp.body);
+        this.userService.updateUserProfile(resp.body);
         this.userService.setLoggedInUser(true);
       })
     }

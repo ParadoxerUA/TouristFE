@@ -36,7 +36,7 @@ export class UserService {
     // return this.isUserLoggedIn;
   }
 
-  change(user){
+  updateUserProfile(user){
     this.em.emit(user.data);
   }
 
