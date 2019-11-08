@@ -5,6 +5,9 @@ export class Trip {
   end_date?: string;
   description?: string;
   points? : Checkpoint[];
+  admin?: string;
+  participants?: number;
+  status?: string;
 }
 
 export class Checkpoint {

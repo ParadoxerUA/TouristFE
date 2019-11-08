@@ -1,0 +1,47 @@
+<button mat-fab color="primary" (click)="redirectToCreateTrip()">New trip</button>
+<mat-card class="list-container">
+    <mat-table [dataSource]="tripsDataSource">
+
+        <ng-container matColumnDef="admin">
+          <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
+          <mat-cell *matCellDef="let trip"> 
+              <div *ngIf="isCurrentUserAdmin(trip.admin);else other_content">
+                  <i class="material-icons">star</i>
+               </div>
+               <ng-template #other_content>{{trip.admin}}</ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.name}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="participants">
+                <mat-header-cell *matHeaderCellDef> Participants </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.participants}} </mat-cell>
+              </ng-container>
+        
+        <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.status}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="start_date">
+                <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.start_date}} </mat-cell>
+              </ng-container>
+
+        <ng-container matColumnDef="end_date">
+                <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.end_date}} </mat-cell>
+              </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row (click)="redirectToTripDetail(row.id)" *matRowDef="let row; columns: displayedColumns;">
+          <button mat-icon-button matSuffix (click)="console.log(1)">
+            <mat-icon>create</mat-icon>
+          </button>
+        </mat-row>
+      </mat-table>
+</mat-card>
