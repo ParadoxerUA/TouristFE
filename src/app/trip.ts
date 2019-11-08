@@ -1,5 +1,5 @@
 export class Trip {
-  id?: number;
+  trip_id?: number;
   name: string;
   start_date: string;
   end_date?: string;

@@ -16,23 +16,18 @@ export class TripDetailPageComponent implements OnInit {
     private tripService: TripService,
     private route: ActivatedRoute
   ) { 
-    this.getTrip();
-    console.log(this.trip);
+    
   }
 
   getTrip(): void {
-    
     this.tripService.getTrip(this.trip_id)
       .subscribe(response => {
-        console.log(response);
         this.trip = response.data as Trip;
       });
   }
 
   ngOnInit() {
-    console.log(this.trip_id);
-    
-    
+    this.getTrip();
   }
 
 }
