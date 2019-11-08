@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service'
-import { BASE_URL } from './config'
+import { CookieService } from 'ngx-cookie-service';
+import { BASE_URL } from './config';
 
 @Injectable({
   providedIn: 'root'

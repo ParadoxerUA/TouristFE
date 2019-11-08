@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {Trip, Checkpoint} from "src/app/trip";
 import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import {catchError, map} from 'rxjs/operators';
 import {UserService} from "./user.service";
 import { BASE_URL } from './config'
 
@@ -29,8 +30,7 @@ export class TripService {
     'Content-Type': 'application/json',
     'Authorization': this.userService.getSessionId()})
   };
-
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
   createTrip(name, startDate, endDate, description){
     this.currentTrip.name = name;
@@ -61,5 +61,18 @@ export class TripService {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
-
+  getTrips(): Observable<any> {
+    const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
+    console.log(tripListUrl);
+    return this.http.get(tripListUrl, {
+      headers: {'Authorization': this.userService.getSessionId()}
+    }).pipe(
+      map(data => data),
+      catchError(
+        error => {
+          this.router.navigate(['error'])
+          return of(error);
+        }
+      ));
+  }
 }
