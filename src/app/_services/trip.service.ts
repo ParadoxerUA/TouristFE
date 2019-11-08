@@ -4,7 +4,7 @@ import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import {UserService} from "./user.service";
-import { DEBUG_URL, PROD_URL } from './config'
+import { BASE_URL } from './config'
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +22,7 @@ export class TripService {
     description: 'inside service'
   };
 
-  private baseUrl = DEBUG_URL;
-  private tripUrl = this.baseUrl + '/trip/v1/trip';  // URL to web api
+  private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
 
   httpOptions = {
     headers: new HttpHeaders({ 
