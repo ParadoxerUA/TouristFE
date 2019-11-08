@@ -28,20 +28,37 @@ export class LoginPopUpComponent implements OnInit {
   }
 
   logInUser(type?: string) {
+    // Pass if user already authorized
     if(this.userService.userIsAuthorized()){
       return;
     }
-    
-    if(type == "facebook"){
-      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-    } else if(type == "google"){
-      this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    } else {
-      this.userService.userLogin(this.data)
+    // if type was not passed into a function
+    if(type === undefined){
+      return this.userService.userLogin(this.data)
       .subscribe(res => {
         this.userService.setSessionId(res.body.data);
       })
+    // if type was passed
+    } else if(type == "facebook"){
+      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    } else if(type == "google"){
+      this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
     }
+    // subscribe on social authentication state (returns observable user)
+    this.authService.authState.subscribe((user) => {
+      // check if authentication is successful (returns user) and user is not authorized
+      if (user && !this.userService.userIsAuthorized()){
+        this.userService.userSocialLogin(this.getSocialData(user)).subscribe(res => {
+          this.userService.setSessionId(res.body.data);
+        })
+      }
+    });
+
+    this.logOutSocial();
+  }
+
+  private getSocialData(user){
+    return {'auth_token': user.authToken, 'provider': user.provider}
   }
   
   logOutSocial(): void {
@@ -55,15 +72,6 @@ export class LoginPopUpComponent implements OnInit {
     private authService: AuthService,
   ){ }
 
-  ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      if (user && !this.userService.userIsAuthorized()){
-        let data = {'auth_token': user.authToken, 'provider': user.provider};
-        this.userService.userSocialLogin(data).subscribe(res => {
-          this.userService.setSessionId(res.body.data);
-        })
-      }
-    });
-  }
+  ngOnInit() { }
 
 }
