@@ -48,7 +48,6 @@ export class LoginPopUpComponent implements OnInit {
     this.authService.authState.subscribe((user) => {
       // check if authentication is successful (returns user) and user is not authorized
       if (user && !this.userService.userIsAuthorized()){
-        console.log(user)
         this.userService.userSocialLogin(this.getSocialData(user)).subscribe(res => {
           this.userService.setSessionId(res.body.data);
         })

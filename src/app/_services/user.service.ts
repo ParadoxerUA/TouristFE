@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service'
-import { debugUrl, prodUrl } from './config'
+import { DEBUG_URL, PROD_URL } from './config'
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = debugUrl;
+  private baseUrl = DEBUG_URL;
   private registerUrl = this.baseUrl + '/user/v1/register'
   private smokeUrl = this.baseUrl + '/smoke/v1/smoke'
   private loginUrl = this.baseUrl + '/user/v1/login'

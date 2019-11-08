@@ -1,2 +1,2 @@
-export const debugUrl = 'http://localhost:5000/api';
-export const prodUrl = '/be/api';
+export const DEBUG_URL = 'http://localhost:5000/api';
+export const PROD_URL = '/be/api';
