@@ -3,13 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { User } from '../user';
 import { UserService } from './user.service';
+import { BASE_URL } from './config'
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripUserService {
 
-  private tripUrl = 'http://localhost:5000/api/trip/v1/trip'
+  private tripUrl = BASE_URL + '/trip/v1/trip'
+
 
   httpOptions = {
     headers: new HttpHeaders({ 
@@ -29,7 +32,7 @@ export class TripUserService {
   }
 
   deleteTripUser(trip_id, user_id): void {
-    const url = `http://localhost:5000/api/trip/v1/manage_trips/${trip_id}?user_id=${user_id}`
+    const url = `${BASE_URL}/trip/v1/manage_trips/${trip_id}?user_id=${user_id}`
     this.http.delete(url, this.httpOptions)
   }
 

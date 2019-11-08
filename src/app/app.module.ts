@@ -18,10 +18,12 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
+import { TripListComponent } from './trip-list/trip-list.component';
 import { SocialLoginModule, AuthServiceConfig, 
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { ErrorComponent } from './error/error.component'
 
 const config = new AuthServiceConfig([
   {
@@ -52,7 +54,9 @@ export function provideConfig() {
     TripDetailPageComponent,
     TripItemListComponent,
     TripUserListComponent,
+    TripListComponent,
     TripDetailPageMapComponent,
+    ErrorComponent,
   ],
   imports: [
     MaterialModule,

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { BASE_URL } from './config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  registerUrl = 'http://localhost:5000/api/user/v1/register'
-  smokeUrl = 'http://localhost:5000/api/smoke/v1/smoke'
-  loginUrl = 'http://localhost:5000/api/user/v1/login'
-  socialLoginUrl = '/be/api/user/v1/social_login'
-  confirmationUrl = 'http://localhost:5000/api/otc/v1/reg_confirmation/'
+  private registerUrl = BASE_URL + '/user/v1/register'
+  private smokeUrl = BASE_URL + '/smoke/v1/smoke'
+  private loginUrl = BASE_URL + '/user/v1/login'
+  private socialLoginUrl = BASE_URL + '/user/v1/social_login'
+  private confirmationUrl = BASE_URL + '/otc/v1/reg_confirmation/'
 
   uuidConfirmation(uuid) {
     return this.http.get(this.confirmationUrl + uuid)
