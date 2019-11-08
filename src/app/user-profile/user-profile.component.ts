@@ -19,14 +19,12 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
 
-
   logoutUser(): void {
     this.userService.userLogout()
       .subscribe(res => {
         this.userService.deleteSessionId();
       });
     this.userService.deleteSessionId();
-    this.userService.setLoggedInUser(false);
     this.router.navigate(['/index']);
 
   }
@@ -40,7 +38,6 @@ export class UserProfileComponent implements OnInit {
     if(this.userService.userIsAuthorized()){
       this.userService.getUserProfile().subscribe(resp => {
         this.userService.updateUserProfile(resp.body);
-        this.userService.setLoggedInUser(true);
       })
     }
     this.userService.setUserSideNav(this.userSideNav);
