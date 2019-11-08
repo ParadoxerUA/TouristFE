@@ -25,7 +25,7 @@ export class TripUserService {
   getTripUsers(trip_id): Observable<any> {
     const url = `${this.tripUrl}/${trip_id}?fields=users`
     return this.http.get(url, this.httpOptions)
-    // return of(mockedUsers)
+    
   }
 
   deleteTripUser(trip_id, user_id): void {
