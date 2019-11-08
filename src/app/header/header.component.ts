@@ -73,7 +73,6 @@ export class HeaderComponent implements OnInit {
     this.userService.toggleUserProfile();
     }
 
-
     ngOnInit() {
     this.user = new User('','', 0, '', '');
     this.userService.getEmittedValue()

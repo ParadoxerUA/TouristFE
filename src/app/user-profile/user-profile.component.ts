@@ -25,8 +25,13 @@ export class UserProfileComponent implements OnInit {
         this.userService.deleteSessionId();
       });
     this.userService.deleteSessionId();
+    this.userSideNav.close();
+    this.clearUser();
     this.router.navigate(['/index']);
+  }
 
+  private clearUser(){
+    this.user = new User('','', 0, '', '');
   }
 
   constructor(
@@ -35,13 +40,9 @@ export class UserProfileComponent implements OnInit {
   ){ }
 
   ngOnInit() {
-    if(this.userService.userIsAuthorized()){
-      this.userService.getUserProfile().subscribe(resp => {
-        this.userService.updateUserProfile(resp.body);
-      })
-    }
+    this.clearUser();
+    this.userService.refreshUser();
     this.userService.setUserSideNav(this.userSideNav);
-    this.user = new User('','', 0, '', '');
     this.userService.getEmittedValue()
         .subscribe(item => this.user=item);
   }

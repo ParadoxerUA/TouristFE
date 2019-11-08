@@ -38,12 +38,7 @@ export class LoginPopUpComponent implements OnInit {
         }
         // if type was not passed into a function
         if(type === undefined){
-            return this.userService.userLogin(this.data)
-                .subscribe(res => {
-                    this.userService.setSessionId(res.body.data)
-                    console.log(this.userService.getSessionId())
-                    this.router.navigate(['trip-list'])
-                })
+            return this.subscribeOnLogin(this.data, type);
             // if type was passed
         } else if(type == "facebook"){
             this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
@@ -54,13 +49,21 @@ export class LoginPopUpComponent implements OnInit {
         this.authService.authState.subscribe((user) => {
             // check if authentication is successful (returns user) and user is not authorized
             if (user && !this.userService.userIsAuthorized()){
-                this.userService.userSocialLogin(this.getSocialData(user)).subscribe(res => {
-                    this.userService.setSessionId(res.body.data);
-                })
+              return this.subscribeOnLogin(this.getSocialData(user), type);
             }
         });
 
         this.logOutSocial();
+    }
+
+    private subscribeOnLogin(data, type?) {
+      this.userService.userLogin(data, type)
+        .subscribe(res => {
+        this.userService.setSessionId(res.body.data);
+        console.log(this.userService.getSessionId());
+        this.userService.refreshUser();
+        this.router.navigate(['trip-list']);
+      });
     }
 
     private getSocialData(user){

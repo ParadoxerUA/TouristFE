@@ -5,6 +5,7 @@ import {MatSidenav} from "@angular/material/sidenav";
 import {User} from "../user";
 import { CookieService } from 'ngx-cookie-service'
 import { BASE_URL } from './config'
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -20,18 +21,25 @@ export class UserService {
   logoutUrl = BASE_URL + '/user/v1/logout';
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
 
-  @Output() em: EventEmitter<any> = new EventEmitter();
-  
+  @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
+
   userSideNav: MatSidenav;
 
-  updateUserProfile(user){
-    this.em.emit(user.data);
+  setUserProfile(user){
+    this.userDataEmitter.emit(user.data);
+  }
+
+  refreshUser(){
+    if(this.userIsAuthorized()){
+      this.getUserProfile().subscribe(resp => {
+        this.setUserProfile(resp.body);
+      });
+    }
   }
 
   getEmittedValue(){
-    return this.em;
+    return this.userDataEmitter;
   }
-
 
   uuidConfirmation(uuid) {
     return this.http.get(this.confirmationUrl + uuid)
@@ -41,10 +49,17 @@ export class UserService {
     return this.http.post(this.registerUrl, data)
   }
 
-  userLogin(data): Observable<any> {
-    return this.http.post(this.loginUrl, data, {observe: 'response'})
-  }
+  userLogin(data, type?): Observable<any> {
+    let loginUrl;
 
+    if(type === undefined){
+      loginUrl = this.loginUrl;
+    } else {
+      loginUrl = this.socialLoginUrl;
+    }
+
+    return this.http.post(loginUrl, data, {observe: 'response'});
+  }
 
   userLogout(): Observable<any> {
     let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
@@ -55,12 +70,6 @@ export class UserService {
     let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
     return this.http.get<User>(this.userProfileUrl, {headers: header, observe: 'response'});
   }
-
-  
-  userSocialLogin(data): Observable<any> {
-    return this.http.post(this.socialLoginUrl, data, {observe: 'response'})
-  } 
-
 
   setSessionId(sessionId) {
     this.cookieService.set('sessionId', sessionId);
@@ -89,6 +98,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
+    private router: Router,
   ) { }
 
 
