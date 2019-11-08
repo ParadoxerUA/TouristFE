@@ -21,20 +21,8 @@ export class UserService {
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
 
   @Output() em: EventEmitter<any> = new EventEmitter();
-
-  // private isUserLoggedIn: boolean = false;
-  // sessionId: string;
+  
   userSideNav: MatSidenav;
-
-  public setLoggedInUser(flag) {
-    // this.isUserLoggedIn= flag;
-  }
-
-
-  public getUserLoggedIn(): boolean {
-    return this.cookieService.check('sessionId');
-    // return this.isUserLoggedIn;
-  }
 
   updateUserProfile(user){
     this.em.emit(user.data);

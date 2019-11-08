@@ -28,11 +28,9 @@ export class HeaderComponent implements OnInit {
 
   ) { }
 
-
-  public getUserLoggedIn(): boolean {
-    return this.userService.userIsAuthorized()}
-
-
+  public userIsAuthorized(): boolean {
+    return this.userService.userIsAuthorized()
+  }
 
   openSignInDialog(): void {
     let dialogRef = this.dialog.open(LoginPopUpComponent, {
