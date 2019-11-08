@@ -20,7 +20,7 @@ export class TripService {
     description: 'inside service'
   };
   // private backendUrl = 'http://localhost/be';
-  private tripUrl = 'http://localhost:5000/api/trip/v1/trip';  // URL to web api
+  private tripUrl = 'http://localhost:5000/api/trip/v1/trip';
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',
@@ -54,7 +54,14 @@ export class TripService {
   }
 
    addTrip(trip: Trip): Observable<Trip> {
-    return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
+    console.log(this.userService.getSessionId());
+     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
+  }
+
+
+  getTripForMap(trip_id): Observable<any> {
+    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid`
+    return this.http.get(url, this.httpOptions)
   }
 
 
