@@ -29,5 +29,10 @@ export class TripUserService {
     // return of(mockedUsers)
   }
 
+  deleteTripUser(trip_id, user_id): void {
+    const url = `http://localhost:5000/api/trip/v1/manage_trips/${trip_id}?user_id=${user_id}`
+    this.http.delete(url, this.httpOptions)
+  }
+
   
 }

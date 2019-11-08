@@ -32,9 +32,10 @@ export class TripUserListComponent implements OnInit {
       });
   }
 
-  delete(userToDelete: User): void {
+  deleteUser(userToDelete: User): void {
     this.tripUsers = this.tripUsers.filter(user => user !== userToDelete);
     // delete user_id from trip below
+    this.tripUserService.deleteTripUser(this.trip_id, userToDelete.id)
   }
 
   ngOnInit() {
