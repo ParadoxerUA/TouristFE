@@ -17,12 +17,7 @@
     width: 60%;
     float: right;
     height: 90%;
-    /*display: flex;*/
     flex-wrap: wrap;
     align-items: flex-start;
     background-color: #f66767;
 }
-
-/*.mat-content {*/
-/*    align-items: center;*/
-/*}*/

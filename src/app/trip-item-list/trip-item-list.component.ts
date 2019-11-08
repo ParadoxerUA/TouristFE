@@ -13,9 +13,9 @@ const ITEMS: Items[] = [];
 export class TripItemListComponent implements OnInit {
   name: string;
   weight: number;
-  amount: number;
+  quantity: number;
 
-  displayedColumns: string[] = ['name', 'weight', 'amount'];
+  displayedColumns: string[] = ['name', 'weight', 'quantity'];
   dataSource = new MatTableDataSource(ITEMS);
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -23,10 +23,10 @@ export class TripItemListComponent implements OnInit {
   addItem() {
     ITEMS.push({name: this.name,
                 weight: this.weight,
-                amount: this.amount});
+                quantity: this.quantity});
     this.name = '';
     this.weight = 0;
-    this.amount = 0;
+    this.quantity = 0;
 
     this.dataSource = new MatTableDataSource(ITEMS);
   }

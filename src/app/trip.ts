@@ -19,5 +19,5 @@ export class Checkpoint {
 export class Items {
   name: string;
   weight: number;
-  amount: number;
+  quantity: number;
 }

@@ -7,10 +7,12 @@
       <input matInput type="number" placeholder="kg" [(ngModel)]="weight">
     </mat-form-field>
     <mat-form-field class="example-margin">
-      <input matInput type="number" placeholder="units" [(ngModel)]="amount">
+      <input matInput type="number" placeholder="units" [(ngModel)]="quantity">
     </mat-form-field>
-    <button mat-mini-fab (click)="addItem()">+</button>
-  </mat-card><br>
+    <mat-chip (click)="addItem()">
+      <i class="material-icons">add</i>
+    </mat-chip>
+  </mat-card>
 
   <mat-card class="main-card">
     <mat-table [dataSource]="dataSource" matSort>
@@ -22,14 +24,12 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header> Weight </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.weight}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.amount}} </mat-cell>
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.quantity}} </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
   </mat-card>
-
-

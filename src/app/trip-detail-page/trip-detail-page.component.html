@@ -1,12 +1,12 @@
 <div class="trip_detail_container">
-    <mat-card id="card" style="text-align: center;">
+  <mat-card id="card" style="text-align: center">
     <mat-card-title>
        Trip name, dates
     </mat-card-title>
 
     <mat-card-content>
-        <mat-expansion-panel >
-            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'" >
+        <mat-expansion-panel>
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title >
                     <mat-icon>explore</mat-icon>
                 </mat-panel-title>
@@ -16,13 +16,12 @@
             <app-trip-detail-page-map></app-trip-detail-page-map>
         </mat-expansion-panel>
     </mat-card-content>
-    </mat-card>
+  </mat-card>
 
-
-    <div class="left">
-        <app-trip-item-list></app-trip-item-list>
-    </div>
-    <div class="right">
-        <app-trip-user-list></app-trip-user-list>
-    </div>
+  <div class="left">
+      <app-trip-item-list></app-trip-item-list>
+  </div>
+  <div class="right">
+      <app-trip-user-list></app-trip-user-list>
+  </div>
 </div>
