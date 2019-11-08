@@ -30,54 +30,52 @@ export class LoginPopUpComponent implements OnInit {
             '';
   }
 
-  // loginUser() {
-  //     this.userService.userLogin(this.data)
-  //         .subscribe(res => {
-  //           this.userService.setSessionId(res.body.data);
-  //           this.userService.getUserProfile().subscribe(resp => {
-  //               this.userService.change(resp.body);
-  //               this.userService.setLoggedInUser(true);
-  //           })
-  //         });
+    logInUser(type?: string) {
+        // Pass if user already authorized
+        if(this.userService.userIsAuthorized()){
+            return;
+        }
+        // if type was not passed into a function
+        if(type === undefined){
+            return this.userService.userLogin(this.data)
+                .subscribe(res => {
+                    this.userService.setSessionId(res.body.data);
+                })
+            // if type was passed
+        } else if(type == "facebook"){
+            this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+        } else if(type == "google"){
+            this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        }
+        // subscribe on social authentication state (returns observable user)
+        this.authService.authState.subscribe((user) => {
+            // check if authentication is successful (returns user) and user is not authorized
+            if (user && !this.userService.userIsAuthorized()){
+                this.userService.userSocialLogin(this.getSocialData(user)).subscribe(res => {
+                    this.userService.setSessionId(res.body.data);
+                })
+            }
+        });
 
-  logInUser(type?: string) {
-    if(this.userService.userIsAuthorized()){
-      return;
+        this.logOutSocial();
     }
-    
-    if(type == "facebook"){
-      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-    } else if(type == "google"){
-      this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    } else {
-        this.userService.userLogin(this.data)
-            .subscribe(res => {
-                this.userService.setSessionId(res.body.data);
-            });
+
+    private getSocialData(user){
+        return {'auth_token': user.authToken, 'provider': user.provider}
     }
-  }
-  
-  logOutSocial(): void {
-    this.authService.signOut();
 
-  }
+    logOutSocial(): void {
+        this.authService.signOut();
+    }
 
-  constructor(
-    public dialogRef: MatDialogRef<LoginPopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private userService: UserService, 
-    private authService: AuthService,
-  ){ }
+    constructor(
+        public dialogRef: MatDialogRef<LoginPopUpComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private userService: UserService,
+        private authService: AuthService,
+    ){ }
 
-  ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      if (user && !this.userService.userIsAuthorized()){
-        let data = {'auth_token': user.authToken, 'provider': user.provider};
-        this.userService.userSocialLogin(data).subscribe(res => {
-          this.userService.setSessionId(res.body.data);
-        })
-      }
-    });
-  }
+    ngOnInit() { }
 
 }
+
