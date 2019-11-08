@@ -14,9 +14,10 @@ const routes: Routes = [
   { path: 'create_trip', component: CreateTripPageComponent },
   { path: 'trip-list', component: TripListComponent },
   { path: 'email-confirmation', component: EmailConfirmationComponent },
-  { path: 'trip_detail', component: TripDetailPageComponent },
+  { path: 'trip_detail/:trip_id', component: TripDetailPageComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'error', component: ErrorComponent},
+
 ];
 
 @NgModule({

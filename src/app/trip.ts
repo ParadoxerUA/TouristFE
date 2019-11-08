@@ -1,5 +1,5 @@
 export class Trip {
-  id?: number;
+  trip_id?: number;
   name: string;
   start_date: string;
   end_date?: string;
@@ -8,6 +8,7 @@ export class Trip {
   admin?: string;
   participants?: number;
   status?: string;
+
 }
 
 export class Checkpoint {

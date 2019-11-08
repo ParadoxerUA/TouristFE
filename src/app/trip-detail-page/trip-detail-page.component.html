@@ -20,5 +20,7 @@
 
 
     <app-trip-item-list></app-trip-item-list>
-    <app-trip-user-list></app-trip-user-list>
+    <div *ngIf="trip">
+        <app-trip-user-list [trip]="trip"></app-trip-user-list>
+    </div> 
 </div>

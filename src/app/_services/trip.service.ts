@@ -61,6 +61,13 @@ export class TripService {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
+
+  getTrip(trip_id: number): Observable<any> {
+    const url = `${this.tripUrl}/${trip_id}`;
+    return this.http.get(url, this.httpOptions)
+  }
+
+
   getTrips(): Observable<any> {
     const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
     console.log(tripListUrl);
@@ -75,4 +82,5 @@ export class TripService {
         }
       ));
   }
+
 }
