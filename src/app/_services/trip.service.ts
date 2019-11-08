@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {catchError, map} from 'rxjs/operators';
 import {UserService} from "./user.service";
+import { BASE_URL } from './config'
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,15 @@ export class TripService {
     latitude: 50.431273,
     longitude: 30.550139,
   }];
+
   public currentTrip: Trip = {
     name: 'Servise trip',
     start_date: 'Right now',
     description: 'inside service'
   };
-  // private backendUrl = 'http://localhost/be';
-  // private tripUrl = '/be/api/trip/v1/trip';  // URL to web api
-  private tripUrl = 'http://localhost:5000/api/trip/v1/trip'
+
+  private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
+
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',
@@ -60,7 +62,7 @@ export class TripService {
   }
 
   getTrips(): Observable<any> {
-    const tripListUrl: string = 'http://localhost:5000/api/trip/v1/trips_list';
+    const tripListUrl: string = `$BASE_URL/trip/v1/trips_list`;
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
