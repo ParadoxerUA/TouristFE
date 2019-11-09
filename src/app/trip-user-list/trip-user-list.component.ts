@@ -34,6 +34,7 @@ export class TripUserListComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('user_list_component', this.trip);
     this.getUsers();
   }
 

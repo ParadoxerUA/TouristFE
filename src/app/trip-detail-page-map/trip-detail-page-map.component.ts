@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TripService} from "../_services/trip.service";
-import { ActivatedRoute } from '@angular/router';
 import {Trip} from "../trip";
 
 interface Marker {
@@ -23,8 +22,8 @@ interface Location {
   styleUrls: ['./trip-detail-page-map.component.css']
 })
 export class TripDetailPageMapComponent implements OnInit {
-  public trip: Trip = {name:'', start_date:''};
-  trip_id;
+  @Input() trip: Trip;
+
   public location: Location = {
     lat: 50.431273,
     lng: 30.550139,
@@ -32,10 +31,7 @@ export class TripDetailPageMapComponent implements OnInit {
     zoom: 5
   };
 
-  getTrip(): void {
-    this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
-    this.trip = this.tripService.getTrip(this.trip_id);
-    console.log(this.trip);
+  createCheckpointsList(): void {
     for(var counter:number = 0; counter<this.trip.points.length; counter++){
       let marker = this.trip.points[counter];
       const newMarker: Marker = {
@@ -48,10 +44,10 @@ export class TripDetailPageMapComponent implements OnInit {
     }
   }
 
-  constructor(private tripService : TripService,
-  private route: ActivatedRoute) { }
+  constructor(private tripService : TripService) { }
   ngOnInit() {
-    this.getTrip();
+    console.log('map_component', this.trip);
+    this.createCheckpointsList();
   }
 
 }

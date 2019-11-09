@@ -16,7 +16,9 @@
                 <mat-panel-description>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <app-trip-detail-page-map></app-trip-detail-page-map>
+            <div *ngIf="trip">
+                <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
+            </div>
         </mat-expansion-panel>
     </mat-card-content>
     </mat-card>
