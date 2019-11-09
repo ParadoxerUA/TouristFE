@@ -8,6 +8,7 @@ export class Trip {
   admin?: string;
   participants?: number;
   status?: string;
+  trip_uuid?: string;
 
 }
 

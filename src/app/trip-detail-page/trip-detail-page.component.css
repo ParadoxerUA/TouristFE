@@ -10,7 +10,6 @@
     width: 40%;
     float: left;
     height: 90%;
-    background-color: aquamarine;
 }
 
 .right {
@@ -19,5 +18,4 @@
     height: 90%;
     flex-wrap: wrap;
     align-items: flex-start;
-    background-color: #f66767;
 }

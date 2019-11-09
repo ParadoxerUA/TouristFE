@@ -46,7 +46,6 @@ export class TripDetailPageMapComponent implements OnInit {
 
   constructor(private tripService : TripService) { }
   ngOnInit() {
-    console.log('map_component', this.trip);
     this.createCheckpointsList();
   }
 
