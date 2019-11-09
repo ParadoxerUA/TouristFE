@@ -29,7 +29,6 @@ export class TripDetailPageComponent implements OnInit {
 
   ngOnInit() {
     this.getTrip();
-    // this.trip.trip_uuid = 'Fucking link'
   }
 
 }

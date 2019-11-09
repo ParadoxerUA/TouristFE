@@ -39,9 +39,9 @@ export class TripDetailPageMapComponent implements OnInit {
         lat: marker.latitude,
         lng:  marker.longitude,
         selected: false,};
-      this.tripService.addCheckpointToList(newMarker.lat,newMarker.lng, newMarker.order );
       this.location.markers.push(newMarker);
     }
+    this.tripService.updateCheckpointList(this.location.markers);
   }
 
   constructor(private tripService : TripService) { }

@@ -42,20 +42,19 @@ export class TripService {
       console.log(g)
     })
   }
-  addCheckpointToList(lat,lng,orderNumber) {
-    const newCheckpoint: Checkpoint = {order_number : orderNumber,
-    latitude: lat,
-    longitude: lng,};
-    this.listOfCheckpoints.push(newCheckpoint);
-  }
 
-  deleteCheckpointFromList(deleteMarkerIndex)
+  updateCheckpointList(markerList)
   {
-    this.listOfCheckpoints.splice(deleteMarkerIndex, 1);
-    for (let _i = deleteMarkerIndex; _i < this.listOfCheckpoints.length; _i++) {
-      this.listOfCheckpoints[_i].order_number--;
+    for(let counter = 0; counter < markerList.length; counter++ )
+    {
+      this.listOfCheckpoints = [];
+      let newPoint = {order_number : counter+1,
+        latitude: markerList.lat,
+        longitude: markerList.lng};
+      this.listOfCheckpoints.push(newPoint);
     }
   }
+
 
    addTrip(trip: Trip): Observable<Trip> {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
