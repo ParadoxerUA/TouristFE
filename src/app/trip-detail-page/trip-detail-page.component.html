@@ -1,5 +1,5 @@
 <div class="trip_detail_container">
-    <mat-card id="card" style="text-align: center;">
+  <mat-card id="card" style="text-align: center">
     <mat-card-title>
         {{this.trip.name}},
         <mat-label> Starts: </mat-label> {{this.trip.start_date | date }},
@@ -8,8 +8,8 @@
     </mat-card-title>
 
     <mat-card-content>
-        <mat-expansion-panel style="text-align: center;">
-            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'" >
+        <mat-expansion-panel>
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title >
                     <mat-icon>explore</mat-icon>
                 </mat-panel-title>
@@ -21,11 +21,12 @@
             </div>
         </mat-expansion-panel>
     </mat-card-content>
-    </mat-card>
+  </mat-card>
 
-
-    <app-trip-item-list></app-trip-item-list>
-    <div *ngIf="trip">
-        <app-trip-user-list [trip]="trip"></app-trip-user-list>
-    </div> 
+  <div class="left">
+      <app-trip-item-list></app-trip-item-list>
+  </div>
+  <div class="right" *ngIf="trip">
+      <app-trip-user-list></app-trip-user-list>
+  </div>
 </div>
