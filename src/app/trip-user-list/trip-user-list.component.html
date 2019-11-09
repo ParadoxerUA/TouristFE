@@ -19,7 +19,7 @@
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="3%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card >
-          <button class="close" (click)="delete(user)">
+          <button class="close" (click)="deleteUser(user)">
             <i class="material-icons">close</i>
           </button>
           <img mat-card-avatarn src="avatar.png" alt="User Avatar">

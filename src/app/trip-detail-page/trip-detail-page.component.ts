@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {TripService} from "../_services/trip.service";
+import { TripService } from '../_services/trip.service';
+import { Trip } from '../trip';
 import {User} from "../user";
-
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -10,24 +10,25 @@ import {User} from "../user";
   styleUrls: ['./trip-detail-page.component.css']
 })
 export class TripDetailPageComponent implements OnInit {
+  trip: Trip;
+  trip_id;
 
-  trip_id = +this.route.snapshot.paramMap.get('trip_id');
   constructor(
-      private route: ActivatedRoute,
-      private tripService: TripService
-  ) { }
+    private tripService: TripService,
+    private route: ActivatedRoute
+  ) {
 
-
-
-  get_trip(): void {
-
-    this.tripService.getTripForMap(this.trip_id)
-        .subscribe(response => {
-          console.log(response)
-        });
   }
+  //
+  // getTrip(): void {
+  //   this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
+  //   this.trip = this.tripService.getTrip(this.trip_id);
+  // }
 
   ngOnInit() {
+    this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
+    this.trip = this.tripService.getTrip(this.trip_id);
+    console.log('init trip detail page', this.trip)
   }
 
 }

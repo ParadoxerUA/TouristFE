@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import {Trip, Checkpoint} from "src/app/trip";
 import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import {catchError, map} from 'rxjs/operators';
 import {UserService} from "./user.service";
+import { BASE_URL } from './config'
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +16,33 @@ export class TripService {
     latitude: 50.431273,
     longitude: 30.550139,
   }];
+
   public currentTrip: Trip = {
     name: 'Servise trip',
     start_date: 'Right now',
     description: 'inside service'
   };
-  // private backendUrl = 'http://localhost/be';
-  private tripUrl = 'http://localhost:5000/api/trip/v1/trip';
+
+  public tripForDetail: Trip = {
+    name: '',
+    start_date: '',
+    points: []
+  };
+
+  public tripForDetailMap: Trip = {
+    name: '',
+    start_date: '',
+    points: []
+  };
+  public tripDetailId = 0;
+  private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
+
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',
     'Authorization': this.userService.getSessionId()})
   };
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
   createTrip(name, startDate, endDate, description){
     this.currentTrip.name = name;
@@ -54,15 +70,54 @@ export class TripService {
   }
 
    addTrip(trip: Trip): Observable<Trip> {
-    console.log(this.userService.getSessionId());
-     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
+    return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
+  getTrip(trip_id: number){
+    if (this.tripDetailId != trip_id) {
+      this.getTripFromBe(trip_id)
+          .subscribe(response => {
+            this.tripForDetail = response.data as Trip;
+            console.log('taking from be', this.tripForDetail);
+          });
+      this.tripDetailId = trip_id;
+    }
+    if (this.tripForDetail.points==undefined || this.tripForDetail.points.length == 0)
+    {
+      this.getTripCheckpointsFromBe(trip_id)
+          .subscribe(response => {
+            this.tripForDetailMap = response.data as Trip;
+          });
+      this.tripForDetail.points = this.tripForDetailMap.points;
+      console.log(this.tripForDetail);
+    }
+        return this.tripForDetail;
+  }
 
-  getTripForMap(trip_id): Observable<any> {
-    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid`
+  getTripCheckpointsFromBe(trip_id: number): Observable<any> {
+    const url = `${this.tripUrl}/${trip_id}?fields=points`;
     return this.http.get(url, this.httpOptions)
   }
 
+  getTripFromBe(trip_id: number): Observable<any> {
+    const url = `${this.tripUrl}/${trip_id}`;
+    return this.http.get(url, this.httpOptions)
+  }
+
+
+  getTrips(): Observable<any> {
+    const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
+    console.log(tripListUrl);
+    return this.http.get(tripListUrl, {
+      headers: {'Authorization': this.userService.getSessionId()}
+    }).pipe(
+      map(data => data),
+      catchError(
+        error => {
+          this.router.navigate(['error'])
+          return of(error);
+        }
+      ));
+  }
 
 }

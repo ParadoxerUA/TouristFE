@@ -1,7 +1,10 @@
 <div class="trip_detail_container">
     <mat-card id="card" style="text-align: center;">
     <mat-card-title>
-       Trip name, dates + map pop-up
+        {{this.trip.name}},
+        <mat-label> Starts: </mat-label> {{this.trip.start_date | date }},
+        <mat-label> Ends: </mat-label> {{this.trip.end_date| date }},
+        <mat-label> Description: </mat-label> {{this.trip.description}}
     </mat-card-title>
 
     <mat-card-content>
@@ -21,5 +24,7 @@
 
 
     <app-trip-item-list></app-trip-item-list>
-    <app-trip-user-list></app-trip-user-list>
+    <div *ngIf="trip">
+        <app-trip-user-list [trip]="trip"></app-trip-user-list>
+    </div> 
 </div>

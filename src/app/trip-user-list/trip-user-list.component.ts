@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TripUserService } from '../_services/trip-user.service'
+import { Component, OnInit, Input } from '@angular/core';
+import { TripUserService } from '../_services/trip-user.service';
 import { User } from '../user';
+import { Trip } from '../trip';
 
 @Component({
   selector: 'app-trip-user-list',
@@ -11,30 +11,26 @@ import { User } from '../user';
 export class TripUserListComponent implements OnInit {
 
   tripUsers: User[];
-  trip_id = +this.route.snapshot.paramMap.get('trip_id');
-
+  @Input() trip: Trip;
   constructor(
-    private route: ActivatedRoute,
     private tripUserService: TripUserService
   ) { 
     this.tripUsers = [];
   }
 
   getUsers(): void {
-    
-    this.tripUserService.getTripUsers(this.trip_id)
+    this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
         response.data.users.forEach(element => {
           this.tripUsers.push(element as User);
-          console.log(element);
         });
       });
   }
 
-  delete(userToDelete: User): void {
+  deleteUser(userToDelete: User): void {
     this.tripUsers = this.tripUsers.filter(user => user !== userToDelete);
     // delete user_id from trip below
+    this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.id)
   }
 
   ngOnInit() {
