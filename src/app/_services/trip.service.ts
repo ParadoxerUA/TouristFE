@@ -23,6 +23,18 @@ export class TripService {
     description: 'inside service'
   };
 
+  public tripForDetail: Trip = {
+    name: '',
+    start_date: '',
+    points: []
+  };
+
+  public tripForDetailMap: Trip = {
+    name: '',
+    start_date: '',
+    points: []
+  };
+  public tripDetailId = 0;
   private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
 
   httpOptions = {
@@ -61,8 +73,33 @@ export class TripService {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
   }
 
+  getTrip(trip_id: number){
+    if (this.tripDetailId != trip_id) {
+      this.getTripFromBe(trip_id)
+          .subscribe(response => {
+            this.tripForDetail = response.data as Trip;
+            console.log('taking from be', this.tripForDetail);
+          });
+      this.tripDetailId = trip_id;
+    }
+    if (this.tripForDetail.points==undefined || this.tripForDetail.points.length == 0)
+    {
+      this.getTripCheckpointsFromBe(trip_id)
+          .subscribe(response => {
+            this.tripForDetailMap = response.data as Trip;
+          });
+      this.tripForDetail.points = this.tripForDetailMap.points;
+      console.log(this.tripForDetail);
+    }
+        return this.tripForDetail;
+  }
 
-  getTrip(trip_id: number): Observable<any> {
+  getTripCheckpointsFromBe(trip_id: number): Observable<any> {
+    const url = `${this.tripUrl}/${trip_id}?fields=points`;
+    return this.http.get(url, this.httpOptions)
+  }
+
+  getTripFromBe(trip_id: number): Observable<any> {
     const url = `${this.tripUrl}/${trip_id}`;
     return this.http.get(url, this.httpOptions)
   }

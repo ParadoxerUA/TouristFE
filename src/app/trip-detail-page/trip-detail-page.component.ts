@@ -10,7 +10,7 @@ import { Trip } from '../trip';
 })
 export class TripDetailPageComponent implements OnInit {
   trip: Trip;
-  trip_id = +this.route.snapshot.paramMap.get('trip_id');
+  trip_id;
 
   constructor(
     private tripService: TripService,
@@ -18,16 +18,16 @@ export class TripDetailPageComponent implements OnInit {
   ) { 
     
   }
-
-  getTrip(): void {
-    this.tripService.getTrip(this.trip_id)
-      .subscribe(response => {
-        this.trip = response.data as Trip;
-      });
-  }
+  //
+  // getTrip(): void {
+  //   this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
+  //   this.trip = this.tripService.getTrip(this.trip_id);
+  // }
 
   ngOnInit() {
-    this.getTrip();
+    this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
+    this.trip = this.tripService.getTrip(this.trip_id);
+    console.log('init trip detail page', this.trip)
   }
 
 }
