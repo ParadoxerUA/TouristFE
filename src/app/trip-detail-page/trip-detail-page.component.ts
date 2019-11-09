@@ -11,7 +11,7 @@ import {User} from "../user";
 })
 export class TripDetailPageComponent implements OnInit {
   trip: Trip;
-  trip_id;
+  trip_id = +this.route.snapshot.paramMap.get('trip_id');
 
   constructor(
     private tripService: TripService,
@@ -19,15 +19,15 @@ export class TripDetailPageComponent implements OnInit {
   ) {
 
   }
-  //
-  // getTrip(): void {
-  //   this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
-  //   this.trip = this.tripService.getTrip(this.trip_id);
-  // }
+
+  getTrip(): void {
+    this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
+    this.trip = this.tripService.getTrip(this.trip_id);
+  }
 
   ngOnInit() {
     this.trip_id = +this.route.snapshot.paramMap.get('trip_id');
-    this.trip = this.tripService.getTrip(this.trip_id);
+    this.getTrip();
     console.log('init trip detail page', this.trip)
   }
 

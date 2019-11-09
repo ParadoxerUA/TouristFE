@@ -74,6 +74,11 @@ export class TripService {
   }
 
   getTrip(trip_id: number){
+    console.log('get trip ', trip_id);
+    if(trip_id == undefined){
+      console.error('TripService#getTrip called with incorrect trip_id param. Value ='+trip_id);
+      return this.tripForDetail;
+    }
     if (this.tripDetailId != trip_id) {
       this.getTripFromBe(trip_id)
           .subscribe(response => {
