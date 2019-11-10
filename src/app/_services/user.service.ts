@@ -13,11 +13,11 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  private registerUrl = BASE_URL + '/user/v1/register'
-  private smokeUrl = BASE_URL + '/smoke/v1/smoke'
-  private loginUrl = BASE_URL + '/user/v1/login'
-  private socialLoginUrl = BASE_URL + '/user/v1/social_login'
-  private confirmationUrl = BASE_URL + '/otc/v1/reg_confirmation/'
+  private registerUrl = BASE_URL + '/user/v1/register';
+  private smokeUrl = BASE_URL + '/smoke/v1/smoke';
+  private loginUrl = BASE_URL + '/user/v1/login';
+  private socialLoginUrl = BASE_URL + '/user/v1/social_login';
+  private confirmationUrl = BASE_URL + '/otc/v1/reg_confirmation/';
   logoutUrl = BASE_URL + '/user/v1/logout';
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { Trip } from '../trip';
+import {User} from "../user";
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -15,8 +16,8 @@ export class TripDetailPageComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute
-  ) { 
-    
+  ) {
+
   }
 
   getTrip(): void {
