@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl, Validators} from "@angular/forms";
 import {TripService} from "../_services/trip.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-trip-page',
@@ -23,7 +24,7 @@ export class CreateTripPageComponent implements OnInit {
     description: '',
     start_date: ''
   };
-  constructor(private tripService : TripService) { }
+  constructor(private tripService : TripService, private router: Router)  { }
 
   create_trip()
   {
@@ -34,7 +35,7 @@ export class CreateTripPageComponent implements OnInit {
     let tripDescription = this.TripDescription.value? this.TripDescription.value : '';// ---fix of null description
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, tripDescription);
-    // console.log("Trip on front", JSON.stringify(this.tripService.currentTrip) );
+    this.CreatedTripRedirect()
   }
   ngOnInit() {
   }
@@ -45,5 +46,12 @@ export class CreateTripPageComponent implements OnInit {
         this.TripName.hasError('required');
     this.button_disabled = isDateInCorrect || isNameInCorrect;
   }
+
+
+
+  private CreatedTripRedirect() {
+          this.router.navigate(['trip-list']);
+  }
+
 
 }
