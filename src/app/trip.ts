@@ -8,6 +8,7 @@ export class Trip {
   admin?: string;
   participants?: number;
   status?: string;
+  trip_uuid?: string;
 
 }
 
@@ -20,7 +21,7 @@ export class Checkpoint {
 export class Items {
   name: string;
   weight: number;
-  amount: number;
+  quantity: number;
 }
 
 export class Role {

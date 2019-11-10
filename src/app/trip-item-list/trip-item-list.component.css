@@ -1,35 +1,27 @@
-.left {
-    width: 40%;
-    float: left;
-    height: 90%;
-}
 .input-card {
-  width: 100%;
-  height: 50px;
+  height: 40px;
   padding-top: 0px;
+  margin-bottom: 0px;
 }
 .item-name-width {
   width: 40%;
   padding: 0px;
   margin: 0px;
 }
-.mat-mini-fab {
-  background-color: green;
-  margin-left: 15px;
-  color: white;
-  font-size: 24px;
-}
 .example-margin {
-  margin: 10px;
-  width: 60px;
+  margin-left: 10px;
+  width: 20%;
+}
+.mat-chip {
+  background-color: green;
+  color: white;
 }
 .table-container {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-
 .mat-card.main-card {
   overflow: auto;
-  max-height: 70%;
+  max-height: 80%;
 }

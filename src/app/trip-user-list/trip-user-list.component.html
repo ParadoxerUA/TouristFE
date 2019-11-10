@@ -1,20 +1,12 @@
-<div class="right">
+<mat-card class="input-card">
   <div class="tags">
     <app-trip-roles [trip]="trip"></app-trip-roles>
-    <!-- <mat-chip-list aria-label="Tag selection">
-      <p><strong>Tags:</strong></p>
-      <mat-chip>Food</mat-chip>
-      <mat-chip>Equipment</mat-chip>
-      <mat-chip>Meds</mat-chip>
-      <mat-chip color="primary" selected>
-        <i class="material-icons">add</i>
-      </mat-chip>
-    </mat-chip-list> -->
   </div>
-  <div class="breaker"></div>
-  <mat-card class="mat-card-content">
-  
-    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="3%" >
+</mat-card>
+
+  <mat-card class="mat-card-user">
+
+    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card >
           <button class="close" (click)="deleteUser(user)">
@@ -32,4 +24,3 @@
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card>
-</div>

@@ -3,6 +3,7 @@
         <mat-sidenav #sidenav mode="side" position="end">
             <mat-list class="user-information">
                 <mat-list-item><button mat-raised-button class="edit">Edit profile</button></mat-list-item>
+                <mat-list-item><button mat-raised-button class="edit"  (click)="navigateToTripList()">Show my trips</button></mat-list-item>
                 <mat-list-item class="avatar-container"><img class="mat-card-avatar" src="{{user.avatar}}"></mat-list-item>
                 <mat-list-item>Email: {{user.email}}</mat-list-item>
                 <mat-list-item>Name: {{user.name}}</mat-list-item>

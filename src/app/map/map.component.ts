@@ -41,8 +41,8 @@ export class MapComponent implements OnInit {
       lat: $event.coords.lat,
       lng: $event.coords.lng,
       selected: false,};
-    this.tripService.addCheckpointToList(newMarker.lat,newMarker.lng, newMarker.order );
     this.location.markers.push(newMarker);
+    this.tripService.updateCheckpointList(this.location.markers);
   }
   markerClick(marker, infoWindow) {
     if(this.infowindow){
@@ -70,7 +70,7 @@ export class MapComponent implements OnInit {
     for (let _i = deleteMarkerIndex; _i < this.location.markers.length; _i++) {
       this.location.markers[_i].order--;
     }
-    this.tripService.deleteCheckpointFromList(deleteMarkerIndex);
+    this.tripService.updateCheckpointList(this.location.markers);
   }
 
   onMouseOver(marker){

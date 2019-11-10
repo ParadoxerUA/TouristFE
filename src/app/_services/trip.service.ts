@@ -11,11 +11,7 @@ import { BASE_URL } from './config'
   providedIn: 'root'
 })
 export class TripService {
-  public listOfCheckpoints : Checkpoint[] =[ {
-    order_number: 1,
-    latitude: 50.431273,
-    longitude: 30.550139,
-  }];
+  public listOfCheckpoints : Checkpoint[] =[ ];
 
   public currentTrip: Trip = {
     name: 'Servise trip',
@@ -49,13 +45,18 @@ export class TripService {
     this.listOfCheckpoints.push(newCheckpoint);
   }
 
-  deleteCheckpointFromList(deleteMarkerIndex)
+  updateCheckpointList(markerList)
   {
-    this.listOfCheckpoints.splice(deleteMarkerIndex, 1);
-    for (let _i = deleteMarkerIndex; _i < this.listOfCheckpoints.length; _i++) {
-      this.listOfCheckpoints[_i].order_number--;
+    this.listOfCheckpoints = [];
+    for(let counter = 0; counter < markerList.length; counter++ )
+    {
+      let newPoint = {order_number : counter+1,
+        latitude: markerList[counter].lat,
+        longitude: markerList[counter].lng};
+      this.listOfCheckpoints.push(newPoint);
     }
   }
+
 
    addTrip(trip: Trip): Observable<Trip> {
     return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
@@ -63,7 +64,7 @@ export class TripService {
 
 
   getTrip(trip_id: number): Observable<any> {
-    const url = `${this.tripUrl}/${trip_id}`;
+    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users`;
     return this.http.get(url, this.httpOptions)
   }
 
@@ -77,7 +78,7 @@ export class TripService {
       map(data => data),
       catchError(
         error => {
-          this.router.navigate(['error'])
+          this.router.navigate(['error']);
           return of(error);
         }
       ));

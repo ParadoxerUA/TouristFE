@@ -19,6 +19,12 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
 
+  navigateToTripList(): void
+  {
+    this.router.navigate(['trip-list']);
+    this.userSideNav.close();
+  }
+
   logoutUser(): void {
     this.userService.userLogout()
       .subscribe(res => {
