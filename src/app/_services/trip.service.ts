@@ -11,11 +11,7 @@ import { BASE_URL } from './config'
   providedIn: 'root'
 })
 export class TripService {
-  public listOfCheckpoints : Checkpoint[] =[ {
-    order_number: 1,
-    latitude: 50.431273,
-    longitude: 30.550139,
-  }];
+  public listOfCheckpoints : Checkpoint[] =[ ];
 
   public currentTrip: Trip = {
     name: 'Servise trip',
@@ -42,15 +38,21 @@ export class TripService {
       console.log(g)
     })
   }
+  addCheckpointToList(lat,lng,orderNumber) {
+    const newCheckpoint: Checkpoint = {order_number : orderNumber,
+    latitude: lat,
+    longitude: lng,};
+    this.listOfCheckpoints.push(newCheckpoint);
+  }
 
   updateCheckpointList(markerList)
   {
+    this.listOfCheckpoints = [];
     for(let counter = 0; counter < markerList.length; counter++ )
     {
-      this.listOfCheckpoints = [];
       let newPoint = {order_number : counter+1,
-        latitude: markerList.lat,
-        longitude: markerList.lng};
+        latitude: markerList[counter].lat,
+        longitude: markerList[counter].lng};
       this.listOfCheckpoints.push(newPoint);
     }
   }
