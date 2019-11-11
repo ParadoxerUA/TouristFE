@@ -1,4 +1,4 @@
-<div class="trip_detail_container">
+<div class="trip_detail_container" *ngIf="trip">
   <mat-card id="card" style="text-align: center">
     <mat-card-title>
         {{this.trip.name}}
@@ -17,13 +17,13 @@
                 <mat-panel-description>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngIf="trip">
+            <div>
                 <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
             </div>
 
 
 
-            <div *ngIf="trip.trip_uuid">
+            <div>
                 <mat-label>
                     Invite_link:localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
                 </mat-label>
@@ -35,7 +35,7 @@
   <div class="left">
       <app-trip-item-list></app-trip-item-list>
   </div>
-  <div class="right" *ngIf="trip">
+  <div class="right">
       <app-trip-user-list [trip]="trip"></app-trip-user-list>
   </div>
 </div>
