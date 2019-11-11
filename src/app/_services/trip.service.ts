@@ -59,13 +59,15 @@ export class TripService {
 
 
    addTrip(trip: Trip): Observable<Trip> {
-    return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
+    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
+    return this.http.post<Trip>(this.tripUrl, trip, {headers: header});
   }
 
 
   getTrip(trip_id: number): Observable<any> {
+    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
     const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users`;
-    return this.http.get(url, this.httpOptions)
+    return this.http.get(url, {headers: header})
   }
 
 
