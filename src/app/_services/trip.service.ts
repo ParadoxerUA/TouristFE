@@ -75,4 +75,13 @@ export class TripService {
         }
       ));
   }
+  updateTrip(trip_id, start_date, end_date, status): Observable<any> {
+    const updateTripUrl = `${BASE_URL}/trip/v1/update/${trip_id}`;
+    let trip = {
+      start_date,
+      end_date,
+      status
+    };
+    return this.http.post(updateTripUrl, trip, this.httpOptions);
+  }
 }
