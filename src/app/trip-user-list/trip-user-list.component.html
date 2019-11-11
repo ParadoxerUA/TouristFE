@@ -1,15 +1,6 @@
 <mat-card class="input-card">
   <div class="tags">
-    <mat-chip-list aria-label="Tag selection">
-      <p><strong>Tags:</strong></p>
-      <mat-chip>Food</mat-chip>
-      <mat-chip>Equipment</mat-chip>
-      <mat-chip>Meds</mat-chip>
-      <!-- <button mat-mini-fab style="padding:0px"> -->
-      <mat-chip color="primary" selected>
-        <i class="material-icons">add</i>
-      </mat-chip>
-    </mat-chip-list>
+    <app-trip-roles [trip]="trip"></app-trip-roles>
   </div>
 </mat-card>
 

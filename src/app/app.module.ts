@@ -26,6 +26,7 @@ import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-p
 import {UserService} from "./_services/user.service";
 import { CookieService } from 'ngx-cookie-service';
 import { ErrorComponent } from './error/error.component';
+import { TripRolesComponent } from './trip-roles/trip-roles.component';
 
 
 const config = new AuthServiceConfig([
@@ -61,6 +62,7 @@ export function provideConfig() {
     TripListComponent,
     TripDetailPageMapComponent,
     ErrorComponent,
+    TripRolesComponent,
   ],
   imports: [
     MaterialModule,

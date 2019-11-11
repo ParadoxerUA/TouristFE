@@ -36,7 +36,8 @@ export class TripListComponent implements OnInit {
       this.tripsDataSource.data = this.trips;
     })
   }
-  redirectToTripDetail(id): void {
+
+  redirectToTripDetail(id): void {  
     this.router.navigate([`trip_detail`, id]);
   }
   redirectToCreateTrip(): void {

@@ -23,3 +23,8 @@ export class Items {
   weight: number;
   quantity: number;
 }
+
+export class Role {
+  id: number;
+  name: string;
+}
