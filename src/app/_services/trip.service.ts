@@ -21,6 +21,11 @@ export class TripService {
 
   private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
 
+  httpOptions = {
+    headers: new HttpHeaders({ 
+    'Content-Type': 'application/json',
+    'Authorization': this.userService.getSessionId()})
+  };
   constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
   createTrip(name, startDate, endDate, description){
@@ -62,7 +67,7 @@ export class TripService {
   getTrip(trip_id: number): Observable<any> {
     let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
     const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users`;
-    return this.http.get(url, {headers: header, observe: 'response'})
+    return this.http.get(url, {headers: header})
   }
 
 
