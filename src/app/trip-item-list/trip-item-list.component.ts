@@ -3,7 +3,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Items } from '../trip';
 
-const ITEMS: Items[] = [];
+const ITEMS: Items[] = [
+  {name: 'Apple', weight: 1, quantity: 3},
+  {name: 'Orange', weight: 2, quantity: 5},
+  {name: 'Banana', weight: 3, quantity: 10}
+];
 
 @Component({
   selector: 'app-trip-item-list',
