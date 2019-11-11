@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, Input } from '@angular/core';
 import { ItemService } from '../_services/item.service';
 import { Item, Trip } from '../trip';
 
@@ -13,10 +11,7 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
 
-  displayedColumns: string[] = ['name', 'weight', 'quantity'];
-  // dataSource = new MatTableDataSource(this.tripItems);
-
-  // @ViewChild(MatSort, {static: true}) sort: MatSort;
+  displayedColumns: string[] = ['Name', 'Weight', 'Quantity'];
 
   constructor(
     private itemService: ItemService
@@ -33,7 +28,6 @@ export class TripItemListComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    // this.dataSource.sort = this.sort;
   }
 
 }
