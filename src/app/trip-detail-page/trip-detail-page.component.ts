@@ -19,9 +19,7 @@ export class TripDetailPageComponent implements OnInit {
     private tripService: TripService,
     private route: ActivatedRoute,
     private userService: UserService
-  ) {
-
-  }
+  ) { }
 
   getTrip(): void {
     this.tripService.getTrip(this.trip_id)
