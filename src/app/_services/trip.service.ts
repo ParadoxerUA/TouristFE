@@ -66,14 +66,13 @@ export class TripService {
 
   getTrip(trip_id: number): Observable<any> {
     let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
-    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users`;
+    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users,admin_id`;
     return this.http.get(url, {headers: header})
   }
 
 
   getTrips(): Observable<any> {
     const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
-    console.log(tripListUrl);
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
