@@ -12,8 +12,10 @@ export class TripUserListComponent implements OnInit {
 
   tripUsers: User[];
   @Input() trip: Trip;
+  @Input() currentUser: User;
+
   constructor(
-    private tripUserService: TripUserService
+    private tripUserService: TripUserService,
   ) { 
     this.tripUsers = [];
   }
@@ -30,7 +32,8 @@ export class TripUserListComponent implements OnInit {
   deleteUser(userToDelete: User): void {
     this.tripUsers = this.tripUsers.filter(user => user !== userToDelete);
     // delete user_id from trip below
-    this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.id)
+    this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.user_id).subscribe();
+    console.log(this.trip);
   }
 
   ngOnInit() {

@@ -68,7 +68,7 @@ export class UserService {
 
   getUserProfile() {
     let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
-    return this.http.get<User>(this.userProfileUrl, {headers: header, observe: 'response'});
+    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'});
   }
 
   setSessionId(sessionId) {
