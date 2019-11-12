@@ -1,10 +1,9 @@
 <div class="trip_detail_container" *ngIf="trip && currentUser">
   <mat-card id="card" style="text-align: center">
     <mat-card-title>
-        {{this.trip.name}}
-        <mat-label> Starts: </mat-label> {{this.trip.start_date | date }};
-        <mat-label> Ends: </mat-label> {{this.trip.end_date| date }};
-        <mat-label> Description: </mat-label> {{this.trip.description}}
+        {{this.trip.name}}<br>
+        {{this.trip.start_date | date }} | {{this.trip.end_date| date }}<br>
+        <span>{{this.trip.description}}</span>
 
     </mat-card-title>
 
@@ -33,7 +32,7 @@
   </mat-card>
 
   <div class="left">
-      <app-trip-item-list></app-trip-item-list>
+      <app-trip-item-list [trip]="trip"></app-trip-item-list>
   </div>
   <div class="right">
       <app-trip-user-list [trip]="trip" [currentUser]="currentUser"></app-trip-user-list>
