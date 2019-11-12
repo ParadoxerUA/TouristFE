@@ -91,6 +91,6 @@ export class TripService {
       end_date,
       status
     };
-    return this.http.post(updateTripUrl, trip, this.httpOptions);
+    return this.http.patch(updateTripUrl, trip, this.httpOptions);
   }
 }
