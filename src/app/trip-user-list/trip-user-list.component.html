@@ -9,7 +9,7 @@
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card >
-          <button class="close" (click)="deleteUser(user)" 
+          <button class="close" (click)="openDialog(user)" 
           *ngIf="(user.user_id != currentUser.user_id) && (currentUser.user_id == trip.admin_id)">
             <i class="material-icons">close</i>
           </button>
