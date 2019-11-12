@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatTableDataSource } from "@angular/material";
 import { ItemService } from '../_services/item.service';
 import { Item, Trip } from '../trip';
 
@@ -10,6 +11,7 @@ import { Item, Trip } from '../trip';
 export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
+  itemsDataSource = new MatTableDataSource(this.tripItems);
 
   displayedColumns: string[] = ['name', 'weight', 'quantity'];
 
@@ -23,6 +25,8 @@ export class TripItemListComponent implements OnInit {
         console.log(response);
         response.data.equipment.forEach(element =>
           this.tripItems.push(element as Item));
+
+        this.itemsDataSource.data = this.tripItems;
       });
     }
 
