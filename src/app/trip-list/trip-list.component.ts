@@ -45,10 +45,14 @@ export class TripListComponent implements OnInit {
     .subscribe(trips => {
       console.log(trips)
       trips.data.forEach(element => {
-        this.trips.push(element as Trip);
         if (element['admin'] == '*') {
           this.admin_trips[element['id']] = true;
         }
+        let start_date: Date = new Date(element['start_date']);
+        let end_date: Date = new Date(element['end_date']);
+        element['start_date'] = this.formatDate(start_date);
+        element['end_date'] = this.formatDate(end_date);
+        this.trips.push(element as Trip);
       });
       this.tripsDataSource.data = this.trips;
     })
@@ -98,12 +102,15 @@ export class TripListComponent implements OnInit {
     this.tripService.updateTrip(trip.id, this.startDate.value, this.endDate.value, this.status.value).subscribe(
       response => {
         if(response.data == 'trip updated') {
-          trip.start_date = this.startDate.value;
-          trip.end_date = this.endDate.value;
+          let start_date = this.startDate.value;
+          let end_date = this.endDate.value;
+          trip.start_date = this.formatDate(start_date);
+          trip.end_date = this.formatDate(end_date);
           trip.status = this.status.value;
         }
       }
     )
+    return trip;
   }
   cancelChanges(id) {
     this.current_editable = null;
@@ -111,5 +118,8 @@ export class TripListComponent implements OnInit {
   }
   isDisabled(): boolean {
     return Boolean(this.current_editable);
+  }
+  private formatDate(date: Date): string {
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
   }
 }

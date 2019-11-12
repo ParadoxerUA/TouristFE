@@ -1,9 +1,7 @@
-.new-trip {
-    position: absolute;
-    right: 3.5vw;
-    top: 80px;
-    width: 100px;
-    height: 100px;
+.button-container {
+    top: 100px;
+    position: relative;
+    text-align: center;
 }
 .new-trip:disabled {
     background-color: rgb(78, 75, 75);
@@ -13,12 +11,6 @@
     top: 80px;
     width: 70vw;
     margin: auto;
-}
-.sibling:hover {
-    background: #777;
-}
-.sibling:active {
-    background: #efefef;
 }
 .date-field {
     width: 60%;
