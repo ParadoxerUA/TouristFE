@@ -18,7 +18,7 @@
     <table>
       <tr>
         <th *ngFor="let col of displayedColumns">
-          {{col}}
+          <h5>{{col | uppercase}}</h5>
         </th>
       </tr>
       <tr *ngFor="let item of tripItems">
@@ -27,16 +27,4 @@
         <td>{{item.quantity}}</td>
       </tr>
     </table>
-    <!-- <mat-table>
-      <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns">
-        <mat-header-cell *matHeaderCellDef> {{ col }} </mat-header-cell>
-        <tr *ngFor="let item of tripItems">
-          <td>{{ item.name }}</td>
-          <td>{{ item.weight }}</td>
-          <td>{{ item.quantity }}</td>
-        </tr>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    </mat-table> -->
   </mat-card>

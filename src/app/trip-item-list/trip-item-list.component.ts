@@ -11,7 +11,7 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
 
-  displayedColumns: string[] = ['Name', 'Weight', 'Quantity'];
+  displayedColumns: string[] = ['name', 'weight', 'quantity'];
 
   constructor(
     private itemService: ItemService
