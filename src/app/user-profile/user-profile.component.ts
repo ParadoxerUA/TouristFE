@@ -1,0 +1,56 @@
+import {Component, OnInit, ViewChild, Injectable} from '@angular/core';
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
+import {MatSidenav} from "@angular/material/sidenav";
+import {User} from '../user';
+
+
+@Component({
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html',
+  styleUrls: ['./user-profile.component.css']
+})
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserProfileComponent implements OnInit {
+
+  @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
+  public user: User;
+
+  navigateToTripList(): void
+  {
+    this.router.navigate(['trip-list']);
+    this.userSideNav.close();
+  }
+
+  logoutUser(): void {
+    this.userService.userLogout()
+      .subscribe(res => {
+        this.userService.deleteSessionId();
+      });
+    this.userService.deleteSessionId();
+    this.userSideNav.close();
+    this.clearUser();
+    this.router.navigate(['/index']);
+  }
+
+  private clearUser(){
+    this.user = new User('','', 0, '', '');
+  }
+
+  constructor(
+      private userService: UserService,
+      private router: Router,
+  ){ }
+
+  ngOnInit() {
+    this.clearUser();
+    this.userService.refreshUser();
+    this.userService.setUserSideNav(this.userSideNav);
+    this.userService.getEmittedValue()
+        .subscribe(item => this.user=item);
+  }
+
+}

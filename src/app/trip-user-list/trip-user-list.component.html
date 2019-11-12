@@ -1,27 +1,19 @@
-<div class="right">
+<mat-card class="input-card">
   <div class="tags">
-
-    <mat-chip-list aria-label="Tag selection">
-      <p><strong>Tags:</strong></p>
-      <mat-chip>Food</mat-chip>
-      <mat-chip>Equipment</mat-chip>
-      <mat-chip>Meds</mat-chip>
-      <!-- <button mat-mini-fab style="padding:0px"> -->
-      <mat-chip color="primary" selected>
-        <i class="material-icons">add</i>
-      </mat-chip>
-      <!-- </button> -->
-    </mat-chip-list>
+    <app-trip-roles [trip]="trip"></app-trip-roles>
   </div>
-  <div class="breaker"></div>
-  <mat-card class="mat-card-content">
-  
-    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="3%" >
+</mat-card>
+
+  <mat-card class="mat-card-user">
+
+    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card >
-          <button class="close" (click)="delete(user)">
+          <button class="close" (click)="openDialog(user)" 
+          *ngIf="(user.user_id != currentUser.user_id) && (currentUser.user_id == trip.admin_id)">
             <i class="material-icons">close</i>
           </button>
+          <!-- <p>{{user.user_id}} and {{currentUser.user_id}} and {{trip.admin_id}}</p> -->
           <img mat-card-avatarn src="avatar.png" alt="User Avatar">
           <mat-card-subtitle>{{user.name}}</mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline">{{user.surname}}</mat-card-subtitle>
@@ -34,4 +26,3 @@
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card>
-</div>

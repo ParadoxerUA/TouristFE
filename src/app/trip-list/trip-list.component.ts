@@ -57,12 +57,9 @@ export class TripListComponent implements OnInit {
       this.tripsDataSource.data = this.trips;
     })
   }
-  redirectToTripDetail(id): void {
-    if (this.current_editable != null) {
-      return;
-    }
-    // this.router.navigate(`trip_detail/${id}`);
-    console.log(id);
+
+  redirectToTripDetail(id): void {  
+    this.router.navigate([`trip_detail`, id]);
   }
   redirectToCreateTrip(): void {
     this.router.navigate(['create_trip']);

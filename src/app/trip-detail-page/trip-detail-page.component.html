@@ -1,24 +1,40 @@
-<div class="trip_detail_container">
-    <mat-card id="card" style="text-align: center;">
+<div class="trip_detail_container" *ngIf="trip && currentUser">
+  <mat-card id="card" style="text-align: center">
     <mat-card-title>
-       Trip name, dates + map pop-up
+        {{this.trip.name}}<br>
+        {{this.trip.start_date | date }} | {{this.trip.end_date| date }}<br>
+        <span>{{this.trip.description}}</span>
+
     </mat-card-title>
 
     <mat-card-content>
-        <mat-expansion-panel style="text-align: center;">
-            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'" >
+        <mat-expansion-panel>
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title >
                     <mat-icon>explore</mat-icon>
                 </mat-panel-title>
                 <mat-panel-description>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <app-trip-detail-page-map></app-trip-detail-page-map>
+            <div>
+                <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
+            </div>
+
+
+
+            <div>
+                <mat-label>
+                    Invite_link:localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
+                </mat-label>
+            </div>
         </mat-expansion-panel>
     </mat-card-content>
-    </mat-card>
+  </mat-card>
 
-
-    <app-trip-item-list></app-trip-item-list>
-    <app-trip-user-list></app-trip-user-list>
+  <div class="left">
+      <app-trip-item-list [trip]="trip"></app-trip-item-list>
+  </div>
+  <div class="right">
+      <app-trip-user-list [trip]="trip" [currentUser]="currentUser"></app-trip-user-list>
+  </div>
 </div>

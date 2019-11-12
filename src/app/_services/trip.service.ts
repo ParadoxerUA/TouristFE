@@ -11,11 +11,7 @@ import { BASE_URL } from './config'
   providedIn: 'root'
 })
 export class TripService {
-  public listOfCheckpoints : Checkpoint[] =[ {
-    order_number: 1,
-    latitude: 50.431273,
-    longitude: 30.550139,
-  }];
+  public listOfCheckpoints : Checkpoint[] =[ ];
 
   public currentTrip: Trip = {
     name: 'Servise trip',
@@ -49,28 +45,41 @@ export class TripService {
     this.listOfCheckpoints.push(newCheckpoint);
   }
 
-  deleteCheckpointFromList(deleteMarkerIndex)
+  updateCheckpointList(markerList)
   {
-    this.listOfCheckpoints.splice(deleteMarkerIndex, 1);
-    for (let _i = deleteMarkerIndex; _i < this.listOfCheckpoints.length; _i++) {
-      this.listOfCheckpoints[_i].order_number--;
+    this.listOfCheckpoints = [];
+    for(let counter = 0; counter < markerList.length; counter++ )
+    {
+      let newPoint = {order_number : counter+1,
+        latitude: markerList[counter].lat,
+        longitude: markerList[counter].lng};
+      this.listOfCheckpoints.push(newPoint);
     }
   }
 
+
    addTrip(trip: Trip): Observable<Trip> {
-    return this.http.post<Trip>(this.tripUrl, trip, this.httpOptions);
+    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
+    return this.http.post<Trip>(this.tripUrl, trip, {headers: header});
   }
+
+
+  getTrip(trip_id: number): Observable<any> {
+    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
+    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users,admin_id`;
+    return this.http.get(url, {headers: header})
+  }
+
 
   getTrips(): Observable<any> {
     const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
-    console.log(tripListUrl);
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
       map(data => data),
       catchError(
         error => {
-          this.router.navigate(['error'])
+          this.router.navigate(['error']);
           return of(error);
         }
       ));

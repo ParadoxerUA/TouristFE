@@ -1,5 +1,5 @@
 export class Trip {
-  id?: number;
+  trip_id?: number;
   name: string;
   start_date: string;
   end_date?: string;
@@ -8,6 +8,8 @@ export class Trip {
   admin?: string;
   participants?: number;
   status?: string;
+  trip_uuid?: string;
+
 }
 
 export class Checkpoint {
@@ -16,8 +18,14 @@ export class Checkpoint {
   longitude: number;
 }
 
-export class Items {
+export class Item {
+  equipment_id: number;
   name: string;
   weight: number;
-  amount: number;
+  quantity: number;
+}
+
+export class Role {
+  id: number;
+  name: string;
 }

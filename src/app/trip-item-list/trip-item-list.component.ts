@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Items } from '../trip';
-
-const ITEMS: Items[] = [];
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material';
+import { ItemService } from '../_services/item.service';
+import { Item, Trip } from '../trip';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -11,31 +10,32 @@ const ITEMS: Items[] = [];
   styleUrls: ['./trip-item-list.component.css'],
 })
 export class TripItemListComponent implements OnInit {
-  name: string;
-  weight: number;
-  amount: number;
+  @Input() trip: Trip;
+  tripItems: Item[] = [];
+  itemsDataSource = new MatTableDataSource(this.tripItems);
 
-  displayedColumns: string[] = ['name', 'weight', 'amount'];
-  dataSource = new MatTableDataSource(ITEMS);
+  displayedColumns: string[] = ['name', 'weight', 'quantity'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  addItem() {
-    ITEMS.push({name: this.name,
-                weight: this.weight,
-                amount: this.amount});
-    this.name = '';
-    this.weight = 0;
-    this.amount = 0;
+  constructor(
+    private itemService: ItemService
+  ) { }
 
-    this.dataSource = new MatTableDataSource(ITEMS);
-  }
+  getItems() {
+    this.itemService.getTripItems(this.trip.trip_id)
+      .subscribe(response => {
+        console.log(response);
+        response.data.equipment.forEach(element =>
+          this.tripItems.push(element as Item));
 
-  constructor() {
-  }
+        this.itemsDataSource.data = this.tripItems;
+      });
+    }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    this.getItems();
+    this.itemsDataSource.sort = this.sort;
   }
 
 }

@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { TripItemListComponent } from './trip-item-list/trip-item-list.component';
 import { TripUserListComponent } from './trip-user-list/trip-user-list.component';
@@ -22,8 +23,12 @@ import { TripListComponent } from './trip-list/trip-list.component';
 import { SocialLoginModule, AuthServiceConfig, 
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
+import {UserService} from "./_services/user.service";
 import { CookieService } from 'ngx-cookie-service';
-import { ErrorComponent } from './error/error.component'
+import { ErrorComponent } from './error/error.component';
+import { TripRolesComponent } from './trip-roles/trip-roles.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+
 
 const config = new AuthServiceConfig([
   {
@@ -51,12 +56,15 @@ export function provideConfig() {
     HeaderComponent,
     FooterComponent,
     EmailConfirmationComponent,
+    UserProfileComponent,
     TripDetailPageComponent,
     TripItemListComponent,
     TripUserListComponent,
     TripListComponent,
     TripDetailPageMapComponent,
     ErrorComponent,
+    TripRolesComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     MaterialModule,
@@ -69,18 +77,22 @@ export function provideConfig() {
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
     FormsModule,
     ReactiveFormsModule,
-    SocialLoginModule
+    SocialLoginModule,
   ],
   entryComponents: [
     LoginPopUpComponent,
     RegisterPopUpComponent,
+    ConfirmationDialogComponent,
   ],
+
   providers: [
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
     },
+    UserService,
     CookieService,
+
   ],
   bootstrap: [AppComponent]
 })

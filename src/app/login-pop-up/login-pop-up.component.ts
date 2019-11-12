@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators} from '@angular/forms';
 import { UserService } from '../_services/user.service'
-import { AuthService, FacebookLoginProvider, SocialUser, GoogleLoginProvider } from 'angularx-social-login';
-import { CookieService } from 'ngx-cookie-service';
+import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
+import { Subscription } from 'rxjs';
 
 
 export interface DialogData {
@@ -17,10 +17,15 @@ export interface DialogData {
   templateUrl: './login-pop-up.component.html',
   styleUrls: ['./login-pop-up.component.css']
 })
+
+
 export class LoginPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
   passwordHide = true;
+  sessionId: string;
+  authServiceSubscription: Subscription;
+  loginSubscription: Subscription;
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
@@ -28,45 +33,45 @@ export class LoginPopUpComponent implements OnInit {
             '';
   }
 
-  logInUser(type?: string) {
-    // Pass if user already authorized
-    if(this.userService.userIsAuthorized()){
-      return;
+    logInUser(type?: string) {
+        // Pass if user already authorized
+        if(this.userService.userIsAuthorized()){
+            return;
+        }
+        // if type was not passed into a function
+        if(type === undefined){
+            this.subscribeOnLogin(this.data);
+            // if type was passed
+        } else if(type == "facebook"){
+            this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+        } else if(type == "google"){
+            this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        }
     }
-    // if type was not passed into a function
-    if(type === undefined){
-      return this.userService.userLogin(this.data)
-      .subscribe(res => {
-        this.userService.setSessionId(res.body.data)
-        console.log(this.userService.getSessionId())
-        this.router.navigate(['trip-list'])
-      })
-    // if type was passed
-    } else if(type == "facebook"){
-      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-    } else if(type == "google"){
-      this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+
+    private getSocialData(user){
+        return {'auth_token': user.authToken, 'provider': user.provider}
+        }
+
+    subscribeOnLogin(data, type?) {
+      // Create subscription on login request
+      this.loginSubscription = this.userService.userLogin(data, type)
+        .subscribe(res => {
+        this.userService.setSessionId(res.body.data);
+        this.userService.refreshUser();
+        this.router.navigate(['trip-list']);
+        
+        // Unsubscribe after user logged in
+        this.closeLoginSubscriptions();
+      });
     }
-    // subscribe on social authentication state (returns observable user)
-    this.authService.authState.subscribe((user) => {
-      // check if authentication is successful (returns user) and user is not authorized
-      if (user && !this.userService.userIsAuthorized()){
-        this.userService.userSocialLogin(this.getSocialData(user)).subscribe(res => {
-          this.userService.setSessionId(res.body.data);
-        })
-      }
-    });
 
-    this.logOutSocial();
-  }
-
-  private getSocialData(user){
-    return {'auth_token': user.authToken, 'provider': user.provider}
-  }
-  
-  logOutSocial(): void {
-    this.authService.signOut();
-  }
+    private closeLoginSubscriptions(){
+      /* Close all subscriptions to avoid subscription 
+      duplicates and memory leaks after next login */
+      this.loginSubscription.unsubscribe();
+      this.authServiceSubscription.unsubscribe();
+    }
 
   constructor(
     public dialogRef: MatDialogRef<LoginPopUpComponent>,
@@ -76,6 +81,17 @@ export class LoginPopUpComponent implements OnInit {
     private authService: AuthService,
   ){ }
 
-  ngOnInit() { }
-
+    ngOnInit() {
+      // Create subscription on AuthService state
+      this.authServiceSubscription = this.authService.authState.subscribe((user) => {
+        console.log(user);
+        // check if authentication is successful (returns user) and user is not authorized
+        if ((user != null) && !this.userService.userIsAuthorized()){
+          this.subscribeOnLogin(this.getSocialData(user), 'type');
+          // Sign out from social service after user data was sent
+          this.authService.signOut();
+        }
+      });
+    }
 }
+
