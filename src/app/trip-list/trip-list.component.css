@@ -19,6 +19,12 @@
     float: left;
     width: 50%;
 }
-.trip-row {
+.active-row {
     height: 5vh;
+}
+.active-row:hover {
+    background-color: #969797e7;
+}
+.active-row:active {
+    background-color: white;   
 }

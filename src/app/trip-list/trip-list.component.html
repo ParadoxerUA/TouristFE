@@ -87,7 +87,7 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row class="trip-row" (click)="redirectToTripDetail(row.id)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row [className]="current_editable == null ? 'active-row' : 'disabled-row'" (click)="current_editable == null ? redirectToTripDetail(row.id) : null" *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </mat-card>
 <div class="button-container">
