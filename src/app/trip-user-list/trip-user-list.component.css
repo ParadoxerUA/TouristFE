@@ -28,14 +28,16 @@
 
 .mat-card-avatar {
   display: block;
-  width: 25px;
-  height: 25px;
+  width: 40%;
+  height: 30%;
+  margin-bottom: 14px;
+  margin-left: -5px;
 }
 
 .mat-card-subtitle {
   display: inline;
-  margin-left: 6px;
-  margin-right: 6px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .close:hover {

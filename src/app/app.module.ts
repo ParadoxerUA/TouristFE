@@ -29,6 +29,7 @@ import { ErrorComponent } from './error/error.component';
 import { TripRolesComponent } from './trip-roles/trip-roles.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 const config = new AuthServiceConfig([
@@ -75,6 +76,7 @@ export function provideConfig() {
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    ClipboardModule,
     HttpClientModule,
     AgmCoreModule.forRoot({apiKey:'AIzaSyBNlwQE0tQLMQbsUEvf-KRc1gxzP6-KXsQ'}),
     FormsModule,

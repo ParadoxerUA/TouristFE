@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { UserService } from '../_services/user.service';
-import { Trip } from '../trip';
-import {User} from "../user";
+import {Role, Trip} from '../trip';
+import { User} from "../user";
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -28,13 +28,19 @@ export class TripDetailPageComponent implements OnInit {
       });
   }
 
+
+  refreshInviteLink(trip_id : number): void {
+      this.tripService.refreshInviteLink(trip_id).subscribe(response => {
+          this.trip.trip_uuid = response.body["data"];
+        });
+  }
+
+
   ngOnInit() {
     this.getTrip();
     this.userService.getUserProfile()
-    .subscribe(response => 
-      this.currentUser = response.body["data"] 
+    .subscribe(response =>
+      this.currentUser = response.body["data"]
       );
-    
   }
-
 }
