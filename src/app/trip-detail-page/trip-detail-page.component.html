@@ -23,10 +23,11 @@
 
 
 
-            <div>
+            <div *ngIf="trip.trip_uuid">
                 <mat-label>
                     Invite_link:localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
                     <button mat-icon-button  ngxClipboard [cbContent]="'localhost:5000/api/trip/v1/manage_trip/'+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
+                    <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)"><mat-icon>refresh</mat-icon></button>
                 </mat-label>
             </div>
         </mat-expansion-panel>

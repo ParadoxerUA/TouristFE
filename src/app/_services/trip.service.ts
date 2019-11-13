@@ -66,7 +66,7 @@ export class TripService {
 
   getTrip(trip_id: number): Observable<any> {
     let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
-    const url = `${this.tripUrl}/${trip_id}?fields=name,start_date,description,end_date,points,trip_uuid,trip_id,users,admin_id`;
+    const url = `${this.tripUrl}/${trip_id}`;
     return this.http.get(url, {headers: header})
   }
 
@@ -83,6 +83,12 @@ export class TripService {
           return of(error);
         }
       ));
+  }
+
+  refreshInviteLink(trip_id: number): Observable<any>  {
+    const tripRefreshUrl: string = `${BASE_URL}/trip/v1/manage_trip/${trip_id}`;
+    return this.http.patch(tripRefreshUrl, null,  {
+      headers: {'Authorization': this.userService.getSessionId()}, observe: 'response'})
   }
 
 }
