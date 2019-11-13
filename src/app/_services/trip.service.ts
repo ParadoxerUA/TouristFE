@@ -72,7 +72,7 @@ export class TripService {
 
 
   getTrips(): Observable<any> {
-    const tripListUrl: string = `${BASE_URL}/trip/v1/trips_list`;
+    const tripListUrl: string = `${BASE_URL}/trip/v1/list`;
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
@@ -84,11 +84,19 @@ export class TripService {
         }
       ));
   }
-
-  refreshInviteLink(trip_id: number): Observable<any>  {
-    const tripRefreshUrl: string = `${BASE_URL}/trip/v1/manage_trip/${trip_id}`;
-    return this.http.patch(tripRefreshUrl, null,  {
-      headers: {'Authorization': this.userService.getSessionId()}, observe: 'response'})
+  updateTrip(trip_id, start_date, end_date, status): Observable<any> {
+    const updateTripUrl = `${BASE_URL}/trip/v1/update/${trip_id}`;
+    let trip = {
+      start_date,
+      end_date,
+      status
+    };
+    return this.http.patch(updateTripUrl, trip, this.httpOptions);
   }
 
+    refreshInviteLink(trip_id: number): Observable<any>  {
+        const tripRefreshUrl: string = `${BASE_URL}/trip/v1/manage_trip/${trip_id}`;
+        return this.http.patch(tripRefreshUrl, null,  {
+            headers: {'Authorization': this.userService.getSessionId()}, observe: 'response'})
+    }
 }
