@@ -6,6 +6,7 @@
         <mat-label> Ends: </mat-label> {{this.trip.end_date| date }};
         <mat-label> Description: </mat-label> {{this.trip.description}}
 
+
     </mat-card-title>
 
     <mat-card-content>
@@ -26,6 +27,7 @@
             <div>
                 <mat-label>
                     Invite_link:localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
+                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:5000/api/trip/v1/manage_trip/'+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                 </mat-label>
             </div>
         </mat-expansion-panel>
