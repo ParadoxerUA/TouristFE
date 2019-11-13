@@ -31,9 +31,9 @@ export class TripUserService {
     
   }
 
-  deleteTripUser(trip_id, user_id): void {
-    const url = `${BASE_URL}/trip/v1/manage_trips/${trip_id}?user_id=${user_id}`
-    this.http.delete(url, this.httpOptions)
+  deleteTripUser(trip_id, user_id): Observable<any> {
+    const url = `${BASE_URL}/trip/v1/manage_trip/${trip_id}?user_id=${user_id}`;
+    return this.http.delete(url, this.httpOptions);
   }
 
   

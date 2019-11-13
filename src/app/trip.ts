@@ -18,7 +18,8 @@ export class Checkpoint {
   longitude: number;
 }
 
-export class Items {
+export class Item {
+  equipment_id: number;
   name: string;
   weight: number;
   quantity: number;
