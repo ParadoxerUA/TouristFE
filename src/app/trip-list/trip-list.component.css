@@ -1,9 +1,10 @@
-button {
-    position: absolute;
-    right: 3.5vw;
-    top: 80px;
-    width: 100px;
-    height: 100px;
+.button-container {
+    top: 100px;
+    position: relative;
+    text-align: center;
+}
+.new-trip:disabled {
+    background-color: rgb(78, 75, 75);
 }
 .list-container {
     position: relative;
@@ -11,9 +12,19 @@ button {
     width: 70vw;
     margin: auto;
 }
-mat-row:hover {
-    background: #777;
+.date-field {
+    width: 60%;
 }
-mat-row:active {
-    background: #efefef;
+.status-field {
+    float: left;
+    width: 50%;
+}
+.active-row {
+    height: 5vh;
+}
+.active-row:hover {
+    background-color: #969797e7;
+}
+.active-row:active {
+    background-color: white;   
 }
