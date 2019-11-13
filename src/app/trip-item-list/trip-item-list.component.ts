@@ -31,6 +31,7 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
         console.log(response);
+        this.tripItems = [];
         response.data.equipment.forEach(element =>
           this.tripItems.push(element as Item));
 
@@ -53,6 +54,7 @@ export class TripItemListComponent implements OnInit {
     this.itemService.addTripItem(this.itemData)
     .subscribe(data => {
       console.log(data);
+      this.getItems();
     })
   }
 
