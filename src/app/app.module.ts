@@ -28,6 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ErrorComponent } from './error/error.component';
 import { TripRolesComponent } from './trip-roles/trip-roles.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
 
 
 const config = new AuthServiceConfig([
@@ -65,6 +66,7 @@ export function provideConfig() {
     ErrorComponent,
     TripRolesComponent,
     ConfirmationDialogComponent,
+    JoinToTripComponent,
   ],
   imports: [
     MaterialModule,
