@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
+
+import {TripService} from '../_services/trip.service'
 
 
 @Component({
@@ -9,9 +11,21 @@ import {ActivatedRoute} from '@angular/router'
 })
 export class JoinToTripComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private tripService: TripService,
+    public router: Router,
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      tripService.joinToTrip(params.trip_uuid).subscribe(res => {
+        console.log(res)
+        this.router.navigate(['trip-list'])
+      })
+    })
+  }
 
   ngOnInit() {
+
   }
 
 }
