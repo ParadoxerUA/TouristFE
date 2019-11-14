@@ -1,11 +1,12 @@
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from "../user";
 import { CookieService } from 'ngx-cookie-service'
 import { BASE_URL } from './config'
 import { Router } from '@angular/router';
+import { retry, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -47,6 +48,10 @@ export class UserService {
 
   postCredentials(data): Observable<any> {
     return this.http.post(this.registerUrl, data)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 
   userLogin(data, type?): Observable<any> {
@@ -58,7 +63,11 @@ export class UserService {
       loginUrl = this.socialLoginUrl;
     }
 
-    return this.http.post(loginUrl, data, {observe: 'response'});
+    return this.http.post(loginUrl, data, {observe: 'response'})
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 
   userLogout(): Observable<any> {
@@ -68,7 +77,20 @@ export class UserService {
 
   getUserProfile() {
     let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
-    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'});
+    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
+  }
+
+  handleError(error){
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.data}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
   }
 
   setSessionId(sessionId) {
