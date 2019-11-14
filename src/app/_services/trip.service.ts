@@ -77,13 +77,7 @@ export class TripService {
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
-      map(data => data),
-      catchError(
-        error => {
-          this.router.navigate(['error']);
-          return of(error);
-        }
-      ));
+      map(data => data));
   }
   updateTrip(trip_id, start_date, end_date, status): Observable<any> {
     const updateTripUrl = `${BASE_URL}/trip/v1/update/${trip_id}`;
