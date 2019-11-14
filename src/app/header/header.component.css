@@ -1,11 +1,20 @@
 .mdc-top-app-bar {
   background-color: #44505f;
-
 }
-
+.landscape-button {
+  background-color: #44505f;   
+}
 .mdc-button.mdc-button--unelevated {
   background-color: #5090ce;
   margin-right: 30px;
   padding: 0.1rem 2rem;
 }
+.header-button {
+  background-color: #5090ce;
+  margin-right: 30px;
+  padding: 0.1rem 2rem;
+}
 
+.example-spacer {
+  flex: 1 1 auto;
+}
