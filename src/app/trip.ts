@@ -19,10 +19,11 @@ export class Checkpoint {
 }
 
 export class Item {
-  equipment_id: number;
+  equipment_id?: number;
   name: string;
   weight: number;
   quantity: number;
+  trip_id: number;
 }
 
 export class Role {

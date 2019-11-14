@@ -21,7 +21,6 @@ export class EmailConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
 }

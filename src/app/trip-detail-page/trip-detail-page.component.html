@@ -8,7 +8,7 @@
             <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title >
                     <H2 ><mat-icon>explore</mat-icon></H2>
-                    <H2 align="center"  class = 'panel-text'>
+                    <H2 class = 'panel-text'>
                         {{this.trip.name}}  {{this.trip.start_date | date }} | {{this.trip.end_date| date }}<br>
                     </H2>
                 </mat-panel-title>
@@ -18,11 +18,10 @@
             <div>
                 <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
             </div>
-
             <div *ngIf="trip.trip_uuid">
-                <mat-label class = 'panel-text'>
-                <strong>Invite_link:</strong>localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
-                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:5000/api/trip/v1/manage_trip/'+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
+                <mat-label>
+                <strong>Invite_link:</strong>localhost:4200/join?trip_uuid={{this.trip.trip_uuid}}
+                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:4200/join?trip_uuid='+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                     <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)"><mat-icon>refresh</mat-icon></button>
                 </mat-label>
             </div>

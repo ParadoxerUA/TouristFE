@@ -10,8 +10,13 @@ import { Item, Trip } from '../trip';
   styleUrls: ['./trip-item-list.component.css'],
 })
 export class TripItemListComponent implements OnInit {
+  name: string;
+  weight: number;
+  quantity: number;
+
   @Input() trip: Trip;
   tripItems: Item[] = [];
+  itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
 
   displayedColumns: string[] = ['name', 'weight', 'quantity'];
@@ -26,12 +31,32 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
         console.log(response);
+        this.tripItems = [];
         response.data.equipment.forEach(element =>
           this.tripItems.push(element as Item));
 
         this.itemsDataSource.data = this.tripItems;
       });
     }
+
+  addItem(): void {
+    this.itemData = {
+      "name": this.name,
+      "weight": this.weight,
+      "quantity": this.quantity,
+      "trip_id": this.trip.trip_id
+    };
+
+    this.name = "";
+    this.weight = 0;
+    this.quantity = 1;
+
+    this.itemService.addTripItem(this.itemData)
+    .subscribe(data => {
+      console.log(data);
+      this.getItems();
+    })
+  }
 
   ngOnInit() {
     this.getItems();

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { UserService } from '../_services/user.service';
-import {Role, Trip} from '../trip';
+import { Role, Trip} from '../trip';
 import { User} from "../user";
 
 @Component({
@@ -28,11 +28,13 @@ export class TripDetailPageComponent implements OnInit {
       });
   }
 
+
   refreshInviteLink(trip_id : number): void {
       this.tripService.refreshInviteLink(trip_id).subscribe(response => {
           this.trip.trip_uuid = response.body["data"];
         });
   }
+
 
   ngOnInit() {
     this.getTrip();
