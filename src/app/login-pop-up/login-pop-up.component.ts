@@ -29,9 +29,16 @@ export class LoginPopUpComponent implements OnInit {
   authServiceSubscription: Subscription;
   loginSubscription: Subscription;
 
-  getErrorMessage() {
+  getEmailErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
+            '';
+  }
+
+  getPasswordErrorMessage(){
+    return this.password.hasError('required') ? 'You must enter a value' :
+        this.password.hasError('minlength') ? 'Password should be at least 8 characters':
+        this.password.hasError('pattern') ? 'Password must contain at least 1 digit and 1 character':
             '';
   }
 

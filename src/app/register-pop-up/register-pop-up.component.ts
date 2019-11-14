@@ -41,9 +41,29 @@ export class RegisterPopUpComponent implements OnInit {
       || this.name.invalid || this.surname.invalid);
   }
 
-  getErrorMessage() {
+  getEmailErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
+            '';
+  }
+
+  getPasswordErrorMessage(){
+    return this.password.hasError('required') ? 'You must enter a value' :
+        this.password.hasError('minlength') ? 'Password should be at least 8 characters':
+        this.password.hasError('pattern') ? 'Password must contain at least 1 digit and 1 character':
+            '';
+  }
+
+  getNameErrorMessage(){
+    return this.name.hasError('required') ? 'You must enter a value' :
+        this.name.hasError('minlength') ? 'Name should be at least 2 characters':
+        this.name.hasError('maxlength') ? 'Name can not be longer than 30 characters':
+            '';
+  }
+
+  getSurnameErrorMessage(){
+    return this.surname.hasError('minlength') ? 'Surname should be at least 2 characters':
+        this.surname.hasError('maxlength') ? 'Surname can not be longer than 30 characters':
             '';
   }
 

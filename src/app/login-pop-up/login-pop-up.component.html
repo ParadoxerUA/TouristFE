@@ -2,10 +2,11 @@
 <div mat-dialog-content class="form-container">
   <mat-form-field>
     <input placeholder="Email" matInput [formControl]="email" [(ngModel)]="data.email" required>
-    <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+    <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
   </mat-form-field><br>
   <mat-form-field>
     <input placeholder="Password" [formControl]="password" matInput [(ngModel)]="data.password" [type]="passwordHide ? 'password' : 'text'" required>
+    <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
     <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'passwordHide password'" [attr.aria-pressed]="passwordHide">
       <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
