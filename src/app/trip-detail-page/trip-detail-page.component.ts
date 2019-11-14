@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { UserService } from '../_services/user.service';
-import {Role, Trip} from '../trip';
+import { Role, Trip} from '../trip';
 import { User} from "../user";
 
 @Component({
