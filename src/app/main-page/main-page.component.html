@@ -1,8 +1,12 @@
 <div class="root__container">
     <!-- Main content -->
     <main class="wrapper-main" >
-        <div *ngIf="userIsAuthorized()">
-            <button class="mdc-button mdc-button--unelevated" type="submit" name="create_trip"  (click)="create_trip()" >Create Trip</button>
+        <div *ngIf="userIsAuthorized()" class="inner-2">
+            <div class="inner-1">
+                <div class="inner-2">
+                        <button class="mdc-button mdc-button--unelevated" type="submit" name="create_trip"  (click)="create_trip()" >Create Trip</button>
+                </div>
+            </div>
         </div>
     </main>
 </div>
