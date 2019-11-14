@@ -1,18 +1,16 @@
 <div class="trip_detail_container" *ngIf="trip && currentUser">
-  <mat-card id="card" style="text-align: center">
+  <mat-card class = 'card-with-map'>
     <mat-card-title>
-        {{this.trip.name}}<br>
-        {{this.trip.start_date | date }} | {{this.trip.end_date| date }}<br>
-        <span>{{this.trip.description}}</span>
-
-
+<!--        <span>{{this.trip.description}}</span>-->
     </mat-card-title>
-
-    <mat-card-content>
+    <mat-card-content >
         <mat-expansion-panel>
             <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title >
-                    <mat-icon>explore</mat-icon>
+                    <H2 ><mat-icon>explore</mat-icon></H2>
+                    <H2 align="center"  class = 'panel-text'>
+                        {{this.trip.name}}  {{this.trip.start_date | date }} | {{this.trip.end_date| date }}<br>
+                    </H2>
                 </mat-panel-title>
                 <mat-panel-description>
                 </mat-panel-description>
@@ -21,10 +19,8 @@
                 <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
             </div>
 
-
-
             <div *ngIf="trip.trip_uuid">
-                <mat-label>
+                <mat-label class = 'panel-text'>
                 <strong>Invite_link:</strong>localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
                     <button mat-icon-button  ngxClipboard [cbContent]="'localhost:5000/api/trip/v1/manage_trip/'+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                     <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)"><mat-icon>refresh</mat-icon></button>

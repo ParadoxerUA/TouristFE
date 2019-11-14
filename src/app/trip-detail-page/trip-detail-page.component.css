@@ -19,3 +19,12 @@
     flex-wrap: wrap;
     align-items: flex-start;
 }
+
+.panel-text{
+    height: 30px;
+    margin-left: 20vw;
+}
+
+.card-with-map.mat-card{
+    padding: 0px;
+}
