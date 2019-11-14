@@ -1,5 +1,5 @@
 .root__container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background-image: url(../../assets/images/trip_background.jpg);
     background-size: cover;
