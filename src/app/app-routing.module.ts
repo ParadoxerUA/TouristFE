@@ -7,6 +7,7 @@ import {EmailConfirmationComponent} from './email-confirmation/email-confirmatio
 import {TripDetailPageComponent} from './trip-detail-page/trip-detail-page.component';
 import {UserProfileComponent} from "./user-profile/user-profile.component";
 import { ErrorComponent } from './error/error.component';
+import {JoinToTripComponent} from './join-to-trip/join-to-trip.component';
 
 const routes: Routes = [
   { path: 'index', component: MainPageComponent },
@@ -17,7 +18,7 @@ const routes: Routes = [
   { path: 'trip_detail/:trip_id', component: TripDetailPageComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'error', component: ErrorComponent},
-
+  { path: 'join', component: JoinToTripComponent},
 ];
 
 @NgModule({
