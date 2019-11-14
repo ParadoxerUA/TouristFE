@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { Item, Trip } from '../trip';
+import { FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -13,6 +14,10 @@ export class TripItemListComponent implements OnInit {
   name: string;
   weight: number;
   quantity: number;
+
+  itemName = new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z]+")]);
+  itemWeight = new FormControl('', [Validators.required, Validators.min(0), Validators.pattern("[0-9]+")]);
+  itemQuantity = new FormControl('', [Validators.required, Validators.min(1), Validators.pattern("[0-9]+")]);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];

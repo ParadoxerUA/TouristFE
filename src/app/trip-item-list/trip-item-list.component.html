@@ -1,16 +1,19 @@
 
   <mat-card class="input-card">
     <mat-form-field class="item-name-width">
-      <input matInput type="text" placeholder="Item name" [(ngModel)]="name">
+      <input matInput type="text" placeholder="Item name" [formControl]="itemName" [(ngModel)]="name">
+      <mat-error *ngIf="itemName.invalid">Item name is not valid</mat-error>
       <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field class="example-margin">
-      <input matInput type="number" placeholder="kg" [(ngModel)]="weight">
+      <input matInput type="number" placeholder="kg" [formControl]="itemWeight" [(ngModel)]="weight">
+      <mat-error *ngIf="itemWeight.invalid">Only number >= 0</mat-error>
     </mat-form-field>
     <mat-form-field class="example-margin">
-      <input matInput type="number" placeholder="units" [(ngModel)]="quantity">
+      <input matInput type="number" placeholder="units" [formControl]="itemQuantity" [(ngModel)]="quantity">
+      <mat-error *ngIf="itemQuantity.invalid">Only number >= 1</mat-error>
     </mat-form-field>
     <mat-chip (click)="addItem()">
       <i class="material-icons">add</i>
