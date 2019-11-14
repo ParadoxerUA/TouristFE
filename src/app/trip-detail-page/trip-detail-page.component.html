@@ -25,8 +25,8 @@
 
             <div *ngIf="trip.trip_uuid">
                 <mat-label>
-                <strong>Invite_link:</strong>localhost:5000/api/trip/v1/manage_trip/{{this.trip.trip_uuid}}
-                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:5000/api/trip/v1/manage_trip/'+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
+                <strong>Invite_link:</strong>localhost:4200/join?trip_uuid={{this.trip.trip_uuid}}
+                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:4200/join?trip_uuid='+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                     <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)"><mat-icon>refresh</mat-icon></button>
                 </mat-label>
             </div>
