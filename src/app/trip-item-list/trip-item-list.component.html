@@ -15,7 +15,7 @@
       <input matInput type="number" placeholder="units" [formControl]="itemQuantity" [(ngModel)]="quantity">
       <mat-error *ngIf="itemQuantity.invalid">{{ getQuantityErrorMessage() }}</mat-error>
     </mat-form-field>
-    <mat-chip (click)="addItem()">
+    <mat-chip (click)="addItem()" [disabled]="dataInvalid()">
       <i class="material-icons">add</i>
     </mat-chip>
   </mat-card>

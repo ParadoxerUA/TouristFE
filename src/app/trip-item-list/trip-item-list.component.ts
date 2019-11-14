@@ -50,6 +50,12 @@ export class TripItemListComponent implements OnInit {
             '';
   }
 
+  dataInvalid(): boolean{
+    return (this.itemName.invalid
+      || this.itemWeight.invalid
+      || this.itemQuantity.invalid);
+  }
+
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
