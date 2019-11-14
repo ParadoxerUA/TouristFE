@@ -18,7 +18,13 @@ export interface DialogData {
 })
 export class RegisterPopUpComponent implements OnInit {
 
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new FormControl('1', [Validators.required, Validators.email]);
+  password = new FormControl('2', [Validators.required, Validators.minLength(8),
+    Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
+  name = new FormControl('3', [Validators.required, Validators.minLength(2),
+    Validators.maxLength(30)])
+  surname = new FormControl('4', [Validators.minLength(2),
+      Validators.maxLength(30)])
   submitted = false;
   passwordHide = true
 
@@ -28,6 +34,11 @@ export class RegisterPopUpComponent implements OnInit {
         console.log(response)
         this.submitted = true
       })
+  }
+
+  dataInvalid(): boolean{
+    return (this.email.invalid || this.password.invalid
+      || this.name.invalid || this.surname.invalid);
   }
 
   getErrorMessage() {

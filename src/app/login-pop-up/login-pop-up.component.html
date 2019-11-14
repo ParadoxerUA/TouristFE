@@ -5,14 +5,14 @@
     <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
   </mat-form-field><br>
   <mat-form-field>
-    <input placeholder="Password" matInput [(ngModel)]="data.password" [type]="passwordHide ? 'password' : 'text'" required>
+    <input placeholder="Password" [formControl]="password" matInput [(ngModel)]="data.password" [type]="passwordHide ? 'password' : 'text'" required>
     <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'passwordHide password'" [attr.aria-pressed]="passwordHide">
       <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
 </div>
 <mat-dialog-actions align="center">
-  <button type="submit" mat-raised-button class="register" mat-dialog-close (click)="logInUser()" >Login</button>
+  <button type="submit" mat-raised-button class="register" (click)="logInUser()" [disabled]="dataInvalid()" >Login</button>
   <button mat-raised-button class="cancel" mat-dialog-close>Cancel</button><br/>
 </mat-dialog-actions>
 
