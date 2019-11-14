@@ -2,19 +2,19 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    top: 6vh;
     /*margin: auto;*/
     /*background-color: crimson;*/
 }
 
 .user-information {
-    margin: 6px;
+    padding-top: 6vh;
+    /* margin: 6px; */
 }
 
 .edit {
     color: white;
     background-color: #009c75;
-    font-size: 1rem;
+    font-size:  1rem;
 }
 
 mat-sidenav-container {
