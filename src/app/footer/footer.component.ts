@@ -11,8 +11,8 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
   }
- //   isIndexPage() {
- //       let path = window.location.pathname;
- //       return path == '/' || path == '/index';
- //   }
+  isIndexPage() {
+      let path = window.location.pathname;
+      return path == '/' || path == '/index';
+  }
 }
