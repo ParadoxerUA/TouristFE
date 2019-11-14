@@ -16,8 +16,8 @@ export class TripItemListComponent implements OnInit {
   quantity: number;
 
   itemName = new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z]+")]);
-  itemWeight = new FormControl('', [Validators.required, Validators.min(0), Validators.pattern("[0-9]+")]);
-  itemQuantity = new FormControl('', [Validators.required, Validators.min(1), Validators.pattern("[0-9]+")]);
+  itemWeight = new FormControl('', [Validators.required, Validators.pattern("[0-9]+")]);
+  itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[0-9]+")]);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
@@ -31,6 +31,24 @@ export class TripItemListComponent implements OnInit {
   constructor(
     private itemService: ItemService
   ) { }
+
+  getNameErrorMessage() {
+    return this.itemName.hasError('required') ? 'Enter a value' :
+        this.itemName.hasError('pattern') ? 'Not a valid name' :
+            '';
+  }
+
+  getWeightErrorMessage() {
+    return this.itemWeight.hasError('required') ? 'Enter a value' :
+        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' :
+            '';
+  }
+
+  getQuantityErrorMessage() {
+    return this.itemQuantity.hasError('required') ? 'Enter a value' :
+        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
+  }
 
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
