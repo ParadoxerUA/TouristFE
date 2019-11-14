@@ -72,6 +72,7 @@ export class LoginPopUpComponent implements OnInit {
       .subscribe(res => {
         this.userService.setSessionId(res.body.data);
         this.userService.refreshUser();
+        this.dialogRef.close();
         this.router.navigate(['trip-list']);
 
         // Unsubscribe after user logged in
