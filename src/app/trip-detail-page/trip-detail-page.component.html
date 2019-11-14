@@ -19,8 +19,8 @@
                 <app-trip-detail-page-map [trip]="trip"></app-trip-detail-page-map>
             </div>
             <div *ngIf="trip.trip_uuid">
-                <mat-label>
-                <strong>Invite_link:</strong>localhost:4200/join?trip_uuid={{this.trip.trip_uuid}}
+                <mat-label class="panel-text">
+               <strong>Invite_link:</strong>localhost:4200/join?trip_uuid={{this.trip.trip_uuid}}
                     <button mat-icon-button  ngxClipboard [cbContent]="'localhost:4200/join?trip_uuid='+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                     <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)"><mat-icon>refresh</mat-icon></button>
                 </mat-label>
