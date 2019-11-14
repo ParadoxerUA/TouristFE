@@ -12,9 +12,10 @@
   margin-left: 10px;
   width: 20%;
 }
-.mat-chip {
+button.mat-mini-fab {
   background-color: green;
   color: white;
+  margin-left: 10px;
 }
 table {
   width: 100%;
