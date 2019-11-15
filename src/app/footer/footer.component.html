@@ -1,3 +1,9 @@
-<footer class="main__footer">
-  <small class="copyright__text">Copyright © 2019 Tourist app</small>
+<footer>
+  <div *ngIf="isIndexPage()">
+    <div class="inner-footer-1">
+      <div class="inner-footer-2">
+        <small class="copyright__text">Copyright © 2019 Tourist app</small>
+      </div>
+    </div>
+  </div>
 </footer>

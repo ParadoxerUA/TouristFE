@@ -3,6 +3,7 @@
     height: 100vh;
     background-image: url(../../assets/images/trip_background.jpg);
     background-size: cover;
+    position: fixed;
 }
 
 .wrapper-main .mdc-button.mdc-button--unelevated {
@@ -13,4 +14,5 @@
     width: 230px;
     font-size: 1.3rem;
     background-color: #009c75;
+    left: 50%;
 }

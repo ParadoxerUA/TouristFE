@@ -22,32 +22,45 @@ export interface DialogData {
 export class LoginPopUpComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [Validators.required, Validators.minLength(8), 
+    Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
   passwordHide = true;
   sessionId: string;
   authServiceSubscription: Subscription;
   loginSubscription: Subscription;
 
-  getErrorMessage() {
+  getEmailErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
             '';
   }
 
-    logInUser(type?: string) {
-        // Pass if user already authorized
-        if(this.userService.userIsAuthorized()){
-            return;
-        }
-        // if type was not passed into a function
-        if(type === undefined){
-            this.subscribeOnLogin(this.data);
-            // if type was passed
-        } else if(type == "facebook"){
-            this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-        } else if(type == "google"){
-            this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-        }
+  getPasswordErrorMessage(){
+    return this.password.hasError('required') ? 'You must enter a value' :
+        this.password.hasError('minlength') ? 'Password should be at least 8 characters':
+        this.password.hasError('pattern') ? 'Password must contain at least 1 digit and 1 character':
+            '';
+  }
+
+  dataInvalid(): boolean{
+    return (this.email.invalid || this.password.invalid);
+  }
+
+  logInUser(type?: string) {
+    // Pass if user already authorized
+    if(this.userService.userIsAuthorized()){
+        return;
     }
+    // if type was not passed into a function
+    if(type === undefined){
+        this.subscribeOnLogin(this.data);
+        // if type was passed
+    } else if(type == "facebook"){
+        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    } else if(type == "google"){
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    }
+  }
 
     private getSocialData(user){
         return {'auth_token': user.authToken, 'provider': user.provider}
@@ -56,11 +69,12 @@ export class LoginPopUpComponent implements OnInit {
     subscribeOnLogin(data, type?) {
       // Create subscription on login request
       this.loginSubscription = this.userService.userLogin(data, type)
-        .subscribe(res => {
+      .subscribe(res => {
         this.userService.setSessionId(res.body.data);
         this.userService.refreshUser();
+        this.dialogRef.close();
         this.router.navigate(['trip-list']);
-        
+
         // Unsubscribe after user logged in
         this.closeLoginSubscriptions();
       });
