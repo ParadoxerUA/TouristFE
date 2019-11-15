@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { Item, Trip } from '../trip';
+import { FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -13,6 +14,10 @@ export class TripItemListComponent implements OnInit {
   name: string;
   weight: number;
   quantity: number;
+
+  itemName = new FormControl('', [Validators.required, Validators.pattern("[a-z]+")]);
+  itemWeight = new FormControl('', [Validators.required, Validators.pattern("[0-9]+")]);
+  itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
@@ -26,6 +31,30 @@ export class TripItemListComponent implements OnInit {
   constructor(
     private itemService: ItemService
   ) { }
+
+  getNameErrorMessage() {
+    return this.itemName.hasError('required') ? 'Enter a value' :
+        this.itemName.hasError('pattern') ? 'Only lowercase letters' :
+            '';
+  }
+
+  getWeightErrorMessage() {
+    return this.itemWeight.hasError('required') ? 'Enter a value' :
+        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' :
+            '';
+  }
+
+  getQuantityErrorMessage() {
+    return this.itemQuantity.hasError('required') ? 'Enter a value' :
+        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
+  }
+
+  dataInvalid(): boolean{
+    return (this.itemName.invalid
+      || this.itemWeight.invalid
+      || this.itemQuantity.invalid);
+  }
 
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
