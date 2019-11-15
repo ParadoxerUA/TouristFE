@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Trip} from '../trip';
 import {FormControl, Validators} from "@angular/forms";
 import {TripService} from "../_services/trip.service";
+import { AccessService } from '../_services/access.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,7 +25,11 @@ export class CreateTripPageComponent implements OnInit {
     description: '',
     start_date: ''
   };
-  constructor(private tripService : TripService, private router: Router)  { }
+  constructor(
+    private tripService : TripService,
+    private router: Router,
+    private accessService: AccessService,
+    )  { }
 
   create_trip()
   {
@@ -38,7 +43,9 @@ export class CreateTripPageComponent implements OnInit {
     this.CreatedTripRedirect()
   }
   ngOnInit() {
+    if(!this.accessService.checkUserAccess()){return};
   }
+
    public refreshButtonState():  void {
     let isDateInCorrect = this.EndDate.value < this.StartDate.value;
     let isNameInCorrect = this.TripName.hasError('minlength')||
