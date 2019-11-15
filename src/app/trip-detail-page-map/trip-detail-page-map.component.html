@@ -3,8 +3,8 @@
         <h2 align="center">Checkpoints</h2>
         <mat-list >
             <mat-list-item *ngFor="let marker of location.markers">
-                <h5 mat-line> {{marker.order}} _ lat: {{marker.lat | number:'2.6-6'}} <br/>
-                    lng: {{marker.lng| number:'2.6-6'}} </h5>
+                <h5 mat-line> {{marker.order}}. lat: {{marker.lat | number:'2.6-6'}} <br/>
+                      lng: {{marker.lng| number:'2.6-6'}} </h5>
             </mat-list-item>
         </mat-list>
     </div>
