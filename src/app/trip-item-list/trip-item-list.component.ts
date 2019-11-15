@@ -34,7 +34,7 @@ export class TripItemListComponent implements OnInit {
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
-        this.itemName.hasError('pattern') ? 'Not a valid name' :
+        this.itemName.hasError('pattern') ? 'Only lowercase letters' :
             '';
   }
 
