@@ -15,7 +15,7 @@ export class TripItemListComponent implements OnInit {
   weight: number;
   quantity: number;
 
-  itemName = new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z]+")]);
+  itemName = new FormControl('', [Validators.required, Validators.pattern("[a-z]+")]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
 
