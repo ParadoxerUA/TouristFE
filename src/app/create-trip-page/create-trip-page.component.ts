@@ -40,7 +40,6 @@ export class CreateTripPageComponent implements OnInit {
     let tripDescription = this.TripDescription.value? this.TripDescription.value : '';// ---fix of null description
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, tripDescription);
-    this.CreatedTripRedirect()
   }
   ngOnInit() {
     if(!this.accessService.checkUserAccess()){return};
@@ -53,12 +52,4 @@ export class CreateTripPageComponent implements OnInit {
         this.TripName.hasError('required');
     this.button_disabled = isDateInCorrect || isNameInCorrect;
   }
-
-
-
-  private CreatedTripRedirect() {
-          this.router.navigate(['trip-list']);
-  }
-
-
 }
