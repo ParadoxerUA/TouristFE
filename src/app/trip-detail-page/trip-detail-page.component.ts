@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { UserService } from '../_services/user.service';
+import { AccessService } from '../_services/access.service';
 import { Role, Trip} from '../trip';
 import { User} from "../user";
 
@@ -18,7 +19,8 @@ export class TripDetailPageComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private accessService: AccessService,
   ) { }
 
   getTrip(): void {
@@ -37,6 +39,7 @@ export class TripDetailPageComponent implements OnInit {
 
 
   ngOnInit() {
+    if(!this.accessService.checkUserAccess()){return};
     this.getTrip();
     this.userService.getUserProfile()
     .subscribe(response =>
