@@ -1,3 +1,7 @@
+<mat-card class="header-container mat-elevation-z0">
+  <span>My trips</span>
+  <button mat-raised-button color="primary" (click)="redirectToCreateTrip()" [disabled]="isDisabled()">New trip</button>
+</mat-card>
 <mat-card class="list-container">
   <mat-table [dataSource]="tripsDataSource">
     <ng-container matColumnDef="admin" class="sibling">
@@ -90,6 +94,3 @@
     <mat-row [className]="current_editable == null ? 'active-row' : 'disabled-row'" (click)="current_editable == null ? redirectToTripDetail(row.id) : null" *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </mat-card>
-<div class="button-container">
-  <button mat-raised-button color="primary" (click)="redirectToCreateTrip()" [disabled]="isDisabled()">New trip</button>
-</div>

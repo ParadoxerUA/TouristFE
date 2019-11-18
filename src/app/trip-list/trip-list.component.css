@@ -1,13 +1,14 @@
-.button-container {
-    top: 100px;
-    position: relative;
-    text-align: center;
-}
 .new-trip:disabled {
     background-color: rgb(78, 75, 75);
 }
 .list-container {
     position: relative;
+    top: 80px;
+    width: 70vw;
+    margin: auto;
+}
+.header-container {
+    background-color: #fafafa;
     top: 80px;
     width: 70vw;
     margin: auto;
