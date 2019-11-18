@@ -43,7 +43,7 @@ export class UserService {
   }
 
   uuidConfirmation(uuid) {
-    return this.http.get(this.confirmationUrl + uuid)
+    return this.http.patch(this.confirmationUrl + uuid, null);
   }
 
   postCredentials(data): Observable<any> {
