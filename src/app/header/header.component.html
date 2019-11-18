@@ -12,6 +12,9 @@
       <button mat-raised-button class="mdc-button mdc-button--unelevated" (click)="openSignUpDialog()">Sign Up</button>
     </div>
     <div *ngIf="userIsAuthorized();">
+      <button mat-stroked-button class="my-trips-button" routerLink="/trip-list">
+        My Trips
+      </button>
       <button (click)="clickToggle()" class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon--unbounded">
         <i class="material-icons">account_circle</i>
       </button>
