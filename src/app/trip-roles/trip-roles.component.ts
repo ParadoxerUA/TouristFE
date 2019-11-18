@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { RoleService } from '../_services/role.service';
 import { Role, Trip } from '../trip';
 
@@ -10,6 +10,8 @@ import { Role, Trip } from '../trip';
 export class TripRolesComponent implements OnInit {
   @Input() trip: Trip;
   tripRoles: Role[] = [];
+  activeRole: number = 0
+  @Output() roleEvent = new EventEmitter<any>()
 
   constructor( 
     private roleService: RoleService
@@ -24,6 +26,11 @@ export class TripRolesComponent implements OnInit {
       });
     }
 
+  activateRole(roleId) {
+    if (roleId === this.activeRole) {this.activeRole = 0}
+    else {this.activeRole = roleId}
+    this.roleEvent.emit(this.activeRole)
+  }
 
   ngOnInit() {
     this.getRoles();

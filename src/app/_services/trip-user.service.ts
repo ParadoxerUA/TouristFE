@@ -36,5 +36,10 @@ export class TripUserService {
     return this.http.delete(url, this.httpOptions);
   }
 
+  toggleRole(role_id, user_id) {
+    const url = `${BASE_URL}/role/v1/role/${role_id}/${user_id}`;
+    return this.http.put(url, {}, this.httpOptions)
+  }
+
   
 }
