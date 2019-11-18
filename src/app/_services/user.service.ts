@@ -47,7 +47,7 @@ export class UserService {
   }
 
   postCredentials(data): Observable<any> {
-    return this.http.post(this.registerUrl, data)
+    return this.http.patch(this.registerUrl, data)
     .pipe(
       retry(1),
       catchError(this.handleError)
