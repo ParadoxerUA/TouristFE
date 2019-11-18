@@ -18,3 +18,9 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+.my-trips-button {
+  border: hidden;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 32px;
+}
