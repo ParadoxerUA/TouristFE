@@ -12,6 +12,13 @@
     top: 80px;
     width: 70vw;
     margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+}
+.mat-mini-fab {
+    background-color: #009c75;
+    color: white;
 }
 .date-field {
     width: 60%;
