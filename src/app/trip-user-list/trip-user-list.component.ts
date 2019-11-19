@@ -25,6 +25,7 @@ export class TripUserListComponent implements OnInit {
   }
 
   getUsers(): void {
+    this.tripUsers = []
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
         response.data.users.forEach(element => {
@@ -64,7 +65,10 @@ export class TripUserListComponent implements OnInit {
 
   toggleRole(userId) {
     this.tripUserService.toggleRole(this.activeRole, userId)
-      .subscribe(response => console.log(response))
+      .subscribe(response => {
+        console.log(response)
+        this.getUsers()
+      })
     console.log('roleId:' + this.activeRole + ' assigned to userId:' + userId)
   }
 
