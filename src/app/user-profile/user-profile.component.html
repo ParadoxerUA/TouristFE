@@ -9,8 +9,8 @@
                 <mat-list-item>Name: {{user.name}}</mat-list-item>
                 <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
-                <mat-list-item><button mat-raised-button class="edit">Calculate capacity</button></mat-list-item>
-                <mat-card>
+                <mat-list-item><button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button></mat-list-item>
+                <mat-card *ngIf="displayCalculateForm">
                     <mat-form-field class="input-width">
                         <input matInput type="text" placeholder="Height" [formControl]="userHeight" [(ngModel)]="height">
                     </mat-form-field>
@@ -22,7 +22,7 @@
                         <mat-radio-button value="female">Female</mat-radio-button>
                     </mat-radio-group>
                     <button mat-raised-button color="primary">OK</button>
-                    <button mat-raised-button color="warn">Cancel</button>
+                    <button mat-raised-button color="warn" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
                 <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"

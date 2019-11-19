@@ -15,6 +15,7 @@ import {User} from '../user';
   providedIn: 'root',
 })
 export class UserProfileComponent implements OnInit {
+  displayCalculateForm = false;
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
