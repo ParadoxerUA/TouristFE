@@ -13,6 +13,7 @@ import { Trip } from '../trip';
 export class TripUserListComponent implements OnInit {
 
   tripUsers: User[];
+  activeRole: number = 0
   @Input() trip: Trip;
   @Input() currentUser: User;
 
@@ -24,11 +25,15 @@ export class TripUserListComponent implements OnInit {
   }
 
   getUsers(): void {
+    this.tripUsers = []
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
         response.data.users.forEach(element => {
+          let rolesList = element.roles.filter(role => role.trip_id === this.trip.trip_id)
+          element.roles = rolesList.map(role => role.id)
           this.tripUsers.push(element as User);
         });
+        console.log(this.tripUsers)
       });
   }
 
@@ -52,6 +57,32 @@ export class TripUserListComponent implements OnInit {
         this.deleteUser(user);
       }
     });
+  }
+
+  recieveRole($event) {
+    this.activeRole = $event
+  }
+
+  toggleRole(userId) {
+    this.tripUserService.toggleRole(this.activeRole, userId)
+      .subscribe(response => {
+        if (response.status === 201) {
+          this.toggleRoleLocaly(userId, this.activeRole)
+        }
+      })
+  }
+
+  toggleRoleLocaly(userId, roleId) {
+    this.tripUsers.forEach(user => {
+      if (user.user_id === userId) {
+        let index = user.roles.indexOf(roleId)
+        if (index > -1) {
+          user.roles.splice(index, 1)
+        } else {
+          user.roles.push(roleId)
+        }
+      }
+    })
   }
 
   ngOnInit() {
