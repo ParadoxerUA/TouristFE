@@ -25,7 +25,7 @@
                         <input matInput type="number" placeholder="Weight" [formControl]="userWeight" #weight>
                         <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
                     </mat-form-field><br><br>
-                    <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)">OK</button>
+                    <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)" [disabled]="dataInvalid()">OK</button>
                     <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>

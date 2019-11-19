@@ -51,6 +51,11 @@ export class UserProfileComponent implements OnInit {
             '';
   }
 
+  dataInvalid(): boolean{
+    return (this.userHeight.invalid
+      || this.userWeight.invalid);
+  }
+
   navigateToTripList(): void
   {
     this.router.navigate(['trip-list']);
