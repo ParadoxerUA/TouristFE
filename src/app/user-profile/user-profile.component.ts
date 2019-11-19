@@ -16,9 +16,24 @@ import {User} from '../user';
 })
 export class UserProfileComponent implements OnInit {
   displayCalculateForm = false;
+  result: number;
+  gender: string;
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
+
+  // TODO: Paste the correct formula to calculate capacity and write to db
+  changeCapacity(height: number, weight: number): void {
+    if (this.gender === "male") {
+      this.result = height * weight * 2;
+    }
+    if (this.gender === "female") {
+      this.result = height * weight * 1;
+    }
+
+    this.user.capacity = this.result;
+    this.displayCalculateForm = false;
+  }
 
   navigateToTripList(): void
   {

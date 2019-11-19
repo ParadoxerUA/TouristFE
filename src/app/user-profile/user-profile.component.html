@@ -13,17 +13,17 @@
                     <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
                 </mat-list-item>
                 <mat-card *ngIf="displayCalculateForm">
-                    <mat-radio-group aria-label="Select a gender">
-                            <mat-radio-button value="male">Male</mat-radio-button>
-                            <mat-radio-button value="female">Female</mat-radio-button>
+                    <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender">
+                        <mat-radio-button value="male">Male</mat-radio-button>
+                        <mat-radio-button value="female">Female</mat-radio-button>
                     </mat-radio-group><br>
                     <mat-form-field class="input-width">
-                        <input matInput type="number" placeholder="Height" [formControl]="userHeight" [(ngModel)]="height">
+                        <input matInput type="number" placeholder="Height" #height>
                     </mat-form-field>
                     <mat-form-field class="input-width">
-                        <input matInput type="number" placeholder="Weight" [formControl]="userWeight" [(ngModel)]="weight">
+                        <input matInput type="number" placeholder="Weight" #weight>
                     </mat-form-field>
-                    <button mat-raised-button class="calc">OK</button>
+                    <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)">OK</button>
                     <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
