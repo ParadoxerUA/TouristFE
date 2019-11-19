@@ -20,6 +20,7 @@ export class UserProfileComponent implements OnInit {
   result: number;
   gender: string;
 
+  userGender = new FormControl('', Validators.required);
   userHeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   userWeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
 
@@ -53,7 +54,8 @@ export class UserProfileComponent implements OnInit {
 
   dataInvalid(): boolean{
     return (this.userHeight.invalid
-      || this.userWeight.invalid);
+      || this.userWeight.invalid
+      || this.userGender.invalid);
   }
 
   navigateToTripList(): void
