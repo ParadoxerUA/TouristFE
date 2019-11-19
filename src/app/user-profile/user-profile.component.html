@@ -23,8 +23,8 @@
                     <mat-form-field class="input-width">
                         <input matInput type="number" placeholder="Weight" [formControl]="userWeight" [(ngModel)]="weight">
                     </mat-form-field>
-                    <button mat-raised-button color="primary">OK</button>
-                    <button mat-raised-button color="warn" (click)="displayCalculateForm=false">Cancel</button>
+                    <button mat-raised-button class="calc">OK</button>
+                    <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
                 <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
