@@ -66,10 +66,23 @@ export class TripUserListComponent implements OnInit {
   toggleRole(userId) {
     this.tripUserService.toggleRole(this.activeRole, userId)
       .subscribe(response => {
-        console.log(response)
-        this.getUsers()
+        if (response.status === 201) {
+          this.toggleRoleLocaly(userId, this.activeRole)
+        }
       })
-    console.log('roleId:' + this.activeRole + ' assigned to userId:' + userId)
+  }
+
+  toggleRoleLocaly(userId, roleId) {
+    this.tripUsers.forEach(user => {
+      if (user.user_id === userId) {
+        let index = user.roles.indexOf(roleId)
+        if (index > -1) {
+          user.roles.splice(index, 1)
+        } else {
+          user.roles.push(roleId)
+        }
+      }
+    })
   }
 
   ngOnInit() {
