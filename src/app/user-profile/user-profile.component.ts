@@ -3,6 +3,7 @@ import {UserService} from "../_services/user.service";
 import {Router} from "@angular/router";
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from '../user';
+import { FormControl, Validators} from '@angular/forms';
 
 
 @Component({
@@ -19,6 +20,9 @@ export class UserProfileComponent implements OnInit {
   result: number;
   gender: string;
 
+  userHeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  userWeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
 
@@ -33,6 +37,18 @@ export class UserProfileComponent implements OnInit {
 
     this.user.capacity = this.result;
     this.displayCalculateForm = false;
+  }
+
+  getHeightErrorMessage() {
+    return this.userHeight.hasError('required') ? 'Enter a value' :
+        this.userHeight.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
+  }
+
+  getWeightErrorMessage() {
+    return this.userWeight.hasError('required') ? 'Enter a value' :
+        this.userWeight.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
   }
 
   navigateToTripList(): void

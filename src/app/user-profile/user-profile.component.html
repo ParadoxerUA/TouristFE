@@ -18,11 +18,13 @@
                         <mat-radio-button value="female">Female</mat-radio-button>
                     </mat-radio-group><br>
                     <mat-form-field class="input-width">
-                        <input matInput type="number" placeholder="Height" #height>
+                        <input matInput type="number" placeholder="Height" [formControl]="userHeight" #height>
+                        <mat-error *ngIf="userHeight.invalid">{{ getHeightErrorMessage() }}</mat-error>
                     </mat-form-field>
                     <mat-form-field class="input-width">
-                        <input matInput type="number" placeholder="Weight" #weight>
-                    </mat-form-field>
+                        <input matInput type="number" placeholder="Weight" [formControl]="userWeight" #weight>
+                        <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
+                    </mat-form-field><br><br>
                     <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)">OK</button>
                     <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
