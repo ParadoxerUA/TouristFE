@@ -9,18 +9,20 @@
                 <mat-list-item>Name: {{user.name}}</mat-list-item>
                 <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
-                <mat-list-item><button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button></mat-list-item>
+                <mat-list-item>
+                    <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
+                </mat-list-item>
                 <mat-card *ngIf="displayCalculateForm">
-                    <mat-form-field class="input-width">
-                        <input matInput type="text" placeholder="Height" [formControl]="userHeight" [(ngModel)]="height">
-                    </mat-form-field>
-                    <mat-form-field class="input-width">
-                        <input matInput type="text" placeholder="Weight" [formControl]="userWeight" [(ngModel)]="weight">
-                    </mat-form-field>
                     <mat-radio-group aria-label="Select a gender">
-                        <mat-radio-button value="male">Male</mat-radio-button>
-                        <mat-radio-button value="female">Female</mat-radio-button>
-                    </mat-radio-group>
+                            <mat-radio-button value="male">Male</mat-radio-button>
+                            <mat-radio-button value="female">Female</mat-radio-button>
+                    </mat-radio-group><br>
+                    <mat-form-field class="input-width">
+                        <input matInput type="number" placeholder="Height" [formControl]="userHeight" [(ngModel)]="height">
+                    </mat-form-field>
+                    <mat-form-field class="input-width">
+                        <input matInput type="number" placeholder="Weight" [formControl]="userWeight" [(ngModel)]="weight">
+                    </mat-form-field>
                     <button mat-raised-button color="primary">OK</button>
                     <button mat-raised-button color="warn" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
