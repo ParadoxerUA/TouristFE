@@ -100,9 +100,5 @@ p.progress-value {
 .glowingBorder:hover { 
   outline: none;
   border-color: cyan;
-  box-shadow: 0 0 10px #9ecaed;
-}
-
-.activeUser {
-  background: cyan;
+  box-shadow: 0 0 10px cyan;
 }
