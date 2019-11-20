@@ -25,8 +25,8 @@ export class RoleService {
     return this.http.get(url, this.httpOptions);
   }
 
-  // addTripRole(trip_id, data){
-  //   const url = BASE_URL + `role/v1/role/${trip_id}`;
-  //   return this.http.post(url, data, this.httpOptions)
-  // }
+  addTripRole(data){
+    const url = BASE_URL + `/role/v1/role`;
+    return this.http.post(url, data, this.httpOptions)
+  }
 }

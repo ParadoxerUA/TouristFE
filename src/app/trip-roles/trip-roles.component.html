@@ -2,10 +2,11 @@
     <p><strong>Tags:</strong></p>
     <mat-chip *ngFor="let role of tripRoles" 
         [ngClass]="{activeRole: activeRole === role.id}"
-        (click)="activateRole(role.id)">
+        (click)="activateRole(role.id)"
+        [style.background-color]="role.color">
         {{role.name}}
     </mat-chip>
-    <mat-chip color="primary" selected>
+    <mat-chip color="primary" selected (click)="openDialog()">
         <i class="material-icons">add</i>
     </mat-chip>
 </mat-chip-list>
