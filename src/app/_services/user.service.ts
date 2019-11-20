@@ -80,6 +80,12 @@ export class UserService {
     return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
   }
 
+  updateCapacity(capacity): Observable<any> {
+    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
+    const url = BASE_URL + `/user/v1/user-profile`;
+    return this.http.patch(url, capacity, {headers: header, observe: 'response'});
+  }
+
   handleError(error){
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

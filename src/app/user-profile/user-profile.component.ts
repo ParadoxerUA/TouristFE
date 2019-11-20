@@ -27,16 +27,17 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
 
-  // TODO: Paste the correct formula to calculate capacity and write to db
+  // TODO: Paste the correct formula to calculate capacity
   changeCapacity(height: number, weight: number): void {
     if (this.gender === "male") {
-      this.result = height * weight * 2;
+      this.result = height * weight * 1.25;
     }
     if (this.gender === "female") {
       this.result = height * weight * 1;
     }
 
-    this.user.capacity = this.result;
+    this.userService.updateCapacity(this.result)
+    .subscribe(() => this.userService.refreshUser());
     this.displayCalculateForm = false;
   }
 
