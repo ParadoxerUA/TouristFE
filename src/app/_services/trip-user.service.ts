@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, observable } from 'rxjs';
 import { User } from '../user';
 import { UserService } from './user.service';
 import { BASE_URL } from './config'
@@ -15,9 +15,9 @@ export class TripUserService {
 
 
   httpOptions = {
-    headers: new HttpHeaders({ 
+    headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': this.userService.getSessionId()})
+    'Authorization': this.userService.getSessionId()}),
   };
 
   constructor(
@@ -36,5 +36,9 @@ export class TripUserService {
     return this.http.delete(url, this.httpOptions);
   }
 
-  
+  toggleRole(role_id, user_id): Observable<any> {
+    const url = `${BASE_URL}/role/v1/role/${role_id}/${user_id}`;
+    return this.http.put(url, {}, {headers: this.httpOptions.headers, observe: 'response'})
+  }
+
 }
