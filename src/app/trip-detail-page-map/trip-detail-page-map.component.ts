@@ -6,7 +6,7 @@ interface Marker {
   order: number;
   lat: number;
   lng: number;
-  label?: string;
+  name: string;
   selected: boolean;
 }
 
@@ -36,6 +36,7 @@ export class TripDetailPageMapComponent implements OnInit {
       let marker = this.trip.points[counter];
       const newMarker: Marker = {
         order: counter +1,
+        name: marker.name,
         lat: marker.latitude,
         lng:  marker.longitude,
         selected: false,};

@@ -40,10 +40,12 @@ export class TripService {
       this.router.navigate(['trip-list']);
     })
   }
-  addCheckpointToList(lat,lng,orderNumber) {
-    const newCheckpoint: Checkpoint = {order_number : orderNumber,
-    latitude: lat,
-    longitude: lng,};
+  addCheckpointToList(lat,lng,name,orderNumber) {
+    const newCheckpoint: Checkpoint = {
+      order_number : orderNumber,
+      name: name,
+      latitude: lat,
+      longitude: lng,};
     this.listOfCheckpoints.push(newCheckpoint);
   }
 
@@ -53,6 +55,7 @@ export class TripService {
     for(let counter = 0; counter < markerList.length; counter++ )
     {
       let newPoint = {order_number : counter+1,
+        name: markerList[counter].name,
         latitude: markerList[counter].lat,
         longitude: markerList[counter].lng};
       this.listOfCheckpoints.push(newPoint);
