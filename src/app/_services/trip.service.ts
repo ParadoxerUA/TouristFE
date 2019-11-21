@@ -20,7 +20,7 @@ export class TripService {
     description: 'inside service'
   };
 
-  private tripUrl = BASE_URL + '/trip/v1/trip';  // URL to web api
+  private tripUrl = BASE_URL + '/trip/v1/trips';  // URL to web api
 
   httpOptions = {
     headers: new HttpHeaders({ 
@@ -74,24 +74,24 @@ export class TripService {
 
 
   getTrips(): Observable<any> {
-    const tripListUrl: string = `${BASE_URL}/trip/v1/list`;
+    const tripListUrl: string = `${BASE_URL}/trip/v1/trips`;
     return this.http.get(tripListUrl, {
       headers: {'Authorization': this.userService.getSessionId()}
     }).pipe(
       map(data => data));
   }
   updateTrip(trip_id, start_date, end_date, status): Observable<any> {
-    const updateTripUrl = `${BASE_URL}/trip/v1/update/${trip_id}`;
+    const updateTripUrl = `${BASE_URL}/trip/v1/trips/${trip_id}`;
     let trip = {
       start_date,
       end_date,
       status
     };
-    return this.http.patch(updateTripUrl, trip, this.httpOptions);
+    return this.http.put(updateTripUrl, trip, this.httpOptions);
   }
 
   refreshInviteLink(trip_id: number): Observable<any>  {
-      const tripRefreshUrl: string = `${BASE_URL}/trip/v1/manage_trip/${trip_id}`;
+      const tripRefreshUrl: string = `${BASE_URL}/trip/v1/trips/${trip_id}`;
       return this.http.patch(tripRefreshUrl, null,  {
           headers: {'Authorization': this.userService.getSessionId()}, observe: 'response'})
   }
