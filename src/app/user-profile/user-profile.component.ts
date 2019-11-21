@@ -21,8 +21,8 @@ export class UserProfileComponent implements OnInit {
   gender: string;
 
   userGender = new FormControl('', Validators.required);
-  userHeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
-  userWeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  userHeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+  userWeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
