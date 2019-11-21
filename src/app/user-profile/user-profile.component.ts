@@ -42,14 +42,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   getHeightErrorMessage() {
-    return this.userHeight.hasError('required') ? 'Enter a value' :
-        this.userHeight.hasError('pattern') ? 'Number greater or equal 1' :
+    return this.userHeight.hasError('required') ? 'Enter a number' :
+        this.userHeight.hasError('pattern') ? 'Number from 1 to 999' :
             '';
   }
 
   getWeightErrorMessage() {
-    return this.userWeight.hasError('required') ? 'Enter a value' :
-        this.userWeight.hasError('pattern') ? 'Number greater or equal 1' :
+    return this.userWeight.hasError('required') ? 'Enter a number' :
+        this.userWeight.hasError('pattern') ? 'Number from 1 to 999' :
             '';
   }
 
