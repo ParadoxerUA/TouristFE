@@ -3,12 +3,12 @@
     height: 80%;
     position: fixed;
     top: 10vh;
-    /*margin: auto;*/
-    /*background-color: crimson;*/
 }
-.right{
-    width: calc(100% - 200px);
-    float: right;
+.map{
+    margin-right: 30px;
+    margin-left: 30px;
+    width: calc(100% - 60px);
+    /*float: right;*/
     height: 90%;
 }
 .left {
@@ -29,6 +29,7 @@
 }
 .mat-raised-button
 {
-    float: right;
+    margin-left: 30px;
+    background-color: #79c1e5;
 }
 
