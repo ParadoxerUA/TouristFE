@@ -3,6 +3,7 @@ import { RoleService } from '../_services/role.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRolePopUpComponent } from '../new-role-pop-up/new-role-pop-up.component';
 import { Role, Trip } from '../trip';
+import { User } from '../user'
 
 @Component({
   selector: 'app-trip-roles',
@@ -11,6 +12,7 @@ import { Role, Trip } from '../trip';
 })
 export class TripRolesComponent implements OnInit {
   @Input() trip: Trip;
+  @Input() currentUser: User;
   tripRoles: Role[] = [];
   name: string;
   color: string;

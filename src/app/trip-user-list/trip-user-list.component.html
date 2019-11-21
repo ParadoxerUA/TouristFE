@@ -1,6 +1,6 @@
 <mat-card class="input-card">
   <div class="tags">
-    <app-trip-roles (roleEvent)="recieveRole($event)" [trip]="trip"></app-trip-roles>
+    <app-trip-roles (roleEvent)="recieveRole($event)" [currentUser]="currentUser" [trip]="trip"></app-trip-roles>
   </div>
 </mat-card>
 
