@@ -27,6 +27,8 @@ export class Item {
 }
 
 export class Role {
+  color: string;
   id: number;
   name: string;
+  trip_id: number;
 }
