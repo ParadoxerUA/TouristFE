@@ -19,6 +19,7 @@ import {
     MatTableModule,
     MatSortModule,
     MatSidenavModule,
+    MatRadioModule,
 } from '@angular/material';
 
 @NgModule({
@@ -41,6 +42,7 @@ import {
     MatTableModule,
     MatSortModule,
     MatSidenavModule,
+    MatRadioModule,
   ],
   exports: [
     MatToolbarModule,
@@ -61,6 +63,7 @@ import {
     MatTableModule,
     MatSortModule,
     MatSidenavModule,
+    MatRadioModule,
   ]
 })
 export class MaterialModule {}

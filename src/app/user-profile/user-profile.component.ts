@@ -3,6 +3,7 @@ import {UserService} from "../_services/user.service";
 import {Router} from "@angular/router";
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from '../user';
+import { FormControl, Validators} from '@angular/forms';
 
 
 @Component({
@@ -15,9 +16,48 @@ import {User} from '../user';
   providedIn: 'root',
 })
 export class UserProfileComponent implements OnInit {
+  displayCalculateForm = false;
+  result: number;
+  gender: string;
+
+  userGender = new FormControl('', Validators.required);
+  userHeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  userWeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
+
+  // TODO: Paste the correct formula to calculate capacity
+  changeCapacity(height: number, weight: number): void {
+    if (this.gender === "male") {
+      this.result = height * weight * 1.25;
+    }
+    if (this.gender === "female") {
+      this.result = height * weight * 1;
+    }
+
+    this.userService.updateCapacity(this.result)
+    .subscribe(() => this.userService.refreshUser());
+    this.displayCalculateForm = false;
+  }
+
+  getHeightErrorMessage() {
+    return this.userHeight.hasError('required') ? 'Enter a value' :
+        this.userHeight.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
+  }
+
+  getWeightErrorMessage() {
+    return this.userWeight.hasError('required') ? 'Enter a value' :
+        this.userWeight.hasError('pattern') ? 'Number greater or equal 1' :
+            '';
+  }
+
+  dataInvalid(): boolean{
+    return (this.userHeight.invalid
+      || this.userWeight.invalid
+      || this.userGender.invalid);
+  }
 
   navigateToTripList(): void
   {
