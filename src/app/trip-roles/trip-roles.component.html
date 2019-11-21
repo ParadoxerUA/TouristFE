@@ -6,7 +6,7 @@
         [style.background-color]="role.color">
         {{role.name}}
     </mat-chip>
-    <mat-chip color="primary" selected (click)="openDialog()">
+    <mat-chip *ngIf="currentUser.user_id == trip.admin_id" color="primary" selected (click)="openDialog()">
         <i class="material-icons">add</i>
     </mat-chip>
 </mat-chip-list>
