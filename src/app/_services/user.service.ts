@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from "../user";
-import { CookieService } from 'ngx-cookie-service'
 import { BASE_URL } from './config'
 import { Router } from '@angular/router';
 import { retry, catchError } from 'rxjs/operators';
@@ -21,7 +20,6 @@ export class UserService {
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
   logoutUrl = BASE_URL + '/user/v1/logout';
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
-  loggedIn = this.userIsAuthorized();
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -50,7 +48,6 @@ export class UserService {
   postCredentials(data): Observable<any> {
     return this.http.post(this.registerUrl, data)
     .pipe(
-      retry(1),
       catchError(this.handleError)
     );
   }
@@ -66,23 +63,22 @@ export class UserService {
 
     return this.http.post(loginUrl, data, {observe: 'response'})
     .pipe(
-      retry(1),
       catchError(this.handleError)
     );
   }
 
   userLogout(): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
     return this.http.post(this.logoutUrl, null, {headers: header, observe: 'response'});
   }
 
   getUserProfile() {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
     return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
   }
 
   updateCapacity(capacity): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
     const url = BASE_URL + `/user/v1/user-profile`;
     return this.http.patch(url, capacity, {headers: header, observe: 'response'});
   }
@@ -101,21 +97,21 @@ export class UserService {
   }
 
   setSessionId(sessionId) {
-    this.cookieService.set('sessionId', sessionId);
+    localStorage.setItem('sessionId', sessionId);
   }
 
   userIsAuthorized(): boolean {
-    return this.cookieService.check('sessionId');
+    return localStorage.getItem('sessionId') !== null;
   }
 
   deleteSessionId() {
-    this.cookieService.delete('sessionId');
+    return localStorage.removeItem('sessionId');
   }
 
   getSessionId() {
-    return this.cookieService.get('sessionId');
+    return localStorage.getItem('sessionId');
   }
-
+  
   setUserSideNav(sideNav: MatSidenav){
     this.userSideNav = sideNav;
   }
@@ -126,7 +122,6 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService,
     private router: Router,
   ) { }
 
