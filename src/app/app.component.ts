@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccessService } from './_services/access.service'
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'touristfe';
 
-  constructor(  ) {  }
+  constructor(
+    private accessService: AccessService,
+  ) {  }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    this.accessService.checkUserAccess();  
+  }
 }

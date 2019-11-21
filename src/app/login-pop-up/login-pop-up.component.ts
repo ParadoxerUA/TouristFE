@@ -70,6 +70,7 @@ export class LoginPopUpComponent implements OnInit {
       // Create subscription on login request
       this.loginSubscription = this.userService.userLogin(data, type)
       .subscribe(res => {
+        this.userService.loggedIn = true;
         this.userService.setSessionId(res.body.data);
         this.userService.refreshUser();
         this.dialogRef.close();

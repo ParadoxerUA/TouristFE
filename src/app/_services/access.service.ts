@@ -9,6 +9,7 @@ import {UserService} from "../_services/user.service";
 export class AccessService {
 
   private baseLinks = ['/', '/index'];
+  private accessStatus = false;
 
   constructor(
     private router: Router,
@@ -16,13 +17,34 @@ export class AccessService {
     private userService: UserService,
     ) { }
 
-  checkUserAccess() {
+  private userHasAccess() {
     let currentLink = window.location.pathname;
-    if(!this.userService.userIsAuthorized() && !this.baseLinks.includes(currentLink)){
+    console.log(this.userService.loggedIn);
+    if(!this.userService.userIsAuthorized() && 
+    (!this.baseLinks.includes(currentLink) || this.userService.loggedIn)){
+      this.userService.loggedIn = false;  
       this.router.navigate(['index']);
       this.header.openSignInDialog();
       return false;
     }
     return true;
+  }
+
+  private setUpTimer(){
+    let root = this;
+    let timer;
+    let userHasAccess = false;
+    (function test(){
+      root.accessStatus = root.userHasAccess();
+      timer = setTimeout(test, 1000);
+      if(!root.accessStatus){
+        clearTimeout(timer);
+      }
+    })();
+  }
+
+  checkUserAccess() {
+    this.setUpTimer();
+    return this.accessStatus;
   }
 }

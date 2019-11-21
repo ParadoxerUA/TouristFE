@@ -21,6 +21,7 @@ export class UserService {
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
   logoutUrl = BASE_URL + '/user/v1/logout';
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
+  loggedIn = this.userIsAuthorized();
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
