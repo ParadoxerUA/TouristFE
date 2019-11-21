@@ -1,12 +1,12 @@
 <div id="container">
     <div id="left1">
-        <h2 align="center">Checkpoints</h2>
-        <mat-list >
+        <h3 align="center">Checkpoints</h3>
+        <mat-nav-list class="list-container">
             <mat-list-item *ngFor="let marker of location.markers">
-                <h5 mat-line> {{marker.order}}. lat: {{marker.lat | number:'2.6-6'}} <br/>
-                      lng: {{marker.lng| number:'2.6-6'}} </h5>
+                <h5 mat-line >{{marker.order}}. {{marker.name}} <br/> lat:  {{marker.lat | number:'2.6-6'}} <br/>
+                    lng: {{marker.lng| number:'2.6-6'}} </h5>
             </mat-list-item>
-        </mat-list>
+        </mat-nav-list>
     </div>
     <div id="right1">
         <agm-map  style="display: block; width: 100%"
