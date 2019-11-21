@@ -18,7 +18,7 @@ export class UserService {
   private smokeUrl = BASE_URL + '/smoke/v1/smoke';
   private loginUrl = BASE_URL + '/user/v1/login';
   private socialLoginUrl = BASE_URL + '/user/v1/social_login';
-  private confirmationUrl = BASE_URL + '/otc/v1/reg_confirmation/';
+  private confirmationUrl = BASE_URL + '/otc/v1/otc/';
   logoutUrl = BASE_URL + '/user/v1/logout';
   userProfileUrl = BASE_URL + '/user/v1/user-profile';
 
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   uuidConfirmation(uuid) {
-    return this.http.get(this.confirmationUrl + uuid)
+    return this.http.patch(this.confirmationUrl + uuid, null);
   }
 
   postCredentials(data): Observable<any> {
@@ -78,6 +78,12 @@ export class UserService {
   getUserProfile() {
     let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
     return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
+  }
+
+  updateCapacity(capacity): Observable<any> {
+    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
+    const url = BASE_URL + `/user/v1/user-profile`;
+    return this.http.patch(url, capacity, {headers: header, observe: 'response'});
   }
 
   handleError(error){

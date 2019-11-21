@@ -1,6 +1,6 @@
 <mat-card class="input-card">
   <div class="tags">
-    <app-trip-roles [trip]="trip"></app-trip-roles>
+    <app-trip-roles (roleEvent)="recieveRole($event)" [currentUser]="currentUser" [trip]="trip"></app-trip-roles>
   </div>
 </mat-card>
 
@@ -8,7 +8,11 @@
 
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
-        <mat-card >
+        <mat-card
+          [ngStyle] = "user.roles.indexOf(activeRole) !== -1 && 
+            {'background': activeRoleColor}"
+          [ngClass]="{glowingBorder: activeRole > 0}"
+          (click)="activeRole > 0 && toggleRole(user.user_id)">
           <button class="close" (click)="openDialog(user)" 
           *ngIf="(user.user_id != currentUser.user_id) && (currentUser.user_id == trip.admin_id)">
             <i class="material-icons">close</i>

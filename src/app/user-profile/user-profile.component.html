@@ -9,7 +9,25 @@
                 <mat-list-item>Name: {{user.name}}</mat-list-item>
                 <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
-                <mat-list-item><button mat-raised-button class="edit">Count capacity</button></mat-list-item>
+                <mat-list-item>
+                    <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
+                </mat-list-item>
+                <mat-card *ngIf="displayCalculateForm">
+                    <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender" [formControl]="userGender">
+                        <mat-radio-button value="male">Male</mat-radio-button>
+                        <mat-radio-button value="female">Female</mat-radio-button>
+                    </mat-radio-group><br>
+                    <mat-form-field class="input-width">
+                        <input matInput type="number" placeholder="Height" [formControl]="userHeight" #height>
+                        <mat-error *ngIf="userHeight.invalid">{{ getHeightErrorMessage() }}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="input-width">
+                        <input matInput type="number" placeholder="Weight" [formControl]="userWeight" #weight>
+                        <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
+                    </mat-form-field><br><br>
+                    <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)" [disabled]="dataInvalid()">OK</button>
+                    <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
+                </mat-card>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
                 <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
                                        class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
