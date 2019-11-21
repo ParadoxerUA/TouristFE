@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AccessService } from './_services/access.service'
 
 @Component({
   selector: 'app-root',
@@ -9,11 +8,17 @@ import { AccessService } from './_services/access.service'
 export class AppComponent implements OnInit {
   title = 'touristfe';
 
-  constructor(
-    private accessService: AccessService,
-  ) {  }
+  constructor() { }
+
+  private setSessionListener(){
+    window.addEventListener('storage', (event) => {
+      if(event.key == 'sessionId') {
+        window.location.reload();
+      }
+    }, false);
+  }
 
   ngOnInit() {
-    this.accessService.checkUserAccess();  
+    this.setSessionListener();
   }
 }

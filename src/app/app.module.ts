@@ -24,7 +24,6 @@ import { SocialLoginModule, AuthServiceConfig,
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
 import {UserService} from "./_services/user.service";
-import { CookieService } from 'ngx-cookie-service';
 import { ErrorComponent } from './error/error.component';
 import { TripRolesComponent } from './trip-roles/trip-roles.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
@@ -32,7 +31,6 @@ import { NewRolePopUpComponent } from './new-role-pop-up/new-role-pop-up.compone
 import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ColorSketchModule } from 'ngx-color/sketch';
-import { AccessService } from './_services/access.service';
 
 
 const config = new AuthServiceConfig([
@@ -96,13 +94,11 @@ export function provideConfig() {
   ],
 
   providers: [
-    AccessService,
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
     },
     UserService,
-    CookieService,
 
   ],
   bootstrap: [AppComponent]
