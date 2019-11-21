@@ -21,19 +21,19 @@ export class UserProfileComponent implements OnInit {
   gender: string;
 
   userGender = new FormControl('', Validators.required);
-  userHeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
-  userWeight = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  userHeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+  userWeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
 
-  // TODO: Paste the correct formula to calculate capacity
   changeCapacity(height: number, weight: number): void {
     if (this.gender === "male") {
-      this.result = height * weight * 1.25;
+      this.result = ((weight * 0.3) + ((height-100)/5) + 4) / 2;
     }
     if (this.gender === "female") {
-      this.result = height * weight * 1;
+      this.result = ((weight * 0.3) + ((height-100)/5)) / 2;
+      console.log(this.result)
     }
 
     this.userService.updateCapacity(this.result)
@@ -42,14 +42,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   getHeightErrorMessage() {
-    return this.userHeight.hasError('required') ? 'Enter a value' :
-        this.userHeight.hasError('pattern') ? 'Number greater or equal 1' :
+    return this.userHeight.hasError('required') ? 'Enter a number' :
+        this.userHeight.hasError('pattern') ? 'Number from 1 to 999' :
             '';
   }
 
   getWeightErrorMessage() {
-    return this.userWeight.hasError('required') ? 'Enter a value' :
-        this.userWeight.hasError('pattern') ? 'Number greater or equal 1' :
+    return this.userWeight.hasError('required') ? 'Enter a number' :
+        this.userWeight.hasError('pattern') ? 'Number from 1 to 999' :
             '';
   }
 

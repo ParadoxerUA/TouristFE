@@ -11,7 +11,7 @@ import { BASE_URL } from './config'
 })
 export class TripUserService {
 
-  private tripUrl = BASE_URL + '/trip/v1/trip'
+  private tripUrl = BASE_URL + '/trip/v1/trips'
 
 
   httpOptions = {

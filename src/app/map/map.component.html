@@ -1,15 +1,23 @@
 <div id="container">
     <div id="left1">
-        <h2 align="center">Checkpoints</h2>
-        <mat-list >
-            <mat-list-item *ngFor="let marker of location.markers">
-                <h5 mat-line >{{marker.order}}. lat:  {{marker.lat | number:'2.6-6'}} <br/>
+        <h3 align="center">Checkpoints</h3>
+        <mat-nav-list class="list-container">
+            <mat-list-item *ngFor="let marker of location.markers; let i = index">
+                <h5 mat-line (click)="selectMarker(marker)" >
+                    <div *ngIf="!marker.editable;else other_content"> {{marker.order}}. {{marker.name}}</div>
+                    <ng-template #other_content>
+                        <mat-form-field class="point-name" style=" margin-bottom: -10px">
+                            <input [(ngModel)]="location.markers[i].name" matInput (input)="onNameChange()">
+                        </mat-form-field>
+                        <br>
+                    </ng-template>
+                    lat:  {{marker.lat | number:'2.6-6'}} <br/>
                     lng: {{marker.lng| number:'2.6-6'}} </h5>
                 <button mat-icon-button (click)="deleteMarker(marker)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </mat-list-item>
-        </mat-list>
+        </mat-nav-list>
     </div>
     <div id="right1">
         <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
@@ -33,7 +41,7 @@
             >
                 <agm-info-window [disableAutoPan]="false" #infoWindow>
                    <div>
-                        Point {{marker.order}} <br/>
+                        {{marker.name}} <br/>
                         <a (click)="onClickInfoView(marker)"> Detele </a>
                     </div>
                 </agm-info-window>

@@ -10,28 +10,46 @@ agm-map{
 #left1 {
     float:left;
     height:100%;
-    width: 265px;
+    width: 290px;
 }
 
 #right1 {
     float:right;
-    height:100%;
-    margin-right: 25px;
+    margin-top: 15px;
+    height:calc(100% - 15px);
     width: calc(100% - 290px);
 }
 
-.mat-list {
-    margin-left: 40px;
-    margin-right: 20px;
-    max-height: 89%;
-    overflow: auto;
-}
 
 a{
     cursor: pointer;
 }
+.list-container {
 
-.list .mat-list .mat-list-item .mat-multi-line .mat-list-item-content {
-    padding-top: 0;
-    padding-bottom: 0;
+    max-height: 89%;
+    margin-left: 15px;
+    overflow: auto;
 }
+
+.list-container .mat-list-item {
+    margin-top: -1px;
+    height: 95px;
+}
+
+.list-container .mat-list-item .mat-line {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+input.mat-input-element {
+    height:15px;
+}
+/*.point-name .mat-form-field-wrapper{*/
+/*    padding-bottom: 0px;*/
+/*}*/
+/*.mat-form-field-infix{*/
+/*    display: block;*/
+/*    position: relative;*/
+/*    flex: auto;*/
+/*    padding-top: 0px;*/
+/*}*/

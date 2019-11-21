@@ -22,7 +22,7 @@ export class ItemService {
   };
 
   getTripItems(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
+    const url = BASE_URL + `/trip/v1/trips/${trip_id}?fields=equipment`;
     return this.http.get(url, this.httpOptions);
   }
 
