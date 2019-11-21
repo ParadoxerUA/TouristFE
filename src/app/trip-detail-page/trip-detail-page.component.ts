@@ -14,6 +14,7 @@ import { User} from "../user";
 export class TripDetailPageComponent implements OnInit {
   trip: Trip;
   trip_id = +this.route.snapshot.paramMap.get('trip_id');
+  readyToRefresh: boolean = true;
   currentUser: User;
 
   constructor(
@@ -32,8 +33,10 @@ export class TripDetailPageComponent implements OnInit {
 
 
   refreshInviteLink(trip_id : number): void {
+      this.readyToRefresh = false;
       this.tripService.refreshInviteLink(trip_id).subscribe(response => {
           this.trip.trip_uuid = response.body["data"];
+          this.readyToRefresh = true;
         });
   }
 

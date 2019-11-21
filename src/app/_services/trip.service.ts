@@ -97,7 +97,7 @@ export class TripService {
   }
 
   joinToTrip(trip_uuid): Observable<any> {
-    const tripInviteUrl: string = `${BASE_URL}/trip/v1/manage_trip/${trip_uuid}`
-    return this.http.post(tripInviteUrl, null, this.httpOptions)
+    const tripInviteUrl: string = `${BASE_URL}/otc/v1/otc/${trip_uuid}`
+    return this.http.patch(tripInviteUrl, null, this.httpOptions)
   }
 }
