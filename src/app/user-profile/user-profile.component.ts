@@ -70,7 +70,6 @@ export class UserProfileComponent implements OnInit {
       .subscribe(res => {
         this.userService.deleteSessionId();
       });
-    this.userService.deleteSessionId();
     this.userSideNav.close();
     this.clearUser();
     this.router.navigate(['/index']);
