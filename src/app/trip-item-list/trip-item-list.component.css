@@ -4,9 +4,13 @@
   margin-bottom: 0px;
 }
 .item-name-width {
-  width: 40%;
+  width: 30%;
   padding: 0px;
   margin: 0px;
+  margin-left: 10px;
+}
+.tag-width {
+  width: 10%;
 }
 .example-margin {
   margin-left: 10px;

@@ -22,6 +22,7 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
   itemData: Item;
+  tripRoles = ['food', 'water', 'more'];
   itemsDataSource = new MatTableDataSource(this.tripItems);
 
   displayedColumns: string[] = ['name', 'weight', 'quantity'];

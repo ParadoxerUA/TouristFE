@@ -1,5 +1,13 @@
 
   <mat-card class="input-card">
+    <mat-form-field class="tag-width">
+      <mat-label>Tag</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let role of tripRoles">
+          {{role}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field class="item-name-width">
       <input matInput type="text" placeholder="Item name" [formControl]="itemName" [(ngModel)]="name">
       <mat-error *ngIf="itemName.invalid">{{ getNameErrorMessage() }}</mat-error>
