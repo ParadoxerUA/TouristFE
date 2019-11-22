@@ -8,17 +8,18 @@ import {TripDetailPageComponent} from './trip-detail-page/trip-detail-page.compo
 import {UserProfileComponent} from "./user-profile/user-profile.component";
 import { ErrorComponent } from './error/error.component';
 import {JoinToTripComponent} from './join-to-trip/join-to-trip.component';
+import {AuthGuard} from './auth/auth.guard';
 
 const routes: Routes = [
   { path: 'index', component: MainPageComponent },
   { path: '', redirectTo: '/index', pathMatch: 'full' },
-  { path: 'create_trip', component: CreateTripPageComponent },
-  { path: 'trip-list', component: TripListComponent },
+  { path: 'create_trip', component: CreateTripPageComponent, canActivate: [AuthGuard]},
+  { path: 'trip-list', component: TripListComponent,  canActivate: [AuthGuard] },
   { path: 'email-confirmation', component: EmailConfirmationComponent },
-  { path: 'trip_detail/:trip_id', component: TripDetailPageComponent },
-  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'trip_detail/:trip_id', component: TripDetailPageComponent, canActivate: [AuthGuard] },
+  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'error', component: ErrorComponent},
-  { path: 'join', component: JoinToTripComponent},
+  { path: 'join', component: JoinToTripComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({
