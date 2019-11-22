@@ -19,6 +19,7 @@ export class TripItemListComponent implements OnInit {
   itemName = new FormControl('', [Validators.required, Validators.pattern("[a-z]+"), Validators.minLength(3)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
@@ -34,6 +35,11 @@ export class TripItemListComponent implements OnInit {
     private itemService: ItemService,
     private roleService: RoleService
   ) { }
+
+  getTagErrorMessage() {
+    return this.tagName.hasError('required') ? 'Choose a tag' :
+            '';
+  }
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
@@ -57,7 +63,8 @@ export class TripItemListComponent implements OnInit {
   dataInvalid(): boolean{
     return (this.itemName.invalid
       || this.itemWeight.invalid
-      || this.itemQuantity.invalid);
+      || this.itemQuantity.invalid
+      || this.tagName.invalid);
   }
 
   getItems() {

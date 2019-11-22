@@ -2,11 +2,12 @@
   <mat-card class="input-card">
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
-      <mat-select>
+      <mat-select [formControl]="tagName">
         <mat-option *ngFor="let role of tripRoles" [style.background-color]="role.color" [value]="role.name">
           {{role.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="tagName.invalid">{{ getTagErrorMessage() }}</mat-error>
     </mat-form-field>
     <mat-form-field class="item-name-width">
       <input matInput type="text" placeholder="Item name" [formControl]="itemName" [(ngModel)]="name">
