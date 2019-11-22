@@ -17,7 +17,7 @@ export class TripItemListComponent implements OnInit {
   quantity: number;
   tag: number;
 
-  itemName = new FormControl('', [Validators.required, Validators.pattern("[a-z]+"), Validators.minLength(3)]);
+  itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
@@ -44,7 +44,7 @@ export class TripItemListComponent implements OnInit {
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
-        this.itemName.hasError('pattern') ? 'Only lowercase letters' :
+        this.itemName.hasError('maxlength') ? 'Max length 20 characters' :
         this.itemName.hasError('minlength') ? 'Min length 3 characters' :
             '';
   }
