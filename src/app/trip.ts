@@ -14,6 +14,7 @@ export class Trip {
 
 export class Checkpoint {
   order_number : number;
+  name: string;
   latitude: number;
   longitude: number;
 }

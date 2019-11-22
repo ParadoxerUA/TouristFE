@@ -81,7 +81,7 @@ export class TripUserListComponent implements OnInit {
   }
 
   toggleRole(userId) {
-    this.tripUserService.toggleRole(this.activeRole, userId)
+    this.tripUserService.toggleRole(this.trip.trip_id, this.activeRole, userId)
       .subscribe(response => {
         if (response.status === 201) {
           this.toggleRoleLocaly(userId, this.activeRole)

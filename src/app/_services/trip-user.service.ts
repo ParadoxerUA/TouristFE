@@ -11,7 +11,7 @@ import { BASE_URL } from './config'
 })
 export class TripUserService {
 
-  private tripUrl = BASE_URL + '/trip/v1/trip'
+  private tripUrl = BASE_URL + '/trip/v1/trips'
 
 
   httpOptions = {
@@ -36,8 +36,8 @@ export class TripUserService {
     return this.http.delete(url, this.httpOptions);
   }
 
-  toggleRole(role_id, user_id): Observable<any> {
-    const url = `${BASE_URL}/role/v1/role/${role_id}/${user_id}`;
+  toggleRole(trip_id, role_id, user_id): Observable<any> {
+    const url = `${BASE_URL}/trip/v1/trips/${trip_id}/roles/${role_id}/${user_id}`;
     return this.http.put(url, {}, {headers: this.httpOptions.headers, observe: 'response'})
   }
 
