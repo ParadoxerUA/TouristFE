@@ -33,25 +33,24 @@ export class TripRolesComponent implements OnInit {
       });
     }
 
-    openDialog(): void {
-      const dialogRef = this.dialog.open(NewRolePopUpComponent, {
-        width: '350px',
-        height: '500px',
-        data: {name: this.name, color: this.color}
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          console.log(result);
-          result.trip_id = this.trip.trip_id;
-          this.addRole(result);
-          this.tripRoles.push(result);
-        }
-      });
-    }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewRolePopUpComponent, {
+      width: '350px',
+      height: '500px',
+      data: {name: this.name, color: this.color}
+    });
 
-  addRole(data): void {
-    this.roleService.addTripRole(data)
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        console.log(result);
+        this.addRole(result, this.trip.trip_id);
+        this.tripRoles.push(result);
+      }
+    });
+  }
+
+  addRole(data, trip_id: number): void {
+    this.roleService.addTripRole(data, trip_id)
     .subscribe();
   }
 

@@ -21,12 +21,12 @@ export class RoleService {
   };
 
   getTripRoles(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/role/v1/role/${trip_id}`;
+    const url = BASE_URL + `/trip/v1/trips/${trip_id}/roles`;
     return this.http.get(url, this.httpOptions);
   }
 
-  addTripRole(data){
-    const url = BASE_URL + `/role/v1/role`;
+  addTripRole(data, trip_id: number){
+    const url = BASE_URL + `/trip/v1/trips/${trip_id}/roles`;
     return this.http.post(url, data, this.httpOptions)
   }
 }
