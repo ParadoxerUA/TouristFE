@@ -22,12 +22,12 @@ export class ItemService {
   };
 
   getTripItems(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
+    const url = BASE_URL + `/trip/v1/trips/${trip_id}?fields=equipment`;
     return this.http.get(url, this.httpOptions);
   }
 
-  addTripItem(itemData: Item): Observable<any> {
-    const url = BASE_URL + `/equipment/v1/equipment`;
+  addTripItem(trip_id: number, itemData: Item): Observable<any> {
+    const url = BASE_URL + `/trip/v1/trips/${trip_id}/equipment`;
     return this.http.post(url, itemData, this.httpOptions);
   }
 }

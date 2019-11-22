@@ -23,7 +23,6 @@ export class Item {
   name: string;
   weight: number;
   quantity: number;
-  trip_id: number;
 }
 
 export class Role {

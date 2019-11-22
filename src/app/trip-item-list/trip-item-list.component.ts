@@ -73,15 +73,14 @@ export class TripItemListComponent implements OnInit {
     this.itemData = {
       "name": this.name,
       "weight": this.weight,
-      "quantity": this.quantity,
-      "trip_id": this.trip.trip_id
+      "quantity": this.quantity
     };
 
     this.name = "";
     this.weight = 0;
     this.quantity = 1;
 
-    this.itemService.addTripItem(this.itemData)
+    this.itemService.addTripItem(this.trip.trip_id, this.itemData)
     .subscribe(data => {
       console.log(data);
       this.getItems();
