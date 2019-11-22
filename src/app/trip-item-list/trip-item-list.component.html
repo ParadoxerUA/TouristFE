@@ -3,8 +3,8 @@
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
       <mat-select>
-        <mat-option *ngFor="let role of tripRoles">
-          {{role}}
+        <mat-option *ngFor="let role of tripRoles" [style.background-color]="role.color" [value]="role.name">
+          {{role.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>

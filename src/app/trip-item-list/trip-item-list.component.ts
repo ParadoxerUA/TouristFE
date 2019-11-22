@@ -2,7 +2,8 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
-import { Item, Trip } from '../trip';
+import { RoleService } from '../_services/role.service';
+import { Item, Trip, Role } from '../trip';
 import { FormControl, Validators} from '@angular/forms';
 
 @Component({
@@ -21,8 +22,8 @@ export class TripItemListComponent implements OnInit {
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
+  tripRoles: Role[] = [];
   itemData: Item;
-  tripRoles = ['food', 'water', 'more'];
   itemsDataSource = new MatTableDataSource(this.tripItems);
 
   displayedColumns: string[] = ['name', 'weight', 'quantity'];
@@ -30,7 +31,8 @@ export class TripItemListComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
-    private itemService: ItemService
+    private itemService: ItemService,
+    private roleService: RoleService
   ) { }
 
   getNameErrorMessage() {
@@ -89,8 +91,18 @@ export class TripItemListComponent implements OnInit {
     })
   }
 
+  getRoles() {
+    this.roleService.getTripRoles(this.trip.trip_id)
+      .subscribe(response => {
+        console.log(response);
+        response.data.forEach(element => 
+          this.tripRoles.push(element as Role));
+      });
+    }
+
   ngOnInit() {
     this.getItems();
+    this.getRoles();
     this.itemsDataSource.sort = this.sort;
   }
 
