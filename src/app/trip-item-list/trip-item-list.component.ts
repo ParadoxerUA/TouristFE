@@ -15,6 +15,7 @@ export class TripItemListComponent implements OnInit {
   name: string;
   weight: number;
   quantity: number;
+  tag: number;
 
   itemName = new FormControl('', [Validators.required, Validators.pattern("[a-z]+"), Validators.minLength(3)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
@@ -27,7 +28,7 @@ export class TripItemListComponent implements OnInit {
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
 
-  displayedColumns: string[] = ['name', 'weight', 'quantity'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -84,7 +85,8 @@ export class TripItemListComponent implements OnInit {
       "name": this.name,
       "weight": this.weight,
       "quantity": this.quantity,
-      "trip_id": this.trip.trip_id
+      "trip_id": this.trip.trip_id,
+      "role_id": this.tag
     };
 
     this.name = "";
