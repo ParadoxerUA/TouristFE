@@ -8,7 +8,17 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'touristfe';
 
-  constructor(  ) {  }
+  constructor() { }
 
-  ngOnInit() {  }
+  private setSessionListener(){
+    window.addEventListener('storage', (event) => {
+      if(event.key == 'sessionId') {
+        window.location.reload();
+      }
+    }, false);
+  }
+
+  ngOnInit() {
+    this.setSessionListener();
+  }
 }
