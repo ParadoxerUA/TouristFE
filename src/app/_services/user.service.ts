@@ -13,9 +13,8 @@ import { ErrorService } from './error.service';
 })
 export class UserService {
 
-  private registerUrl = BASE_URL + '/user/v1/register';
+  private userUrl = BASE_URL + '/user/v1/user';
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
-  userProfileUrl = BASE_URL + '/user/v1/user-profile';
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -42,7 +41,7 @@ export class UserService {
   }
 
   postCredentials(data): Observable<any> {
-    return this.http.post(this.registerUrl, data)
+    return this.http.post(this.userUrl, data)
     .pipe(
       catchError(this.errorService.handleError)
     );
@@ -50,7 +49,7 @@ export class UserService {
 
   getUserProfile() {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
+    return this.http.get(this.userUrl, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

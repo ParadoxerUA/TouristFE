@@ -11,7 +11,7 @@ import { ErrorService } from '../_services/error.service';
 export class AuthService {
 
   private loginUrl = BASE_URL + '/user/v1/login';
-  private socialLoginUrl = BASE_URL + '/user/v1/social_login';
+  private socialLoginUrl = BASE_URL + '/user/v1/login/social';
   private logoutUrl = BASE_URL + '/user/v1/logout';
   private sessionTimeout;
   private day = 1000 * 60 * 60 * 24;

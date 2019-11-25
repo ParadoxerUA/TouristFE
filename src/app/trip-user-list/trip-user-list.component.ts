@@ -26,25 +26,17 @@ export class TripUserListComponent implements OnInit {
 
   getUsers(): void {
     this.tripUsers = []
-    this.tripRoles = []
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
         response.data.users.forEach(element => {
-          this.getRolesFromUser(element)
           let rolesList = element.roles.filter(role => role.trip_id === this.trip.trip_id)
           element.roles = rolesList.map(role => role.id)
           this.tripUsers.push(element as User);
         });
         console.log(this.tripUsers)
-        console.log(this.tripRoles)
       });
   }
 
-  getRolesFromUser(user) {
-    user.roles.forEach(role => {
-      if (!this.tripRoles.includes(role)) {this.tripRoles.push(role)}
-    })
-  }
 
   getRoleColor(roleId) {
     let color = 'white'
@@ -58,7 +50,6 @@ export class TripUserListComponent implements OnInit {
     this.tripUsers = this.tripUsers.filter(user => user !== userToDelete);
     // delete user_id from trip below
     this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.user_id).subscribe();
-    console.log(this.trip);
   }
 
   openDialog(user: User): void {
@@ -78,6 +69,7 @@ export class TripUserListComponent implements OnInit {
   recieveRole($event) {
     this.activeRole = $event
     this.activeRoleColor = this.getRoleColor($event)
+    console.log('activeRoleColor=' + this.activeRoleColor)
   }
 
   toggleRole(userId) {
@@ -104,6 +96,7 @@ export class TripUserListComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+    this.tripRoles = this.trip.roles
   }
 
 }
