@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role } from '../trip';
-import { FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -71,11 +71,17 @@ export class TripItemListComponent implements OnInit {
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
         this.tripItems = [];
         response.data.equipment.forEach(element =>
           this.tripItems.push(element as Item));
 
+        this.tripItems.forEach(element =>
+          {for (let role of this.tripRoles) {
+            if (role.id === element.role_id) {
+              element.role_color = role.color;
+            }
+          }});
+        
         this.itemsDataSource.data = this.tripItems;
       });
     }
@@ -103,15 +109,14 @@ export class TripItemListComponent implements OnInit {
   getRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
         response.data.forEach(element => 
           this.tripRoles.push(element as Role));
       });
     }
 
   ngOnInit() {
-    this.getItems();
     this.getRoles();
+    this.getItems();
     this.itemsDataSource.sort = this.sort;
   }
 
