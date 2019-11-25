@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
 import { TripService } from '../_services/trip.service';
-import { AccessService } from '../_services/access.service';
 import { Trip } from '../trip';
 import { Router } from '@angular/router';
 import { FormControl } from "@angular/forms";
@@ -33,11 +32,9 @@ export class TripListComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private router: Router,
-    private accessService: AccessService,
     ) { }
 
   ngOnInit() {
-    if(!this.accessService.checkUserAccess()){return};
     this.getTrips();
   }
   getOtherStatus(status) {
