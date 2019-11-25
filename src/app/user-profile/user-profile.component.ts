@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from '../user';
 import { FormControl, Validators} from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 
 @Component({
@@ -66,9 +67,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   logoutUser(): void {
-    this.userService.userLogout()
+    this.authService.userLogout()
       .subscribe(res => {
-        this.userService.deleteSessionId();
+        this.authService.deleteSessionId();
       });
     this.userSideNav.close();
     this.clearUser();
@@ -82,6 +83,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
       private userService: UserService,
       private router: Router,
+      private authService: AuthService,
   ){ }
 
   ngOnInit() {
