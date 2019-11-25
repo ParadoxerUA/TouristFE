@@ -100,6 +100,10 @@ export class UserService {
     localStorage.setItem('sessionId', sessionId);
   }
 
+  setUserId(userId) {
+    localStorage.setItem('userId', userId);
+  }
+
   userIsAuthorized(): boolean {
     return localStorage.getItem('sessionId') !== null;
   }
