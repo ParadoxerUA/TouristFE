@@ -13,13 +13,11 @@ import { retry, catchError } from 'rxjs/operators';
 })
 export class UserService {
 
-  private registerUrl = BASE_URL + '/user/v1/register';
-  private smokeUrl = BASE_URL + '/smoke/v1/smoke';
+  private userUrl = BASE_URL + '/user/v1/user';
   private loginUrl = BASE_URL + '/user/v1/login';
-  private socialLoginUrl = BASE_URL + '/user/v1/social_login';
+  private socialLoginUrl = BASE_URL + '/user/v1/login/social';
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
-  logoutUrl = BASE_URL + '/user/v1/logout';
-  userProfileUrl = BASE_URL + '/user/v1/user-profile';
+  private logoutUrl = BASE_URL + '/user/v1/logout';
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -46,7 +44,7 @@ export class UserService {
   }
 
   postCredentials(data): Observable<any> {
-    return this.http.post(this.registerUrl, data)
+    return this.http.post(this.userUrl, data)
     .pipe(
       catchError(this.handleError)
     );
@@ -74,7 +72,7 @@ export class UserService {
 
   getUserProfile() {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
+    return this.http.get(this.userUrl, {headers: header, observe: 'response'})
   }
 
   updateCapacity(capacity): Observable<any> {
