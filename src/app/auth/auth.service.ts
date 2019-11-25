@@ -13,6 +13,8 @@ export class AuthService {
   private loginUrl = BASE_URL + '/user/v1/login';
   private socialLoginUrl = BASE_URL + '/user/v1/social_login';
   private logoutUrl = BASE_URL + '/user/v1/logout';
+  private sessionTimeout;
+  private day = 1000 * 60 * 60 * 24;
 
   userLogin(data, type?): Observable<any> {
     let loginUrl;
@@ -37,8 +39,15 @@ export class AuthService {
     );
   }
 
+  private clearSession(){
+    this.deleteSessionId();
+    window.location.reload();
+  }
+
   setSessionId(sessionId) {
     localStorage.setItem('sessionId', sessionId);
+    // Set timeout to clear sessionId after 24 hours
+    this.sessionTimeout = setTimeout(this.clearSession.bind(this), this.day);
   }
 
   userIsAuthorized(): boolean {
@@ -46,6 +55,7 @@ export class AuthService {
   }
 
   deleteSessionId() {
+    clearTimeout(this.sessionTimeout);
     return localStorage.removeItem('sessionId');
   }
 
