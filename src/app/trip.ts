@@ -25,6 +25,8 @@ export class Item {
   weight: number;
   quantity: number;
   trip_id: number;
+  role_id: number;
+  role_color?: string;
 }
 
 export class Role {
@@ -32,4 +34,9 @@ export class Role {
   id: number;
   name: string;
   trip_id: number;
+}
+
+export class Group {
+  level: number = 0;
+  parent: Group;
 }
