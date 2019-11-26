@@ -72,7 +72,6 @@ export class LoginPopUpComponent implements OnInit {
     .subscribe(res => {
       this.userService.setSessionId(res.body.data.session_id);
       console.log('userId='+res.body.data.user_id)
-      this.userService.setUserId(res.body.data.user_id);
       this.userService.refreshUser();
       this.dialogRef.close();
       this.router.navigate(['trip-list']);
