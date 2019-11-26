@@ -2,14 +2,34 @@
     <mat-sidenav-container>
         <mat-sidenav #sidenav mode="side" position="end">
             <mat-list class="user-information">
-                <mat-list-item class="avatar-container"><img class="mat-card-avatar" src="{{user.avatar}}"></mat-list-item>
-                <mat-list-item>Email: {{user.email}}</mat-list-item>
-                <mat-list-item>Name: {{user.name}}</mat-list-item>
-                <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
-                <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
-                <mat-list-item>
-                    <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
+                <mat-list-item class="avatar-container">
+                    {{user.email}}
+                    <ngx-avatar class="my-avatar" size="100" src="{{user.avatar}}"></ngx-avatar>
                 </mat-list-item>
+                <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
+                                                     class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
+                <div *ngIf="this.editable;else staticValue">
+                      <input [(ngModel)]="user.name" matInput>
+                </div>
+                  <ng-template #staticValue>
+                      <mat-list-item>Name: {{user.name}}</mat-list-item>
+                  </ng-template>
+                <div *ngIf="this.editable;else surname">
+                    Surname: <input [(ngModel)]="user.surname" matInput>
+                </div>
+                  <ng-template #surname>
+                    <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
+                  </ng-template>
+                <div *ngIf="this.editable;else capacity">
+                    <input [(ngModel)]="user.capacity" matInput>
+                </div>
+                  <ng-template #capacity>
+                    <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
+                      <mat-list-item>
+                        <button mat-raised-button class="edit" (click)="displayCalculateForm=!displayCalculateForm">Calculate capacity</button>
+                      </mat-list-item>
+                  </ng-template>
+
                 <mat-card *ngIf="displayCalculateForm">
                     <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender" [formControl]="userGender">
                         <mat-radio-button value="male">Male</mat-radio-button>
@@ -26,10 +46,13 @@
                     <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)" [disabled]="dataInvalid()">OK</button>
                     <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
-                <mat-list-item><button mat-raised-button class="edit">Edit profile</button></mat-list-item>
+                <div *ngIf="this.editable;else submit">
+                    <mat-list-item><button mat-raised-button class="edit" (click)="this.editable=false">Submit</button></mat-list-item>
+                </div>
+                <ng-template #submit>
+                    <mat-list-item><button mat-raised-button class="edit" (click)="this.editable=true">Edit profile</button></mat-list-item>
+                </ng-template>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
-                <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
-                                       class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
             </mat-list>
         </mat-sidenav>
         <mat-sidenav-content>

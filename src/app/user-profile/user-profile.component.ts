@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild, Injectable} from '@angular/core';
-import {UserService} from "../_services/user.service";
-import {Router} from "@angular/router";
-import {MatSidenav} from "@angular/material/sidenav";
-import {User} from '../user';
-import { FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
+import { UserService } from "../_services/user.service";
+import { Router } from "@angular/router";
+import { MatSidenav } from "@angular/material/sidenav";
+import { User} from '../user';
+import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 
 
@@ -20,6 +20,7 @@ export class UserProfileComponent implements OnInit {
   displayCalculateForm = false;
   result: number;
   gender: string;
+  editable: boolean;
 
   userGender = new FormControl('', Validators.required);
   userHeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
@@ -83,6 +84,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.clearUser();
     this.userService.refreshUser();
+    this.editable = false;
     this.userService.setUserSideNav(this.userSideNav);
     this.userService.getEmittedValue()
         .subscribe(item => this.user=item);

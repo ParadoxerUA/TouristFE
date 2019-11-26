@@ -31,6 +31,7 @@ import { NewRolePopUpComponent } from './new-role-pop-up/new-role-pop-up.compone
 import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ColorSketchModule } from 'ngx-color/sketch';
+import { AvatarModule } from 'ngx-avatar';
 
 
 const config = new AuthServiceConfig([
@@ -85,6 +86,7 @@ export function provideConfig() {
     ReactiveFormsModule,
     SocialLoginModule,
     ColorSketchModule,
+    AvatarModule,
   ],
   entryComponents: [
     LoginPopUpComponent,

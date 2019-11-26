@@ -13,8 +13,9 @@
 
 .edit {
     color: white;
-    background-color: #009c75;
+    background-color: #79c1e5;
     font-size: 1rem;
+    width: 100%;
 }
 
 mat-sidenav-container {
@@ -30,8 +31,13 @@ mat-sidenav {
 
 .mdc-button.mdc-button--unelevated {
     background-color: #5090ce;
-    margin-top: 50px;
+    /*margin-top: 50px;*/
     padding: 0.1rem 2rem;
+    width: 100%;
+}
+
+.my-avatar /deep/ .avatar-content {
+    margin-left:  15px!important;
 }
 
 .mat-card-avatar {
