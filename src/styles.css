@@ -12,3 +12,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color:rgb(66, 134, 244);
   background-color:rgb(66, 134, 244) ;
 }
+
+.glowingBorder {
+  border: 4px solid #dadada;
+  border-radius: 5px;
+}
+
+.glowingBorder:hover, .activeBorder {
+  outline: none;
+  border-color: cyan;
+  box-shadow: 0 0 10px cyan;
+}

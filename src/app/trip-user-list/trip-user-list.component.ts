@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { User } from '../user';
 import { Trip, Role } from '../trip';
+import {RoleService} from '../_services/role.service'
 
 @Component({
   selector: 'app-trip-user-list',
@@ -22,6 +23,7 @@ export class TripUserListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private tripUserService: TripUserService,
+    private roleService: RoleService,
   ) {}
 
   getUsers(): void {
@@ -33,13 +35,15 @@ export class TripUserListComponent implements OnInit {
           element.roles = rolesList.map(role => role.id)
           this.tripUsers.push(element as User);
         });
-        console.log(this.tripUsers)
+        // console.log(this.tripUsers)
       });
   }
 
 
   getRoleColor(roleId) {
     let color = 'white'
+    // console.log(this.tripRoles)
+    // console.log(roleId)
     this.tripRoles.forEach(role => {
       if (role.id === roleId) {color = role.color}
     })
@@ -67,6 +71,14 @@ export class TripUserListComponent implements OnInit {
   }
 
   recieveRole($event) {
+    // will refresh roles after new role was created
+    if ($event === -1) {
+      this.roleService.getTripRoles(this.trip.trip_id)
+        .subscribe(response => {
+          this.tripRoles = response.data
+        })
+        
+    }
     this.activeRole = $event
     this.activeRoleColor = this.getRoleColor($event)
     console.log('activeRoleColor=' + this.activeRoleColor)
@@ -98,5 +110,4 @@ export class TripUserListComponent implements OnInit {
     this.getUsers();
     this.tripRoles = this.trip.roles
   }
-
 }

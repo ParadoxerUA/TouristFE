@@ -25,34 +25,38 @@ export class TripRolesComponent implements OnInit {
   ) { }
 
   getRoles() {
+    this.tripRoles = []
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
+        // console.log(response);
         response.data.forEach(element => 
           this.tripRoles.push(element as Role));
       });
     }
 
-    openDialog(): void {
-      const dialogRef = this.dialog.open(NewRolePopUpComponent, {
-        width: '350px',
-        height: '500px',
-        data: {name: this.name, color: this.color}
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          console.log(result);
-          result.trip_id = this.trip.trip_id;
-          this.addRole(result);
-          this.tripRoles.push(result);
-        }
-      });
-    }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewRolePopUpComponent, {
+      width: '350px',
+      height: '500px',
+      data: {name: this.name, color: this.color}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        // console.log(result);
+        result.trip_id = this.trip.trip_id;
+        this.addRole(result);
+        this.tripRoles.push(result);
+      }
+    });
+  }
 
   addRole(data): void {
-    this.roleService.addTripRole(data)
-    .subscribe();
+    this.roleService.addTripRole(data).subscribe(response => {
+      this.getRoles()
+      this.roleEvent.emit(-1)
+      console.log(this.tripRoles)
+    });
   }
 
   activateRole(roleId) {

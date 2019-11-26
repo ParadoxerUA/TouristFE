@@ -71,7 +71,7 @@ export class LoginPopUpComponent implements OnInit {
     // Create subscription on login request
     this.loginSubscription = this.authService.userLogin(data, type)
     .subscribe(res => {
-      this.authService.setSessionId(res.body.data);
+      this.authService.setSessionId(res.body.data.session_id, res.body.data.user_id);
       this.userService.refreshUser();
       this.dialogRef.close();
       this.router.navigate(['trip-list']);
