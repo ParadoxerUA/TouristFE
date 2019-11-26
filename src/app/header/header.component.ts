@@ -1,9 +1,10 @@
-import {Component, Injectable, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginPopUpComponent } from '../login-pop-up/login-pop-up.component';
 import { RegisterPopUpComponent } from '../register-pop-up/register-pop-up.component';
-import {UserService} from "../_services/user.service";
-import {User} from '../user';
+import { UserService } from "../_services/user.service";
+import { AuthService } from '../auth/auth.service';
+import { User } from '../user';
 
 
 @Component({
@@ -25,11 +26,12 @@ export class HeaderComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private userService: UserService,
+    private authService: AuthService,
 
   ) { }
 
   public userIsAuthorized(): boolean {
-    return this.userService.userIsAuthorized()
+    return this.authService.userIsAuthorized()
   }
 
   openSignInDialog(): void {

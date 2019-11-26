@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Trip, Checkpoint} from "src/app/trip";
+import { Trip, Checkpoint } from "src/app/trip";
 import { Observable, of} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {catchError, map} from 'rxjs/operators';
-import {UserService} from "./user.service";
+import { map, catchError } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 import { BASE_URL } from './config'
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,15 @@ export class TripService {
   httpOptions = {
     headers: new HttpHeaders({ 
     'Content-Type': 'application/json',
-    'Authorization': this.userService.getSessionId()})
+    'Authorization': this.authService.getSessionId()})
   };
-  constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
+
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    private authService: AuthService,
+    private errorService: ErrorService,
+    ) { }
 
   createTrip(name, startDate, endDate, description){
     this.currentTrip.name = name;
@@ -63,25 +70,33 @@ export class TripService {
   }
 
 
-  addTrip(trip: Trip): Observable<Trip> {
-    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
-    return this.http.post<Trip>(this.tripUrl, trip, {headers: header});
+  addTrip(trip: Trip): Observable<any> {
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.post(this.tripUrl, trip, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
 
   getTrip(trip_id: number): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.userService.getSessionId()});
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     const url = `${this.tripUrl}/${trip_id}`;
     return this.http.get(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
 
   getTrips(): Observable<any> {
     const tripListUrl: string = `${BASE_URL}/trip/v1/trips`;
     return this.http.get(tripListUrl, {
-      headers: {'Authorization': this.userService.getSessionId()}
+      headers: {'Authorization': this.authService.getSessionId()}
     }).pipe(
-      map(data => data));
+      map(data => data),
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+      );
   }
   updateTrip(trip_id, start_date, end_date, status): Observable<any> {
     const updateTripUrl = `${BASE_URL}/trip/v1/trips/${trip_id}`;
@@ -90,17 +105,26 @@ export class TripService {
       end_date,
       status
     };
-    return this.http.put(updateTripUrl, trip, this.httpOptions);
+    return this.http.put(updateTripUrl, trip, this.httpOptions)
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
   refreshInviteLink(trip_id: number): Observable<any>  {
       const tripRefreshUrl: string = `${BASE_URL}/trip/v1/trips/${trip_id}`;
       return this.http.patch(tripRefreshUrl, null,  {
-          headers: {'Authorization': this.userService.getSessionId()}, observe: 'response'})
+          headers: {'Authorization': this.authService.getSessionId()}, observe: 'response'})
+          .pipe(
+            catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+          );
   }
 
   joinToTrip(trip_uuid): Observable<any> {
     const tripInviteUrl: string = `${BASE_URL}/otc/v1/otc/${trip_uuid}`
     return this.http.patch(tripInviteUrl, null, this.httpOptions)
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 }
