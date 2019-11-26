@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
-import { RoleService } from '../_services/role.service';
+import { UserService } from '../_services/user.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -35,7 +35,7 @@ export class TripItemListComponent implements OnInit {
 
   constructor(
     private itemService: ItemService,
-    private roleService: RoleService
+    private userService: UserService,
   ) { }
 
   getTagErrorMessage() {
@@ -107,13 +107,13 @@ export class TripItemListComponent implements OnInit {
     })
   }
 
-  getRoles() {
-    this.roleService.getTripRoles(this.trip.trip_id)
-      .subscribe(response => {
-        response.data.forEach(element => 
+  getUserRoles() {
+    this.userService.getUserProfile()
+      .subscribe(response =>{
+        response.body["data"].roles.forEach(element =>
           this.tripRoles.push(element as Role));
-      });
-    }
+    });
+  }
 
   addGroups(data: any[], groupByColumns: string[]): any[] {
     var rootGroup = new Group();
@@ -163,7 +163,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRoles();
+    this.getUserRoles();
     this.getItems();
     this.itemsDataSource.sort = this.sort;
   }
