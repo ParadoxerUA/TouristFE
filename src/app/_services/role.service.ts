@@ -31,7 +31,7 @@ export class RoleService {
     );
   }
 
-  addTripRole(data){
+  addTripRole(data): Observable<any> {
     const url = BASE_URL + `/role/v1/role`;
     return this.http.post(url, data, this.httpOptions)
     .pipe(
