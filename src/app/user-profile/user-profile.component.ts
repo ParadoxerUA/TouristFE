@@ -59,12 +59,6 @@ export class UserProfileComponent implements OnInit {
       || this.userGender.invalid);
   }
 
-  navigateToTripList(): void
-  {
-    this.router.navigate(['trip-list']);
-    this.userSideNav.close();
-  }
-
   logoutUser(): void {
     this.userService.userLogout()
       .subscribe(res => {

@@ -36,7 +36,7 @@ export class TripService {
     this.currentTrip.description = description;
     this.currentTrip.points = this.listOfCheckpoints;
     this.addTrip(this.currentTrip).subscribe(g => {
-      console.log(g)
+      console.log(g);
       this.router.navigate(['trip-list']);
     })
   }
