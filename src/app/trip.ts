@@ -9,7 +9,7 @@ export class Trip {
   participants?: number;
   status?: string;
   trip_uuid?: string;
-
+  roles?: Role[];
 }
 
 export class Checkpoint {

@@ -24,7 +24,6 @@ import { SocialLoginModule, AuthServiceConfig,
           FacebookLoginProvider,GoogleLoginProvider } from 'angularx-social-login';
 import { TripDetailPageMapComponent } from './trip-detail-page-map/trip-detail-page-map.component';
 import {UserService} from "./_services/user.service";
-import { CookieService } from 'ngx-cookie-service';
 import { ErrorComponent } from './error/error.component';
 import { TripRolesComponent } from './trip-roles/trip-roles.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
@@ -100,7 +99,6 @@ export function provideConfig() {
       useFactory: provideConfig
     },
     UserService,
-    CookieService,
 
   ],
   bootstrap: [AppComponent]
