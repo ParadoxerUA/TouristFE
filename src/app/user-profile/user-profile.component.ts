@@ -32,7 +32,7 @@ export class UserProfileComponent implements OnInit {
     second: this.confirmPassword}, this.passwordMatchValidator);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
-  public user: User;
+  public user;
 
   private getUserFormControl(){
     return new FormControl('', [Validators.required, 
@@ -49,33 +49,53 @@ export class UserProfileComponent implements OnInit {
        ? null : {'mismatch': true};
  }
 
-  changeCapacity(height: number, weight: number): void {
-    if (this.gender === "male") {
-      this.result = ((weight * 0.3) + ((height-100)/5) + 4) / 2;
-    }
-    if (this.gender === "female") {
-      this.result = ((weight * 0.3) + ((height-100)/5)) / 2;
-      console.log(this.result)
-    }
+  changeCapacity(): void {
+    let delta = this.gender === "male" ? 4 : 0;
+
+    this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
 
     this.userService.updateCapacity(this.result)
     .subscribe(() => this.userService.refreshUser());
     this.calculateFormOpened = false;
   }
 
-  updatePassword(newPassword, oldPassword?){
-    let data = {'new_password': newPassword, 'old_password': oldPassword};
+  updatePassword(){
+    let data = {};
+    if(!(this.oldPassword.value === undefined)){
+      data = {'old_password': this.oldPassword.value};
+    }
+    data['new_password'] = this.newPassword.value
     this.userService.updatePassword(data)
     .subscribe(() => this.userService.refreshUser());
+    this.clearPasswordForm();
+    alert('Password was changed');
+  }
+
+  private clearPasswordForm(){
     this.passwordFormOpened = false;
+    this.resetPasswordFields();
+  }
+
+  private resetPasswordFields(){
+    this.oldPassword.reset();
+    this.newPassword.reset();
+    this.confirmPassword.reset();
+  }
+
+  private resetCapacityFields(){
+    this.userGender.reset();
+    this.userHeight.reset();
+    this.userWeight.reset();
   }
 
   toggleCalculateForm(){
     this.calculateFormOpened = !this.calculateFormOpened;
+    this.resetCapacityFields();
   }
 
   togglePasswordForm(){
     this.passwordFormOpened = !this.passwordFormOpened;
+    this.resetPasswordFields();
   }
 
   getHeightErrorMessage() {
@@ -111,7 +131,7 @@ export class UserProfileComponent implements OnInit {
 
   passwordDataInvalid(): boolean{
     return (this.newPassword.invalid
-      || this.confirmPassword.invalid);
+      || this.confirmPassword.invalid || this.passswordGroup.invalid);
   }
 
   navigateToTripList(): void
@@ -124,10 +144,8 @@ export class UserProfileComponent implements OnInit {
     this.authService.userLogout()
       .subscribe(res => {
         this.authService.deleteSessionId();
+        window.location.reload();
       });
-    this.userSideNav.close();
-    this.clearUser();
-    this.router.navigate(['/index']);
   }
 
   private clearUser(){
