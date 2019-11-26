@@ -90,4 +90,5 @@ p.progress-value {
   height: 65px;
   padding-top: 0px;
   margin-bottom: 0px;
+  overflow: auto;
 }

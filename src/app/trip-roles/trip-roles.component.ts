@@ -46,16 +46,14 @@ export class TripRolesComponent implements OnInit {
         // console.log(result);
         result.trip_id = this.trip.trip_id;
         this.addRole(result);
-        this.tripRoles.push(result);
       }
     });
   }
 
   addRole(data): void {
     this.roleService.addTripRole(data).subscribe(response => {
-      this.getRoles()
+      this.tripRoles.push(response.data)
       this.roleEvent.emit(-1)
-      console.log(this.tripRoles)
     });
   }
 
