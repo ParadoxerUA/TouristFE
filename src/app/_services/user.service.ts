@@ -63,7 +63,16 @@ export class UserService {
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
-  
+
+  updateUser(name, surname, capacity): Observable<any> {
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    const url = this.userUrl;
+    return this.http.patch(url, {name, surname, capacity}, {headers: header, observe: 'response'})
+        .pipe(
+            catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+        );
+  }
+
   setUserSideNav(sideNav: MatSidenav){
     this.userSideNav = sideNav;
   }

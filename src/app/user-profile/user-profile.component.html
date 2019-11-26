@@ -4,24 +4,65 @@
             <mat-list class="user-information">
                 <mat-list-item class="avatar-container">
                     {{user.email}}
-                    <ngx-avatar class="my-avatar" size="100" src="{{user.avatar}}"></ngx-avatar>
+                    <ngx-avatar class="my-avatar" size="70" src="{{user.avatar}}"></ngx-avatar>
                 </mat-list-item>
-                <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
-                                                     class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
+                <mat-list-item>
+                    <button mat-raised-button name="logout" (click)="logoutUser()"
+                            class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
                 <div *ngIf="this.editable;else staticValue">
-                      <input [(ngModel)]="user.name" matInput>
+                    <mat-form-field mat-line class="input-edit">
+                        <input matInput placeholder="Name"
+                               [(ngModel)]="user.name"
+                               [formControl]="nameFormControl" (input)="checkUserData()"
+                               (keypress)="letterOnly($event)" type="text"/>
+                        <mat-error *ngIf="nameFormControl.hasError('minlength')">
+                            Minimum name length is 2.
+                        </mat-error>
+                        <mat-error *ngIf="nameFormControl.hasError('maxlength')">
+                            Maximum name length is 30.
+                        </mat-error>
+                        <mat-error *ngIf="nameFormControl.hasError('required')">
+                            Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
                 </div>
                   <ng-template #staticValue>
                       <mat-list-item>Name: {{user.name}}</mat-list-item>
                   </ng-template>
                 <div *ngIf="this.editable;else surname">
-                    Surname: <input [(ngModel)]="user.surname" matInput>
+                    <mat-form-field mat-line class="input-edit">
+                        <input matInput placeholder="Surname"
+                               [(ngModel)]="user.surname"
+                               (keypress)="letterOnly($event)" type="text"
+                               [formControl]="surnameFormControl" (input)="checkUserData()"/>
+                        <mat-error *ngIf="surnameFormControl.hasError('minlength')">
+                            Minimum surname length is 2.
+                        </mat-error>
+                        <mat-error *ngIf="surnameFormControl.hasError('maxlength')">
+                            Maximum surname length is 30.
+                        </mat-error>
+                    </mat-form-field>
                 </div>
                   <ng-template #surname>
                     <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                   </ng-template>
                 <div *ngIf="this.editable;else capacity">
-                    <input [(ngModel)]="user.capacity" matInput>
+                    <mat-form-field mat-line class="input-edit">
+                    <input placeholder="Capacity"
+                           (keypress)="numberOnly($event)" type="text"
+                           [(ngModel)]="user.capacity" matInput [formControl]="capacityControl"
+                           (input)="checkUserData()"/>
+                        <mat-error *ngIf="capacityControl.hasError('min')">
+                            Minimum capacity is 1 kg.
+                        </mat-error>
+                        <mat-error *ngIf="capacityControl.hasError('max')">
+                            Maximum capacity is 40 kg.
+                        </mat-error>
+                        <mat-error *ngIf="capacityControl.hasError('required')">
+                            Capacity is <strong>required</strong>
+                        </mat-error>
+
+                        </mat-form-field>
                 </div>
                   <ng-template #capacity>
                     <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
@@ -46,10 +87,10 @@
                     <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)" [disabled]="dataInvalid()">OK</button>
                     <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
                 </mat-card>
-                <div *ngIf="this.editable;else submit">
-                    <mat-list-item><button mat-raised-button class="edit" (click)="this.editable=false">Submit</button></mat-list-item>
+                <div *ngIf="this.editable;else edit">
+                    <mat-list-item><button mat-raised-button class="edit" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit</button></mat-list-item>
                 </div>
-                <ng-template #submit>
+                <ng-template #edit>
                     <mat-list-item><button mat-raised-button class="edit" (click)="this.editable=true">Edit profile</button></mat-list-item>
                 </ng-template>
                 <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
