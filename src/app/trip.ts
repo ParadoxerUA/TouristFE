@@ -35,3 +35,8 @@ export class Role {
   name: string;
   trip_id: number;
 }
+
+export class Group {
+  level: number = 0;
+  parent: Group;
+}

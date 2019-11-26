@@ -50,5 +50,13 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <ng-container matColumnDef="groupHeader">
+        <td colspan="999" mat-cell *matCellDef="let group">
+          <mat-chip class="group-color" [style.background-color]="group.role_color"></mat-chip>
+        </td>
+      </ng-container>
+
+      <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
     </table>
   </mat-card>

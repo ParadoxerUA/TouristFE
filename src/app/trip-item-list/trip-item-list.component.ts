@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
-import { Item, Trip, Role } from '../trip';
+import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -29,6 +29,7 @@ export class TripItemListComponent implements OnInit {
   itemsDataSource = new MatTableDataSource(this.tripItems);
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
+  groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -81,8 +82,8 @@ export class TripItemListComponent implements OnInit {
               element.role_color = role.color;
             }
           }});
-        
-        this.itemsDataSource.data = this.tripItems;
+
+        this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
       });
     }
 
@@ -113,6 +114,53 @@ export class TripItemListComponent implements OnInit {
           this.tripRoles.push(element as Role));
       });
     }
+
+  addGroups(data: any[], groupByColumns: string[]): any[] {
+    var rootGroup = new Group();
+    return this.getSublevel(data, 0, groupByColumns, rootGroup);
+  }
+
+  getSublevel(data: any[], level: number, groupByColumns: string[], parent: Group): any[] {
+    // Recursive function, stop when there are no more levels.q
+    if (level >= groupByColumns.length)
+      return data;
+
+    var groups = this.uniqueBy(
+      data.map(
+        row => {
+          var result = new Group();
+          result.level = level + 1;
+          result.parent = parent;
+          for (var i = 0; i <= level; i++)
+            result[groupByColumns[i]] = row[groupByColumns[i]];
+          return result;
+        }
+      ),
+      JSON.stringify);
+
+    const currentColumn = groupByColumns[level];
+
+    var subGroups = [];
+    groups.forEach(group => {
+      let rowsInGroup = data.filter(row => group[currentColumn] === row[currentColumn])
+      let subGroup = this.getSublevel(rowsInGroup, level + 1, groupByColumns, group);
+      subGroup.unshift(group);
+      subGroups = subGroups.concat(subGroup);
+    })
+    return subGroups;
+  }
+
+  uniqueBy(a, key) {
+    var seen = {};
+    return a.filter(function (item) {
+      var k = key(item);
+      return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
+  }
+
+  isGroup(index, item): boolean {
+    return item.level;
+  }
 
   ngOnInit() {
     this.getRoles();
