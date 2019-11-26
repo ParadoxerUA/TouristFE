@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import {UserService} from "../_services/user.service";
+import { AuthService } from './auth.service';
+import { HeaderComponent } from '../header/header.component'
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ import {UserService} from "../_services/user.service";
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private router: Router,
+    private headerComponent: HeaderComponent,
   ){  }
 
   canActivate(
@@ -22,9 +24,9 @@ export class AuthGuard implements CanActivate {
   }
   
   checkLogin(url: string): boolean{
-    if(this.userService.userIsAuthorized()){return true;}
-
+    if(this.authService.userIsAuthorized()){return true;}
     this.router.navigate(['/index']);
+    this.headerComponent.openSignInDialog();
     return false;
   }
 }

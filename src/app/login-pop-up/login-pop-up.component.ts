@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators} from '@angular/forms';
 import { UserService } from '../_services/user.service'
-import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
+import { AuthService } from '../auth/auth.service';
+import { AuthService as SocialAuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
 
 
@@ -48,7 +49,7 @@ export class LoginPopUpComponent implements OnInit {
 
   logInUser(type?: string) {
     // Pass if user already authorized
-    if(this.userService.userIsAuthorized()){
+    if(this.authService.userIsAuthorized()){
         return;
     }
     // if type was not passed into a function
@@ -56,22 +57,21 @@ export class LoginPopUpComponent implements OnInit {
         this.subscribeOnLogin(this.data);
         // if type was passed
     } else if(type == "facebook"){
-        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+        this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
     } else if(type == "google"){
-        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
     }
   }
 
-  private getSocialData(user){
-      return {'auth_token': user.authToken, 'provider': user.provider}
-      }
+    private getSocialData(user){
+        return {'auth_token': user.authToken, 'provider': user.provider}
+        }
 
   subscribeOnLogin(data, type?) {
     // Create subscription on login request
-    this.loginSubscription = this.userService.userLogin(data, type)
+    this.loginSubscription = this.authService.userLogin(data, type)
     .subscribe(res => {
-      this.userService.setSessionId(res.body.data.session_id);
-      console.log('userId='+res.body.data.user_id)
+      this.authService.setSessionId(res.body.data);
       this.userService.refreshUser();
       this.dialogRef.close();
       this.router.navigate(['trip-list']);
@@ -93,18 +93,19 @@ export class LoginPopUpComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private userService: UserService,
     private router: Router,
+    private socialAuthService: SocialAuthService,
     private authService: AuthService,
   ){ }
 
   ngOnInit() {
     // Create subscription on AuthService state
-    this.authServiceSubscription = this.authService.authState.subscribe((user) => {
+    this.authServiceSubscription = this.socialAuthService.authState.subscribe((user) => {
       console.log(user);
       // check if authentication is successful (returns user) and user is not authorized
-      if ((user != null) && !this.userService.userIsAuthorized()){
+      if ((user != null) && !this.authService.userIsAuthorized()){
         this.subscribeOnLogin(this.getSocialData(user), 'type');
         // Sign out from social service after user data was sent
-        this.authService.signOut();
+        this.socialAuthService.signOut();
       }
     });
   }
