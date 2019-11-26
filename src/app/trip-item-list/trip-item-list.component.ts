@@ -27,6 +27,7 @@ export class TripItemListComponent implements OnInit {
   tripRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
+  isPersonalInventory: Boolean
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
   groupByColumns: string[] = ['role_color'];
@@ -165,6 +166,7 @@ export class TripItemListComponent implements OnInit {
   ngOnInit() {
     this.getUserRoles();
     this.getItems();
+    this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
   }
 

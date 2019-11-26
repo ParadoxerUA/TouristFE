@@ -44,8 +44,9 @@ export class AuthService {
     window.location.reload();
   }
 
-  setSessionId(sessionId) {
+  setSessionId(sessionId, userId) {
     localStorage.setItem('sessionId', sessionId);
+    localStorage.setItem('userId', userId);
     // Set timeout to clear sessionId after 24 hours
     this.sessionTimeout = setTimeout(this.clearSession.bind(this), this.day);
   }
