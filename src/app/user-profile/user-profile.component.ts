@@ -66,9 +66,11 @@ export class UserProfileComponent implements OnInit {
     }
     data['new_password'] = this.newPassword.value
     this.userService.updatePassword(data)
-    .subscribe(() => this.userService.refreshUser());
+    .subscribe(() => {
+      this.userService.refreshUser();
+      alert('Password was changed');
+    });
     this.clearPasswordForm();
-    alert('Password was changed');
   }
 
   private clearPasswordForm(){
