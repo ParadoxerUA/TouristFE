@@ -3,7 +3,7 @@ import {UserService} from "../_services/user.service";
 import {Router} from "@angular/router";
 import {MatSidenav} from "@angular/material/sidenav";
 import {User} from '../user';
-import { FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 
 
@@ -17,16 +17,37 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class UserProfileComponent implements OnInit {
-  displayCalculateForm = false;
+  calculateFormOpened = false;
+  passwordFormOpened = false;
   result: number;
   gender: string;
 
   userGender = new FormControl('', Validators.required);
-  userHeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
-  userWeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+  userHeight = this.getUserFormControl();
+  userWeight = this.getUserFormControl();
+  oldPassword = this.getPasswordFormControl();
+  newPassword = this.getPasswordFormControl();
+  confirmPassword = this.getPasswordFormControl();
+  passswordGroup = new FormGroup({first: this.newPassword, 
+    second: this.confirmPassword}, this.passwordMatchValidator);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user: User;
+
+  private getUserFormControl(){
+    return new FormControl('', [Validators.required, 
+      Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+  }
+
+  private getPasswordFormControl(){
+    return new FormControl('', [Validators.required, Validators.minLength(8),
+      Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
+  }
+
+  private passwordMatchValidator(g: FormGroup) {
+    return g.get('first').value === g.get('second').value
+       ? null : {'mismatch': true};
+ }
 
   changeCapacity(height: number, weight: number): void {
     if (this.gender === "male") {
@@ -39,7 +60,22 @@ export class UserProfileComponent implements OnInit {
 
     this.userService.updateCapacity(this.result)
     .subscribe(() => this.userService.refreshUser());
-    this.displayCalculateForm = false;
+    this.calculateFormOpened = false;
+  }
+
+  updatePassword(newPassword, oldPassword?){
+    let data = {'new_password': newPassword, 'old_password': oldPassword};
+    this.userService.updatePassword(data)
+    .subscribe(() => this.userService.refreshUser());
+    this.passwordFormOpened = false;
+  }
+
+  toggleCalculateForm(){
+    this.calculateFormOpened = !this.calculateFormOpened;
+  }
+
+  togglePasswordForm(){
+    this.passwordFormOpened = !this.passwordFormOpened;
   }
 
   getHeightErrorMessage() {
@@ -54,10 +90,28 @@ export class UserProfileComponent implements OnInit {
             '';
   }
 
-  dataInvalid(): boolean{
+  getPasswordErrorMessage(password){
+    return password.hasError('required') ? 'You must enter a value' :
+        password.hasError('minlength') ? 'Min length is 8 characters':
+        password.hasError('pattern') ? 'At least 1 digit and 1 character':
+        password.hasError()
+            '';
+  }
+
+  getPasswordGroupErrorMessage(password){
+    return this.passswordGroup.hasError('mismatch') ? 'Passwords do not match.': 
+        this.getPasswordErrorMessage(password);
+  }
+
+  capacityDataInvalid(): boolean{
     return (this.userHeight.invalid
       || this.userWeight.invalid
       || this.userGender.invalid);
+  }
+
+  passwordDataInvalid(): boolean{
+    return (this.newPassword.invalid
+      || this.confirmPassword.invalid);
   }
 
   navigateToTripList(): void
