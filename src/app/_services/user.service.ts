@@ -57,7 +57,7 @@ export class UserService {
 
   updateCapacity(capacity): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    const url = BASE_URL + `/user/v1/user-profile`;
+    const url = BASE_URL + `/user/v1/user`;
     return this.http.patch(url, capacity, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
