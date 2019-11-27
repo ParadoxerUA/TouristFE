@@ -14,6 +14,7 @@ import { ErrorService } from './error.service';
 export class UserService {
 
   private userUrl = BASE_URL + '/user/v1/user';
+  private changePasswordUrl = `${this.userUrl}/change_password`
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
@@ -57,13 +58,21 @@ export class UserService {
 
   updateCapacity(capacity): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    const url = BASE_URL + `/user/v1/user-profile`;
+    const url = this.userUrl;
     return this.http.patch(url, capacity, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
   
+  updatePassword(data): Observable<any> {
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    return this.http.put(this.changePasswordUrl, data, {headers: header, observe: 'response'})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
   setUserSideNav(sideNav: MatSidenav){
     this.userSideNav = sideNav;
   }

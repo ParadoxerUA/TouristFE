@@ -20,15 +20,10 @@ export class ItemService {
     private errorService: ErrorService,
   ) { }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': this.authService.getSessionId()})
-  };
-
   getTripItems(trip_id: number): Observable<any> {
     const url = BASE_URL + `/trip/v1/trips/${trip_id}?fields=equipment`;
-    return this.http.get(url, this.httpOptions)
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
@@ -36,7 +31,8 @@ export class ItemService {
 
   addTripItem(itemData: Item): Observable<any> {
     const url = BASE_URL + `/equipment/v1/equipment`;
-    return this.http.post(url, itemData, this.httpOptions)
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.post(url, itemData, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

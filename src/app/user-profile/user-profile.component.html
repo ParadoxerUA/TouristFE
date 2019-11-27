@@ -10,9 +10,9 @@
                 <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
                 <mat-list-item>
-                    <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
+                    <button mat-raised-button class="edit" (click)="toggleCalculateForm()">Calculate capacity</button>
                 </mat-list-item>
-                <mat-card *ngIf="displayCalculateForm">
+                <mat-card *ngIf="calculateFormOpened">
                     <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender" [formControl]="userGender">
                         <mat-radio-button value="male">Male</mat-radio-button>
                         <mat-radio-button value="female">Female</mat-radio-button>
@@ -25,17 +25,34 @@
                         <input matInput type="number" min=1 max=1000 placeholder="weight, kg" [formControl]="userWeight" #weight>
                         <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
                     </mat-form-field><br><br>
-                    <button mat-raised-button class="calc" (click)="changeCapacity(height.value, weight.value)" [disabled]="dataInvalid()">OK</button>
-                    <button mat-raised-button class="cancel" (click)="displayCalculateForm=false">Cancel</button>
+                    <button mat-raised-button class="confirm" (click)="changeCapacity()" [disabled]="capacityDataInvalid()">OK</button>
+                    <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
-                <mat-list-item><button mat-raised-button class="edit">Change password</button></mat-list-item>
+                <mat-list-item><button mat-raised-button class="edit" (click)="togglePasswordForm()">Change password</button></mat-list-item>
+                <mat-card *ngIf="passwordFormOpened">
+                    <div style="text-align: center;">
+                        <mat-form-field *ngIf="user.passwordIsSet" style="margin-bottom: 10px;">
+                            <input matInput type="password" placeholder="Old password" [formControl]="oldPassword">
+                            <mat-error *ngIf="oldPassword.invalid">{{ getPasswordErrorMessage(oldPassword) }}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field style="margin-bottom: 10px;">
+                            <input matInput type="password" placeholder="New password" [formControl]="newPassword">
+                            <mat-error *ngIf="newPassword.invalid">{{ getPasswordErrorMessage(newPassword) }}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field style="margin-bottom: 10px;">
+                            <input matInput type="password" placeholder="Repeat new password" [formControl]="confirmPassword">
+                            <mat-error *ngIf="confirmPassword.invalid">{{ getPasswordGroupErrorMessage(confirmPassword) }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <button mat-raised-button class="confirm" (click)="updatePassword()" [disabled]="passwordDataInvalid()">OK</button>
+                    <button mat-raised-button class="cancel" (click)="togglePasswordForm()">Cancel</button>
+                </mat-card>
                 <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
                                        class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
             </mat-list>
         </mat-sidenav>
         <mat-sidenav-content>
             <router-outlet></router-outlet>
-<!--            <button (click)="sidenav.toggle()">Toggle</button>-->
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
