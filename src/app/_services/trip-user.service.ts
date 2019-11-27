@@ -12,7 +12,7 @@ import { ErrorService } from './error.service';
 })
 export class TripUserService {
 
-  private tripUrl = BASE_URL + '/trip/v1/trips'
+  private tripUrl = BASE_URL + '/trip/v1/trip'
 
   constructor(
     private http: HttpClient,
@@ -31,7 +31,7 @@ export class TripUserService {
   }
 
   deleteTripUser(trip_id, user_id): Observable<any> {
-    const url = `${BASE_URL}/trip/v1/manage_trip/${trip_id}?user_id=${user_id}`;
+    const url = `${BASE_URL}/user/v1/user?trip_id=${trip_id}&user_id=${user_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.delete(url, {headers: header})
     .pipe(

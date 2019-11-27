@@ -21,7 +21,7 @@ export class ItemService {
   ) { }
 
   getTripItems(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/trip/v1/trips/${trip_id}?fields=equipment`;
+    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(

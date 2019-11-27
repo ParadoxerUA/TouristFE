@@ -115,9 +115,7 @@ export class UserProfileComponent implements OnInit {
   getPasswordErrorMessage(password){
     return password.hasError('required') ? 'You must enter a value' :
         password.hasError('minlength') ? 'Min length is 8 characters':
-        password.hasError('pattern') ? 'At least 1 digit and 1 character':
-        password.hasError()
-            '';
+        password.hasError('pattern') ? 'At least 1 digit and 1 character': ''
   }
 
   getPasswordGroupErrorMessage(password){
