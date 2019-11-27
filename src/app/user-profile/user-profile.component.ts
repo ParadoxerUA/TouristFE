@@ -41,11 +41,11 @@ export class UserProfileComponent implements OnInit {
       this.result = ((weight * 0.3) + ((height-100)/5)) / 2;
       console.log(this.result)
     }
-    this.user.capacity = this.result;
-    this.submitUserData();
-    // this.userService.updateCapacity(this.result)
-    // .subscribe(() => this.userService.refreshUser());
-    // this.displayCalculateForm = false;
+    // this.user.capacity = this.result;
+    // this.submitUserData();
+    this.userService.updateCapacity(this.result)
+    .subscribe(() => this.userService.refreshUser());
+    this.displayCalculateForm = false;
   }
 
   getHeightErrorMessage() {
