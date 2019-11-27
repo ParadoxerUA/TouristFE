@@ -72,6 +72,10 @@ export class UserService {
     this.userSideNav.toggle();
   }
 
+  getUserId(): number {
+    return Number(localStorage.getItem('userId'))
+  }
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,

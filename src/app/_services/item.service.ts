@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject,  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config';
@@ -11,6 +11,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ItemService {
+  private isPersonalInventorySource = new BehaviorSubject(false)
+  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable()
 
   constructor(
     private http: HttpClient,
@@ -38,5 +40,10 @@ export class ItemService {
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
+  }
+
+  togglePersonalInventory() {
+    let nextValue = !this.isPersonalInventorySource.getValue()
+    this.isPersonalInventorySource.next(nextValue)
   }
 }

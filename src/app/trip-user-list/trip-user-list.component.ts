@@ -5,6 +5,8 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { User } from '../user';
 import { Trip, Role } from '../trip';
 import {RoleService} from '../_services/role.service'
+import {UserService} from '../_services/user.service'
+import {ItemService} from '../_services/item.service'
 
 @Component({
   selector: 'app-trip-user-list',
@@ -13,17 +15,21 @@ import {RoleService} from '../_services/role.service'
 })
 export class TripUserListComponent implements OnInit {
 
+  userId: number
   tripUsers: User[];
   tripRoles: Role[]
   activeRole: number = 0
   activeRoleColor: string = 'white'
   @Input() trip: Trip;
   @Input() currentUser: User;
+  isPersonalInventory: Boolean = false
 
   constructor(
     public dialog: MatDialog,
     private tripUserService: TripUserService,
     private roleService: RoleService,
+    private userService: UserService,
+    private itemService: ItemService,
   ) {}
 
   getUsers(): void {
@@ -106,8 +112,17 @@ export class TripUserListComponent implements OnInit {
     })
   }
 
+  togglePersonalInventory() {
+    this.itemService.togglePersonalInventory()
+  }
+
   ngOnInit() {
-    this.getUsers();
+    this.getUsers()
+    this.userId = this.userService.getUserId()
     this.tripRoles = this.trip.roles
+    this.itemService.isPersonalInventoryStatus
+      .subscribe(status => {
+        this.isPersonalInventory = status
+  })
   }
 }

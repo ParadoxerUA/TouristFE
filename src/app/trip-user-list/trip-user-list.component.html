@@ -11,8 +11,10 @@
         <mat-card
           [ngStyle] = "user.roles.indexOf(activeRole) !== -1 && 
             {'background': activeRoleColor}"
-          [ngClass]="{glowingBorder: activeRole > 0}"
-          (click)="activeRole > 0 && toggleRole(user.user_id)">
+          [ngClass]="{glowingBorder: (activeRole > 0 || user.user_id === userId),
+          activeBorder: isPersonalInventory}"
+          (click)="(activeRole > 0 && toggleRole(user.user_id)) ||
+          (user.user_id === userId && togglePersonalInventory())">
           <button class="close" (click)="openDialog(user)" 
           *ngIf="(user.user_id != currentUser.user_id) && (currentUser.user_id == trip.admin_id)">
             <i class="material-icons">close</i>

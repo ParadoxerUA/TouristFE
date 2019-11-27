@@ -23,7 +23,7 @@ export class TripItemListComponent implements OnInit {
   tripItems: Item[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean
+  isPersonalInventory: Boolean = false
 
   displayedColumns: string[] = ['name', 'weight', 'quantity'];
 
@@ -90,9 +90,12 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isPersonalInventory = false
     this.getItems();
     this.itemsDataSource.sort = this.sort;
+    this.itemService.isPersonalInventoryStatus
+      .subscribe(status => {
+        this.isPersonalInventory = status
+    })
   }
 
 }
