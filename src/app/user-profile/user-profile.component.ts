@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
-import { UserService } from "../_services/user.service";
-import { Router } from "@angular/router";
-import { MatSidenav } from "@angular/material/sidenav";
+import { Component, OnInit, ViewChild, Injectable} from '@angular/core';
+import { UserService} from "../_services/user.service";
+import { Router} from "@angular/router";
+import { MatSidenav} from "@angular/material/sidenav";
 import { User} from '../user';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 
 
@@ -17,7 +17,8 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class UserProfileComponent implements OnInit {
-  displayCalculateForm = false;
+  calculateFormOpened = false;
+  passwordFormOpened = false;
   result: number;
   gender: string;
   editable: boolean;
@@ -27,26 +28,86 @@ export class UserProfileComponent implements OnInit {
   nameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30), Validators.required]);
   capacityControl = new FormControl('', [Validators.min(1), Validators.max(40), Validators.required]);
   userGender = new FormControl('', Validators.required);
-  userHeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
-  userWeight = new FormControl('', [Validators.required, Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+  userHeight = this.getUserFormControl();
+  userWeight = this.getUserFormControl();
+  oldPassword = this.getPasswordFormControl();
+  newPassword = this.getPasswordFormControl();
+  confirmPassword = this.getPasswordFormControl();
+  passswordGroup = new FormGroup({first: this.newPassword,
+    second: this.confirmPassword}, this.passwordMatchValidator);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
-  public user: User;
+  public user;
 
-  changeCapacity(height: number, weight: number): void {
-    if (this.gender === "male") {
-      this.result = ((weight * 0.3) + ((height-100)/5) + 4) / 2;
-    }
-    if (this.gender === "female") {
-      this.result = ((weight * 0.3) + ((height-100)/5)) / 2;
-      console.log(this.result)
-    }
-    // this.user.capacity = this.result;
-    // this.submitUserData();
-    this.userService.updateCapacity(this.result)
-    .subscribe(() => this.userService.refreshUser());
-    this.displayCalculateForm = false;
+  private getUserFormControl(){
+      return new FormControl('', [Validators.required,
+        Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
   }
+
+  private getPasswordFormControl(){
+      return new FormControl('', [Validators.required, Validators.minLength(8),
+            Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
+  }
+
+  private passwordMatchValidator(g: FormGroup) {
+      return g.get('first').value === g.get('second').value
+          ? null : {'mismatch': true};
+  }
+
+
+  changeCapacity(): void {
+    let delta = this.gender === "male" ? 4 : 0;
+
+    this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
+
+    this.userService.updateCapacity(this.result)
+            .subscribe(() => this.userService.refreshUser());
+    this.calculateFormOpened = false;
+  }
+
+  updatePassword(){
+    let data = {};
+    if(!(this.oldPassword.value === undefined)){
+      data = {'old_password': this.oldPassword.value};
+    }
+    data['new_password'] = this.newPassword.value
+    this.userService.updatePassword(data)
+    .subscribe(() => {
+      this.userService.refreshUser();
+      alert('Password was changed');
+    });
+    this.clearPasswordForm();
+  }
+
+  private clearPasswordForm(){
+    this.passwordFormOpened = false;
+    this.resetPasswordFields();
+  }
+
+  private resetPasswordFields(){
+    this.oldPassword.reset();
+    this.newPassword.reset();
+    this.confirmPassword.reset();
+  }
+
+  private resetCapacityFields(){
+    this.userGender.reset();
+    this.userHeight.reset();
+    this.userWeight.reset();
+  }
+
+  toggleCalculateForm(){
+    this.calculateFormOpened = !this.calculateFormOpened;
+    this.resetCapacityFields();
+  }
+
+  togglePasswordForm(){
+    this.passwordFormOpened = !this.passwordFormOpened;
+    this.resetPasswordFields();
+  }
+
+
+
 
   getHeightErrorMessage() {
     return this.userHeight.hasError('required') ? 'Enter a number' :
@@ -60,42 +121,65 @@ export class UserProfileComponent implements OnInit {
             '';
   }
 
-  numberOnly(event): boolean {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
+  getPasswordErrorMessage(password){
+    return password.hasError('required') ? 'You must enter a value' :
+        password.hasError('minlength') ? 'Min length is 8 characters':
+        password.hasError('pattern') ? 'At least 1 digit and 1 character':
+        password.hasError()
+            '';
   }
 
-  letterOnly(event): boolean {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    // console.log('charCode ', charCode);
-    if ((charCode != 32) && (charCode != 39) && (charCode < 65 || charCode > 122 )) {
-      return false;
-    }
-    return true;
-}
+  getPasswordGroupErrorMessage(password){
+    return this.passswordGroup.hasError('mismatch') ? 'Passwords do not match.':
+        this.getPasswordErrorMessage(password);
+  }
 
-  dataInvalid(): boolean{
+  capacityDataInvalid(): boolean{
     return (this.userHeight.invalid
       || this.userWeight.invalid
       || this.userGender.invalid);
+  }
+
+  passwordDataInvalid(): boolean{
+    return (this.newPassword.invalid
+      || this.confirmPassword.invalid || this.passswordGroup.invalid);
+  }
+
+  navigateToTripList(): void
+  {
+    this.router.navigate(['trip-list']);
+    this.userSideNav.close();
   }
 
   logoutUser(): void {
     this.authService.userLogout()
       .subscribe(res => {
         this.authService.deleteSessionId();
+        window.location.reload();
       });
-    this.userSideNav.close();
-    this.clearUser();
-    this.router.navigate(['/index']);
   }
 
   private clearUser(){
     this.user = new User('','', 0, '', '');
   }
+
+  numberOnly(event): boolean {
+      const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          return false;
+      }
+      return true;
+  }
+
+  letterOnly(event): boolean {
+      const charCode = (event.which) ? event.which : event.keyCode;
+        // console.log('charCode ', charCode);
+      if ((charCode != 32) && (charCode != 39) && (charCode < 65 || charCode > 122 )) {
+          return false;
+      }
+      return true;
+  }
+
   submitUserData()
   {
     this.editable=false;

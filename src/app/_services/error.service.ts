@@ -21,11 +21,11 @@ export class ErrorService {
       if(error.status == 401){
         localStorage.removeItem('sessionId');
         window.location.reload();
-        return throwError(errorMessage);
+        return throwError(error);
       }
     }
     window.alert(errorMessage);
-    return throwError(errorMessage);
+    return throwError(error);
   }
 
   constructor() { }

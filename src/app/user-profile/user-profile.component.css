@@ -75,12 +75,15 @@ mat-radio-group {
   }
 mat-card > button.mat-raised-button {
     margin-left: 15px;
-    padding: 0.1rem 2rem;
     color: white;
 }
-.calc {
+.confirm {
+    text-align: center;
     background-color: #009c75;
+    width: 40%;
 }
 .cancel {
+    text-align: center;
     background-color: #f66767;
+    width: 40%;
 }

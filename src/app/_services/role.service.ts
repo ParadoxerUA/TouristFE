@@ -17,23 +17,19 @@ export class RoleService {
     private errorService: ErrorService,
   ) { }
 
-  httpOptions = {
-    headers: new HttpHeaders({ 
-    'Content-Type': 'application/json',
-    'Authorization': this.authService.getSessionId()})
-  };
-
   getTripRoles(trip_id: number): Observable<any> {
     const url = BASE_URL + `/role/v1/role/${trip_id}`;
-    return this.http.get(url, this.httpOptions)
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
 
-  addTripRole(data){
+  addTripRole(data): Observable<any> {
     const url = BASE_URL + `/role/v1/role`;
-    return this.http.post(url, data, this.httpOptions)
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.post(url, data, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

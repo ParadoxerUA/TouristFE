@@ -1,7 +1,7 @@
 <mat-chip-list aria-label="Tag selection">
     <p><strong>Tags:</strong></p>
     <mat-chip *ngFor="let role of tripRoles" 
-        [ngClass]="{activeRole: activeRole === role.id}"
+        [ngClass]="{activeBorder: activeRole === role.id}"
         (click)="activateRole(role.id)"
         [style.background-color]="role.color">
         {{role.name}}
