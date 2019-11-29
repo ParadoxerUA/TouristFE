@@ -113,9 +113,9 @@ export class TripItemListComponent implements OnInit {
 
   getTripRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
-    .subscribe(response =>{
+    .subscribe(response => {
       this.tripRoles = [];
-      response.data.forEach(role =>
+      response.data.roles.forEach(role =>
         this.tripRoles.push(role as Role));
         // to delete
         console.log(this.tripRoles);
