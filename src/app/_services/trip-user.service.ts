@@ -40,9 +40,9 @@ export class TripUserService {
   }
 
   toggleRole(role_id, user_id): Observable<any> {
-    const url = `${BASE_URL}/role/v1/role/${role_id}/${user_id}`;
+    const url = `${BASE_URL}/role/v1/role/${role_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
-    return this.http.put(url, {}, {headers: header, observe: 'response'})
+    return this.http.put(url, {'user_id': user_id}, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
