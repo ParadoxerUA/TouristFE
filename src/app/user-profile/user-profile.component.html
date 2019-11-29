@@ -8,7 +8,8 @@
                 </mat-list-item>
                 <mat-list-item>
                     <button mat-raised-button name="logout" (click)="logoutUser()"
-                            class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
+                            class="mdc-button mdc-button--unelevated">Logout</button>
+                </mat-list-item>
                 <div *ngIf="this.editable;else staticValue">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Name"
@@ -61,29 +62,29 @@
                         <mat-error *ngIf="capacityControl.hasError('required')">
                             Capacity is <strong>required</strong>
                         </mat-error>
-
                     </mat-form-field>
                 </div>
                 <ng-template #capacity>
                     <mat-list-item>Capacity: {{user.capacity}}</mat-list-item>
+                </ng-template>
                 <mat-list-item>
-                    <button mat-raised-button class="edit" (click)="displayCalculateForm=true">Calculate capacity</button>
+                        <button mat-raised-button class="edit" (click)="toggleCalculateForm()">Calculate capacity</button>
                 </mat-list-item>
-                <mat-card *ngIf="displayCalculateForm">
-                    <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender" [formControl]="userGender">
-                        <mat-radio-button value="male">Male</mat-radio-button>
-                        <mat-radio-button value="female">Female</mat-radio-button>
-                    </mat-radio-group><br>
-                    <mat-form-field class="input-width">
-                        <input matInput type="number" min=1 max=1000 placeholder="height, cm" [formControl]="userHeight" #height>
-                        <mat-error *ngIf="userHeight.invalid">{{ getHeightErrorMessage() }}</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="input-width">
-                        <input matInput type="number" min=1 max=1000 placeholder="weight, kg" [formControl]="userWeight" #weight>
-                        <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
-                    </mat-form-field><br><br>
-                    <button mat-raised-button class="confirm" (click)="changeCapacity()" [disabled]="capacityDataInvalid()">OK</button>
-                    <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
+                <mat-card *ngIf="calculateFormOpened">
+                      <mat-radio-group aria-label="Select a gender" [(ngModel)]="gender" [formControl]="userGender">
+                          <mat-radio-button value="male">Male</mat-radio-button>
+                          <mat-radio-button value="female">Female</mat-radio-button>
+                      </mat-radio-group><br>
+                      <mat-form-field class="input-width">
+                          <input matInput type="number" min=1 max=1000 placeholder="height, cm" [formControl]="userHeight" #height>
+                          <mat-error *ngIf="userHeight.invalid">{{ getHeightErrorMessage() }}</mat-error>
+                      </mat-form-field>
+                      <mat-form-field class="input-width">
+                          <input matInput type="number" min=1 max=1000 placeholder="weight, kg" [formControl]="userWeight" #weight>
+                          <mat-error *ngIf="userWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
+                      </mat-form-field><br><br>
+                      <button mat-raised-button class="confirm" (click)="changeCapacity()" [disabled]="capacityDataInvalid()">OK</button>
+                      <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
                 <div *ngIf="this.editable;else edit">
                     <mat-list-item><button mat-raised-button class="edit" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit</button></mat-list-item>
@@ -110,8 +111,6 @@
                     <button mat-raised-button class="confirm" (click)="updatePassword()" [disabled]="passwordDataInvalid()">OK</button>
                     <button mat-raised-button class="cancel" (click)="togglePasswordForm()">Cancel</button>
                 </mat-card>
-                <mat-list-item><button mat-raised-button name="logout" (click)="logoutUser()"
-                                       class="mdc-button mdc-button--unelevated">Logout</button></mat-list-item>
             </mat-list>
         </mat-sidenav>
         <mat-sidenav-content>
