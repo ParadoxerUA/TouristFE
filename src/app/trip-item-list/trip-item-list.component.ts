@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { UserService } from '../_services/user.service';
+import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -25,6 +26,7 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
+  userRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean
@@ -37,6 +39,7 @@ export class TripItemListComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private userService: UserService,
+    private roleService: RoleService,
   ) { }
 
   getTagErrorMessage() {
@@ -108,12 +111,25 @@ export class TripItemListComponent implements OnInit {
     })
   }
 
+  getTripRoles() {
+    this.roleService.getTripRoles(this.trip.trip_id)
+    .subscribe(response =>{
+      this.tripRoles = [];
+      response.data.forEach(role =>
+        this.tripRoles.push(role as Role));
+        // to delete
+        console.log(this.tripRoles);
+  });
+  }
+
   getUserRoles() {
-    this.userService.getUserProfile()
-      .subscribe(response =>{
-        response.body["data"].roles.forEach(element =>
-          this.tripRoles.push(element as Role));
-    });
+    // this.tripRoles.forEach(role => 
+    //   { if () })
+    // this.userService.getUserProfile()
+    //   .subscribe(response =>{
+    //     response.body["data"].roles.forEach(element =>
+    //       this.tripRoles.push(element as Role));
+    // });
   }
 
   addGroups(data: any[], groupByColumns: string[]): any[] {
@@ -164,6 +180,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getTripRoles();
     this.getUserRoles();
     this.getItems();
     this.isPersonalInventory = false;
