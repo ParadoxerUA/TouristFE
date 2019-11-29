@@ -63,7 +63,6 @@ export class UserProfileComponent implements OnInit {
     let data = {};
     if(this.oldPassword.value !== null){
       data = {'old_password': this.oldPassword.value};
-      console.log("FUCK")
     }
     data['new_password'] = this.newPassword.value
     this.userService.updatePassword(data)
