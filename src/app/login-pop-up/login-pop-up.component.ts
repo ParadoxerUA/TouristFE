@@ -69,7 +69,7 @@ export class LoginPopUpComponent implements OnInit {
 
   subscribeOnLogin(data, type?) {
     // Create subscription on login request
-    this.loginSubscription = this.authService.userLogin(data, type)
+    this.loginSubscription = this.authService.userLogin(data)
     .subscribe(res => {
       this.authService.setSessionId(res.body.data.session_id, res.body.data.user_id);
       this.userService.refreshUser();

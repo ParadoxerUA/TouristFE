@@ -18,7 +18,7 @@ export class RoleService {
   ) { }
 
   getTripRoles(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/role/v1/role/${trip_id}`;
+    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=roles`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(

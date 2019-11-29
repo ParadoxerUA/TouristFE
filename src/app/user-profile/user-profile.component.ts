@@ -20,7 +20,6 @@ export class UserProfileComponent implements OnInit {
   calculateFormOpened = false;
   passwordFormOpened = false;
   result: number;
-  gender: string;
 
   userGender = new FormControl('', Validators.required);
   userHeight = this.getUserFormControl();
@@ -50,11 +49,11 @@ export class UserProfileComponent implements OnInit {
  }
 
   changeCapacity(): void {
-    let delta = this.gender === "male" ? 4 : 0;
+    let delta = this.userGender.value === "male" ? 4 : 0;
 
     this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
 
-    this.userService.updateCapacity(this.result)
+    this.userService.updateCapacity({'capacity': this.result})
     .subscribe(() => this.userService.refreshUser());
     this.calculateFormOpened = false;
   }
@@ -115,9 +114,7 @@ export class UserProfileComponent implements OnInit {
   getPasswordErrorMessage(password){
     return password.hasError('required') ? 'You must enter a value' :
         password.hasError('minlength') ? 'Min length is 8 characters':
-        password.hasError('pattern') ? 'At least 1 digit and 1 character':
-        password.hasError()
-            '';
+        password.hasError('pattern') ? 'At least 1 digit and 1 character': ''
   }
 
   getPasswordGroupErrorMessage(password){

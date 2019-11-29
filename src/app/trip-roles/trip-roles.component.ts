@@ -18,8 +18,8 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0
   @Output() roleEvent = new EventEmitter<any>()
-
-  constructor( 
+  
+  constructor(
     private dialog: MatDialog,
     private roleService: RoleService
   ) { }
@@ -28,8 +28,8 @@ export class TripRolesComponent implements OnInit {
     this.tripRoles = []
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        // console.log(response);
-        response.data.forEach(element => 
+        console.log(response);
+        response.data.roles.forEach(element => 
           this.tripRoles.push(element as Role));
       });
     }

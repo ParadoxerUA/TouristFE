@@ -11,21 +11,12 @@ import { ErrorService } from '../_services/error.service';
 export class AuthService {
 
   private loginUrl = BASE_URL + '/user/v1/login';
-  private socialLoginUrl = BASE_URL + '/user/v1/login/social';
   private logoutUrl = BASE_URL + '/user/v1/logout';
   private sessionTimeout;
   private day = 1000 * 60 * 60 * 24;
 
-  userLogin(data, type?): Observable<any> {
-    let loginUrl;
-
-    if(type === undefined){
-      loginUrl = this.loginUrl;
-    } else {
-      loginUrl = this.socialLoginUrl;
-    }
-
-    return this.http.post(loginUrl, data, {observe: 'response'})
+  userLogin(data): Observable<any> {
+    return this.http.post(this.loginUrl, data, {observe: 'response'})
     .pipe(
       catchError(this.errorService.handleError.bind(this))
     );
@@ -33,6 +24,7 @@ export class AuthService {
 
   userLogout(): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    console.log(header);
     return this.http.post(this.logoutUrl, null, {headers: header, observe: 'response'})
     .pipe(
       catchError(this.errorService.handleError.bind(this))
@@ -41,7 +33,7 @@ export class AuthService {
 
   private clearSession(){
     this.deleteSessionId();
-    window.location.reload();
+    // window.location.reload();
   }
 
   setSessionId(sessionId, userId) {
