@@ -18,8 +18,8 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0
   @Output() roleEvent = new EventEmitter<any>()
-
-  constructor( 
+  
+  constructor(
     private dialog: MatDialog,
     private roleService: RoleService
   ) { }
