@@ -117,8 +117,6 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles = [];
       response.data.roles.forEach(role =>
         this.tripRoles.push(role as Role));
-        // to delete
-        // console.log(this.tripRoles);
     });
   }
 
@@ -129,8 +127,6 @@ export class TripItemListComponent implements OnInit {
       response.data.forEach(user_role =>
         {for (let role of this.tripRoles) {
           if (role.id === user_role.id) {
-            // console.log(`Trip role`, role, role.id);
-            // console.log(`User role`, user_role, user_role.id);
             this.userTripRoles.push(user_role as Role);
           }
         }

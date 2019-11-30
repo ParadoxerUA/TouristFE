@@ -28,7 +28,6 @@ export class TripRolesComponent implements OnInit {
     this.tripRoles = []
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
         response.data.roles.forEach(element => 
           this.tripRoles.push(element as Role));
       });
@@ -43,7 +42,6 @@ export class TripRolesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        // console.log(result);
         result.trip_id = this.trip.trip_id;
         this.addRole(result);
       }
