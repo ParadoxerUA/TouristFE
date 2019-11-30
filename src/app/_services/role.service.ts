@@ -34,4 +34,13 @@ export class RoleService {
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
+
+  getUserRoles(): Observable<any> {
+    const url = BASE_URL + `/user/v1/user/roles`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
 }
