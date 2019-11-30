@@ -26,7 +26,7 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
-  userRoles: Role[] = [];
+  userTripRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false
@@ -118,18 +118,24 @@ export class TripItemListComponent implements OnInit {
       response.data.roles.forEach(role =>
         this.tripRoles.push(role as Role));
         // to delete
-        console.log(this.tripRoles);
-  });
+        // console.log(this.tripRoles);
+    });
   }
 
-  getUserRoles() {
-    // this.tripRoles.forEach(role => 
-    //   { if () })
-    // this.userService.getUserProfile()
-    //   .subscribe(response =>{
-    //     response.body["data"].roles.forEach(element =>
-    //       this.tripRoles.push(element as Role));
-    // });
+  getUserTripRoles() {
+    this.roleService.getUserRoles()
+    .subscribe(response => {
+      this.userTripRoles = [];
+      response.data.forEach(user_role =>
+        {for (let role of this.tripRoles) {
+          if (role.id === user_role.id) {
+            // console.log(`Trip role`, role, role.id);
+            // console.log(`User role`, user_role, user_role.id);
+            this.userTripRoles.push(user_role as Role);
+          }
+        }
+      });
+    });
   }
 
   addGroups(data: any[], groupByColumns: string[]): any[] {
@@ -181,7 +187,7 @@ export class TripItemListComponent implements OnInit {
 
   ngOnInit() {
     this.getTripRoles();
-    this.getUserRoles();
+    this.getUserTripRoles();
     this.getItems();
     this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
