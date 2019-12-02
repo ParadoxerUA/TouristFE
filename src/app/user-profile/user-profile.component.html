@@ -2,14 +2,34 @@
     <mat-sidenav-container>
         <mat-sidenav #sidenav mode="side" position="end">
             <mat-list class="user-information">
-                <mat-list-item class="avatar-container">
-                    {{user.email}}
-                    <ngx-avatar class="my-avatar" size="70" src="{{user.avatar}}"></ngx-avatar>
-                </mat-list-item>
-                <mat-list-item>
-                    <button mat-raised-button name="logout" (click)="logoutUser()"
-                            class="mdc-button mdc-button--unelevated">Logout</button>
-                </mat-list-item>
+                <div *ngIf="this.editable;else staticAvatar">
+                    <mat-list-item  class="avatar-container">
+                        {{user.email}}
+                        <input type="file" name="image" style="display: none;" id="selectedFile"   (change)="fileProgress($event)" />
+                        <ngx-avatar class="my-avatar" size="70" src="{{previewUrl}}"></ngx-avatar>
+<!--                        <input type="button" value="Browse..." onclick="document.getElementById('selectedFile').click();" />-->
+                        <button mat-icon-button class="mdc-button edit_avatar" onclick="document.getElementById('selectedFile').click();"><mat-icon>edit</mat-icon></button>
+                    </mat-list-item>
+                </div>
+                <ng-template #staticAvatar>
+                    <mat-list-item class="avatar-container">
+                        {{user.email}}
+                        <ngx-avatar class="my-avatar" size="70" src="{{user.avatar}}"></ngx-avatar>
+                    </mat-list-item>
+                </ng-template>
+                <div *ngIf="this.editable;else logout">
+                    <mat-list-item>
+                        <button mat-raised-button class="edit" (click)="this.editable=false">Cancel changes</button>
+                    </mat-list-item>
+                </div>
+                <ng-template #logout>
+                    <mat-list-item>
+                        <button mat-raised-button name="logout" (click)="logoutUser()"
+                                class="mdc-button mdc-button--unelevated">Logout</button>
+                    </mat-list-item>
+                </ng-template>
+
+
                 <div *ngIf="this.editable;else staticValue">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Name"
@@ -30,6 +50,7 @@
                 <ng-template #staticValue>
                     <mat-list-item>Name: {{user.name}}</mat-list-item>
                 </ng-template>
+
                 <div *ngIf="this.editable;else surname">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Surname"
@@ -47,6 +68,7 @@
                 <ng-template #surname>
                     <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 </ng-template>
+
                 <div *ngIf="this.editable;else capacity">
                     <mat-form-field mat-line class="input-edit">
                         <input placeholder="Capacity"
@@ -87,10 +109,10 @@
                       <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
                 <div *ngIf="this.editable;else edit">
-                    <mat-list-item><button mat-raised-button class="edit" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit</button></mat-list-item>
+                    <mat-list-item><button mat-raised-button class="edit" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit changes</button></mat-list-item>
                 </div>
                 <ng-template #edit>
-                    <mat-list-item><button mat-raised-button class="edit" (click)="this.editable=true">Edit profile</button></mat-list-item>
+                    <mat-list-item><button mat-raised-button class="edit" (click)="editUser()">Edit profile</button></mat-list-item>
                 </ng-template>
                 <mat-list-item><button mat-raised-button class="edit" (click)="togglePasswordForm()">Change password</button></mat-list-item>
                 <mat-card *ngIf="passwordFormOpened">

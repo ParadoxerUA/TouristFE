@@ -29,6 +29,7 @@ import { TripRolesComponent } from './trip-roles/trip-roles.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { NewRolePopUpComponent } from './new-role-pop-up/new-role-pop-up.component';
 import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { AvatarModule } from 'ngx-avatar';
@@ -86,6 +87,7 @@ export function provideConfig() {
     ReactiveFormsModule,
     SocialLoginModule,
     ColorSketchModule,
+    MaterialFileInputModule,
     AvatarModule,
   ],
   entryComponents: [
@@ -94,7 +96,6 @@ export function provideConfig() {
     ConfirmationDialogComponent,
     NewRolePopUpComponent,
   ],
-
   providers: [
     {
       provide: AuthServiceConfig,

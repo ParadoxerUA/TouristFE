@@ -5,6 +5,7 @@ import { MatSidenav} from "@angular/material/sidenav";
 import { User} from '../user';
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { HttpClient, HttpEventType} from "@angular/common/http";
 
 
 @Component({
@@ -23,6 +24,7 @@ export class UserProfileComponent implements OnInit {
   gender: string;
   editable: boolean;
   userDataIsIncorrect: boolean;
+
 
   surnameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
   nameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30), Validators.required]);
@@ -70,7 +72,7 @@ export class UserProfileComponent implements OnInit {
     if(!(this.oldPassword.value === undefined)){
       data = {'old_password': this.oldPassword.value};
     }
-    data['new_password'] = this.newPassword.value
+    data['new_password'] = this.newPassword.value;
     this.userService.updatePassword(data)
     .subscribe(() => {
       this.userService.refreshUser();
@@ -105,9 +107,6 @@ export class UserProfileComponent implements OnInit {
     this.passwordFormOpened = !this.passwordFormOpened;
     this.resetPasswordFields();
   }
-
-
-
 
   getHeightErrorMessage() {
     return this.userHeight.hasError('required') ? 'Enter a number' :
@@ -161,6 +160,7 @@ export class UserProfileComponent implements OnInit {
 
   private clearUser(){
     this.user = new User('','', 0, '', '');
+    this.previewUrl = null;
   }
 
   numberOnly(event): boolean {
@@ -180,13 +180,39 @@ export class UserProfileComponent implements OnInit {
       return true;
   }
 
+  editUser() {
+    this.editable=true;
+    this.previewUrl = this.user.avatar;
+    console.log(this.previewUrl);
+  }
+
+  // stopEditingUser() {
+  //   this.editable = true;
+  // }
+
   submitUserData()
   {
+    if (this.previewUrl!=this.user.avatar){
+      this.userService.updateUserAvatar(this.fileData)
+          .subscribe(res => {
+            console.log(res);
+            // this.uploadedFilePath = res.data.filePath;
+          });
+    }
     this.editable=false;
     if(!this.user.surname){this.user.surname=''}
     this.userService.updateUser(this.user.name, this.user.surname, this.user.capacity)
         .subscribe(() => this.userService.refreshUser());
+  }
 
+  onSubmit() {
+    this.userService.updateUserAvatar(this.fileData)
+        .subscribe(res => {
+          console.log(res);
+          // this.uploadedFilePath = res.data.filePath;
+        });
+    this.userService.updateUser(this.user.name, this.user.surname, this.user.capacity)
+        .subscribe(() => this.userService.refreshUser());
   }
 
   checkUserData()
@@ -200,10 +226,34 @@ export class UserProfileComponent implements OnInit {
     this.userDataIsIncorrect = nameIsIncorect||surnameIsCorrect||capasityIsCorrect;
   }
 
+  fileData: File = null;
+  previewUrl:any = null;
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+  }
+
+  preview() {
+    // Show preview
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (_event) => {
+      this.previewUrl = reader.result;
+      console.log(this.previewUrl);
+    }
+  }
+
+
   constructor(
       private userService: UserService,
       private router: Router,
       private authService: AuthService,
+      private http: HttpClient,
   ){ }
 
   ngOnInit() {
