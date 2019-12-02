@@ -71,25 +71,21 @@ export class TripItemListComponent implements OnInit {
       || this.tagName.invalid);
   }
 
+  setColorToItems() {
+    this.tripItems.map(item => item.role_color =
+      this.tripRoles.find(role => role.id === item.role_id).color);
+  }
+
   getItems() {
-    this.getTripRoles();
-    this.getUserTripRoles();
     this.itemService.getTripItems(this.trip.trip_id)
-      .subscribe(response => {
-        this.tripItems = [];
-        response.data.equipment.forEach(element =>
-          this.tripItems.push(element as Item));
+    .subscribe(response => {
+      this.tripItems = [];
+      response.data.equipment.forEach(element =>
+        this.tripItems.push(element as Item));
 
-        this.tripItems.forEach(element =>
-          {for (let role of this.tripRoles) {
-            if (role.id === element.role_id) {
-              element.role_color = role.color;
-            }
-          }});
-
-        this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
-      });
-    }
+      this.getTripRoles();
+    });
+  }
 
   addItem(): void {
     this.itemData = {
@@ -106,7 +102,6 @@ export class TripItemListComponent implements OnInit {
 
     this.itemService.addTripItem(this.itemData)
     .subscribe(data => {
-      console.log(data);
       this.getItems();
     })
   }
@@ -117,20 +112,22 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles = [];
       response.data.roles.forEach(role =>
         this.tripRoles.push(role as Role));
+      this.getUserTripRoles();
+      this.setColorToItems();
+      this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
     });
+  }
+
+  setRolesToUser(response) {
+    this.userTripRoles = response.data.filter(user_role =>
+      user_role.trip_id === this.trip.trip_id)
   }
 
   getUserTripRoles() {
     this.roleService.getUserRoles()
     .subscribe(response => {
       this.userTripRoles = [];
-      response.data.forEach(user_role =>
-        {for (let role of this.tripRoles) {
-          if (role.id === user_role.id) {
-            this.userTripRoles.push(user_role as Role);
-          }
-        }
-      });
+      this.setRolesToUser(response);
     });
   }
 
