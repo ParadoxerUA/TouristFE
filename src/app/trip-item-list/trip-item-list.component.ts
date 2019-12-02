@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
-import { UserService } from '../_services/user.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
@@ -38,7 +37,6 @@ export class TripItemListComponent implements OnInit {
 
   constructor(
     private itemService: ItemService,
-    private userService: UserService,
     private roleService: RoleService,
   ) { }
 
@@ -74,6 +72,8 @@ export class TripItemListComponent implements OnInit {
   }
 
   getItems() {
+    this.getTripRoles();
+    this.getUserTripRoles();
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
         this.tripItems = [];
@@ -182,8 +182,6 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTripRoles();
-    this.getUserTripRoles();
     this.getItems();
     this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
