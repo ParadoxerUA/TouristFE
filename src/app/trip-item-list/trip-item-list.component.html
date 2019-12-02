@@ -52,9 +52,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
       <ng-container matColumnDef="groupHeader">
-        <td colspan="999" mat-cell *matCellDef="let group"></td>
+        <td colspan="999" mat-cell *matCellDef="let group" [style.background-color]="group.role_color"></td>
       </ng-container>
 
-      <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
+      <tr mat-row class="tag-color-line" *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
     </table>
   </mat-card>

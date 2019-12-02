@@ -35,3 +35,6 @@ th {
 .role-color {
   width: 50%;
 }
+.tag-color-line {
+  height: 10px !important;
+}
