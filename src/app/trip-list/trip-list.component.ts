@@ -36,6 +36,7 @@ export class TripListComponent implements OnInit {
 
   ngOnInit() {
     this.getTrips();
+    // console.log(this.tripsDataSource)
   }
   getOtherStatus(status) {
     if (status == 'Open') {
@@ -58,6 +59,7 @@ export class TripListComponent implements OnInit {
         this.trips.push(element as Trip);
       });
       this.tripsDataSource.data = this.trips;
+      console.log(this.tripsDataSource)
     })
   }
 
