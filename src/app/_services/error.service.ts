@@ -18,7 +18,7 @@ export class ErrorService {
     } else {
       // server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.data}`;
-      if(error.status == 401){
+      if(error.status in [401, 0]){
         localStorage.removeItem('sessionId');
         window.location.reload();
         return throwError(error);
