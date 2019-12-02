@@ -7,7 +7,6 @@
                         {{user.email}}
                         <input type="file" name="image" style="display: none;" id="selectedFile"   (change)="fileProgress($event)" />
                         <ngx-avatar class="my-avatar" size="70" src="{{previewUrl}}"></ngx-avatar>
-<!--                        <input type="button" value="Browse..." onclick="document.getElementById('selectedFile').click();" />-->
                         <button mat-icon-button class="mdc-button edit_avatar" onclick="document.getElementById('selectedFile').click();"><mat-icon>edit</mat-icon></button>
                     </mat-list-item>
                 </div>

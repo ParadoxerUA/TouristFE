@@ -6,6 +6,7 @@ import { User} from '../user';
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient, HttpEventType} from "@angular/common/http";
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class UserProfileComponent implements OnInit {
   gender: string;
   editable: boolean;
   userDataIsIncorrect: boolean;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
 
   surnameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
@@ -185,10 +188,6 @@ export class UserProfileComponent implements OnInit {
     this.previewUrl = this.user.avatar;
     console.log(this.previewUrl);
   }
-
-  // stopEditingUser() {
-  //   this.editable = true;
-  // }
 
   submitUserData()
   {
