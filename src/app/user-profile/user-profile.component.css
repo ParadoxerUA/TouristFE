@@ -18,6 +18,13 @@
     width: 100%;
 }
 
+.react {
+    color: white;
+    background-color: darkturquoise;
+    font-size: 1rem;
+    width: 100%;
+}
+
 mat-sidenav-container {
     height: 100%;
 }
@@ -31,10 +38,8 @@ mat-sidenav {
 
 .mdc-button.mdc-button--unelevated {
     background-color: #5090ce;
-    /*margin-top: 50px;*/
     padding: 0.1rem 2rem;
     width: 100%;
-    /*margin-bottom: 10px;*/
 }
 
 .mdc-button.edit_avatar {

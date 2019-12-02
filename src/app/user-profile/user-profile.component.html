@@ -19,7 +19,7 @@
                 </ng-template>
                 <div *ngIf="this.editable;else logout">
                     <mat-list-item>
-                        <button mat-raised-button class="edit" (click)="this.editable=false">Cancel changes</button>
+                        <button mat-raised-button class="react" (click)="this.editable=false">Cancel changes</button>
                     </mat-list-item>
                 </div>
                 <ng-template #logout>
@@ -109,7 +109,7 @@
                       <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
                 <div *ngIf="this.editable;else edit">
-                    <mat-list-item><button mat-raised-button class="edit" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit changes</button></mat-list-item>
+                    <mat-list-item><button mat-raised-button class="react" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit changes</button></mat-list-item>
                 </div>
                 <ng-template #edit>
                     <mat-list-item><button mat-raised-button class="edit" (click)="editUser()">Edit profile</button></mat-list-item>
