@@ -5,11 +5,18 @@ import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config'
 import { catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
+  private newRoleSource = new BehaviorSubject(null);
+  newRole = this.newRoleSource.asObservable();
+
+  setNewRoleId(role) {
+    this.newRoleSource.next(role);
+  }
   
   constructor(
     private http: HttpClient,

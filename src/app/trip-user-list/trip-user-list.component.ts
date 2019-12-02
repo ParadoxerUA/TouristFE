@@ -47,13 +47,13 @@ export class TripUserListComponent implements OnInit {
 
 
   getRoleColor(roleId) {
-    let color = 'white'
+    let color = 'white';
     // console.log(this.tripRoles)
     // console.log(roleId)
     this.tripRoles.forEach(role => {
-      if (role.id === roleId) {color = role.color}
+      if (role.id === roleId) {color = role.color;}
     })
-    return color
+    return color;
   }
 
   deleteUser(userToDelete: User): void {
@@ -77,11 +77,12 @@ export class TripUserListComponent implements OnInit {
   }
 
   recieveRole($event) {
+    console.log($event);
     // will refresh roles after new role was created
     if ($event === -1) {
       this.roleService.getTripRoles(this.trip.trip_id)
         .subscribe(response => {
-          this.tripRoles = response.data
+          this.tripRoles = response.data['roles'];
         })
         
     }
