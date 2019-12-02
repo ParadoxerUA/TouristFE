@@ -73,7 +73,6 @@ export class TripItemListComponent implements OnInit {
 
   getItems() {
     this.getTripRoles();
-    this.getUserTripRoles();
     this.itemService.getTripItems(this.trip.trip_id)
       .subscribe(response => {
         this.tripItems = [];
@@ -117,6 +116,7 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles = [];
       response.data.roles.forEach(role =>
         this.tripRoles.push(role as Role));
+        this.getUserTripRoles();
     });
   }
 
