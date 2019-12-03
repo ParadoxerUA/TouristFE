@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router} from '@angular/router';
-import {UserService} from "../_services/user.service";
+import { Router } from '@angular/router';
+import { UserService } from "../_services/user.service";
 import { AuthService } from '../auth/auth.service';
 
 
@@ -23,6 +23,7 @@ export class MainPageComponent implements OnInit {
   
   create_trip(){
     this.router.navigate(['/create_trip']);
+    this.userService.closeUserProfile();
   }
 
   ngOnInit() {
