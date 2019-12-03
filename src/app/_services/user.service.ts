@@ -21,6 +21,7 @@ export class UserService {
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
   userSideNav: MatSidenav;
+  userProfileEditable = false;
 
   setUserProfile(user){
     this.userDataEmitter.emit(user.data);
@@ -100,6 +101,11 @@ export class UserService {
 
   toggleUserProfile(){
     this.userSideNav.toggle();
+    this.userProfileEditable = false;
+  }
+
+  closeUserProfile(){
+    this.userSideNav.close()
   }
 
   constructor(

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
 import { TripService } from '../_services/trip.service';
+import { UserService } from "../_services/user.service";
 import { Trip } from '../trip';
 import { Router } from '@angular/router';
 import { FormControl } from "@angular/forms";
@@ -31,6 +32,7 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private tripService: TripService,
+    private userService: UserService,
     private router: Router,
     ) { }
 
@@ -63,9 +65,11 @@ export class TripListComponent implements OnInit {
 
   redirectToTripDetail(id): void {  
     this.router.navigate([`trip_detail`, id]);
+    this.userService.closeUserProfile();
   }
   redirectToCreateTrip(): void {
     this.router.navigate(['create_trip']);
+    this.userService.closeUserProfile();
   }
   isCurrentUserAdmin(admin): boolean {
     return admin == '*';

@@ -2,7 +2,7 @@
     <mat-sidenav-container>
         <mat-sidenav #sidenav mode="side" position="end">
             <mat-list class="user-information">
-                <div *ngIf="this.editable;else staticAvatar">
+                <div *ngIf="this.userService.userProfileEditable;else staticAvatar">
                     <mat-list-item  class="avatar-container">
                         {{user.email}}
                         <input type="file" name="image" style="display: none;" id="selectedFile"   (change)="fileProgress($event)" />
@@ -16,9 +16,9 @@
                         <ngx-avatar class="my-avatar" size="70" src="{{user.avatar}}"></ngx-avatar>
                     </mat-list-item>
                 </ng-template>
-                <div *ngIf="this.editable;else logout">
+                <div *ngIf="this.userService.userProfileEditable;else logout">
                     <mat-list-item>
-                        <button mat-raised-button class="react" (click)="this.editable=false">Cancel changes</button>
+                        <button mat-raised-button class="react" (click)="CancelEdit()">Cancel changes</button>
                     </mat-list-item>
                 </div>
                 <ng-template #logout>
@@ -28,11 +28,10 @@
                     </mat-list-item>
                 </ng-template>
 
-
-                <div *ngIf="this.editable;else staticValue">
+                <div *ngIf="this.userService.userProfileEditable;else staticValue">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Name"
-                               [(ngModel)]="user.name"
+                               [(ngModel)]="editedUser.name"
                                [formControl]="nameFormControl" (input)="checkUserData()"
                                (keypress)="letterOnly($event)" type="text"/>
                         <mat-error *ngIf="nameFormControl.hasError('minlength')">
@@ -50,10 +49,10 @@
                     <mat-list-item>Name: {{user.name}}</mat-list-item>
                 </ng-template>
 
-                <div *ngIf="this.editable;else surname">
+                <div *ngIf="this.userService.userProfileEditable;else surname">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Surname"
-                               [(ngModel)]="user.surname"
+                               [(ngModel)]="editedUser.surname"
                                (keypress)="letterOnly($event)" type="text"
                                [formControl]="surnameFormControl" (input)="checkUserData()"/>
                         <mat-error *ngIf="surnameFormControl.hasError('minlength')">
@@ -68,11 +67,11 @@
                     <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 </ng-template>
 
-                <div *ngIf="this.editable;else capacity">
+                <div *ngIf="this.userService.userProfileEditable;else capacity">
                     <mat-form-field mat-line class="input-edit">
                         <input placeholder="Capacity"
                                (keypress)="numberOnly($event)" type="text"
-                               [(ngModel)]="user.capacity" matInput [formControl]="capacityControl"
+                               [(ngModel)]="editedUser.capacity" matInput [formControl]="capacityControl"
                                (input)="checkUserData()"/>
                         <mat-error *ngIf="capacityControl.hasError('min')">
                             Minimum capacity is 1 kg.
@@ -107,7 +106,7 @@
                       <button mat-raised-button class="confirm" (click)="changeCapacity()" [disabled]="capacityDataInvalid()">OK</button>
                       <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
-                <div *ngIf="this.editable;else edit">
+                <div *ngIf="this.userService.userProfileEditable;else edit">
                     <mat-list-item><button mat-raised-button class="react" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit changes</button></mat-list-item>
                 </div>
                 <ng-template #edit>

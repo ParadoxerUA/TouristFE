@@ -23,10 +23,7 @@ export class UserProfileComponent implements OnInit {
   passwordFormOpened = false;
   result: number;
   gender: string;
-  editable: boolean;
   userDataIsIncorrect: boolean;
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
 
 
   surnameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
@@ -43,6 +40,7 @@ export class UserProfileComponent implements OnInit {
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user;
+  public editedUser = new User('','', 0, '', '');
 
   private getUserFormControl(){
       return new FormControl('', [Validators.required,
@@ -64,6 +62,7 @@ export class UserProfileComponent implements OnInit {
     let delta = this.gender === "male" ? 4 : 0;
 
     this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
+    this.editedUser.capacity = this.result;
 
     this.userService.updateCapacity(this.result)
             .subscribe(() => this.userService.refreshUser());
@@ -184,9 +183,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   editUser() {
-    this.editable=true;
+    this.userService.userProfileEditable=true;
     this.previewUrl = this.user.avatar;
-    console.log(this.previewUrl);
+    this.editedUser.name = this.user.name;
+    this.editedUser.surname = this.user.surname;
+    this.editedUser.capacity = this.user.capacity;
   }
 
   submitUserData()
@@ -198,21 +199,12 @@ export class UserProfileComponent implements OnInit {
             // this.uploadedFilePath = res.data.filePath;
           });
     }
-    this.editable=false;
-    if(!this.user.surname){this.user.surname=''}
-    this.userService.updateUser(this.user.name, this.user.surname, this.user.capacity)
+    this.userService.userProfileEditable=false;
+    if(!this.editedUser.surname){this.editedUser.surname=''}
+    this.userService.updateUser(this.editedUser.name, this.editedUser.surname, this.editedUser.capacity)
         .subscribe(() => this.userService.refreshUser());
   }
 
-  onSubmit() {
-    this.userService.updateUserAvatar(this.fileData)
-        .subscribe(res => {
-          console.log(res);
-          // this.uploadedFilePath = res.data.filePath;
-        });
-    this.userService.updateUser(this.user.name, this.user.surname, this.user.capacity)
-        .subscribe(() => this.userService.refreshUser());
-  }
 
   checkUserData()
   {
@@ -223,6 +215,14 @@ export class UserProfileComponent implements OnInit {
         this.surnameFormControl.hasError('maxlength');
     let capasityIsCorrect = this.capacityControl.hasError('min')||this.capacityControl.hasError('max')||this.capacityControl.hasError('required');
     this.userDataIsIncorrect = nameIsIncorect||surnameIsCorrect||capasityIsCorrect;
+  }
+
+  CancelEdit(){
+    this.userService.userProfileEditable=false;
+    this.editedUser.name = this.user.name;
+    this.editedUser.surname = this.user.surname;
+    this.editedUser.capacity = this.user.capacity;
+    this.previewUrl = this.user.avatar;
   }
 
   fileData: File = null;
@@ -247,7 +247,6 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
   constructor(
       private userService: UserService,
       private router: Router,
@@ -258,7 +257,6 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.clearUser();
     this.userService.refreshUser();
-    this.editable = false;
     this.userService.setUserSideNav(this.userSideNav);
     this.userService.getEmittedValue()
         .subscribe(item => this.user=item);
