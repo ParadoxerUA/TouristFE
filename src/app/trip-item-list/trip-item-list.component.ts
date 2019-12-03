@@ -189,11 +189,11 @@ export class TripItemListComponent implements OnInit {
       .subscribe(status => {
         this.isPersonalInventory = status
     });
-    this.roleService.newRoleId.subscribe(message => {
-      console.log('trip roles', this.tripRoles);
-      console.log('user trip roles', this.userTripRoles);
-      console.log('Message in item-list', message);
-    });
+    // this.roleService.newRoleId.subscribe(message => {
+    //   console.log('trip roles', this.tripRoles);
+    //   console.log('user trip roles', this.userTripRoles);
+    //   console.log('Message in item-list', message);
+    // });
   }
 
 }

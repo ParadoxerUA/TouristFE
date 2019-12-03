@@ -42,8 +42,8 @@ export class RoleService {
     );
   }
 
-  getUserRoles(): Observable<any> {
-    const url = BASE_URL + `/user/v1/user/roles`;
+  getUserRoles(trip_id): Observable<any> {
+    const url = BASE_URL + `/user/v1/user?fields=roles&trip_id=${trip_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(
