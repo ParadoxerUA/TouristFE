@@ -5,6 +5,8 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { User } from '../user';
 import { Trip, Role } from '../trip';
 import {RoleService} from '../_services/role.service'
+import {UserService} from '../_services/user.service'
+import {ItemService} from '../_services/item.service'
 
 @Component({
   selector: 'app-trip-user-list',
@@ -13,17 +15,21 @@ import {RoleService} from '../_services/role.service'
 })
 export class TripUserListComponent implements OnInit {
 
+  userId: number
   tripUsers: User[];
   tripRoles: Role[]
   activeRole: number = 0
   activeRoleColor: string = 'white'
   @Input() trip: Trip;
   @Input() currentUser: User;
+  isPersonalInventory: Boolean = false
 
   constructor(
     public dialog: MatDialog,
     private tripUserService: TripUserService,
     private roleService: RoleService,
+    private userService: UserService,
+    private itemService: ItemService,
   ) {}
 
   getUsers(): void {
@@ -41,13 +47,13 @@ export class TripUserListComponent implements OnInit {
 
 
   getRoleColor(roleId) {
-    let color = 'white'
+    let color = 'white';
     // console.log(this.tripRoles)
     // console.log(roleId)
     this.tripRoles.forEach(role => {
-      if (role.id === roleId) {color = role.color}
+      if (role.id === roleId) {color = role.color;}
     })
-    return color
+    return color;
   }
 
   deleteUser(userToDelete: User): void {
@@ -71,11 +77,12 @@ export class TripUserListComponent implements OnInit {
   }
 
   recieveRole($event) {
+    console.log($event);
     // will refresh roles after new role was created
     if ($event === -1) {
       this.roleService.getTripRoles(this.trip.trip_id)
         .subscribe(response => {
-          this.tripRoles = response.data
+          this.tripRoles = response.data['roles'];
         })
         
     }
@@ -85,15 +92,19 @@ export class TripUserListComponent implements OnInit {
   }
 
   toggleRole(userId) {
+    if (userId == this.userService.getUserId()) {
+      return;
+    }
     this.tripUserService.toggleRole(this.activeRole, userId)
       .subscribe(response => {
         if (response.status === 201) {
-          this.toggleRoleLocaly(userId, this.activeRole)
+          this.toggleRoleLocaly(userId, this.activeRole);
         }
       })
   }
 
   toggleRoleLocaly(userId, roleId) {
+    //-------------------------------------------ToFIX--------------------------------------//
     this.tripUsers.forEach(user => {
       if (user.user_id === userId) {
         let index = user.roles.indexOf(roleId)
@@ -106,8 +117,21 @@ export class TripUserListComponent implements OnInit {
     })
   }
 
+  togglePersonalInventory() {
+    this.itemService.togglePersonalInventory()
+  }
+
+  isUserAdmin(user_id: number): boolean {
+    return user_id == this.trip['admin_id'];
+  }
+
   ngOnInit() {
-    this.getUsers();
+    this.getUsers()
+    this.userId = this.userService.getUserId()
     this.tripRoles = this.trip.roles
+    this.itemService.isPersonalInventoryStatus
+      .subscribe(status => {
+        this.isPersonalInventory = status
+  })
   }
 }

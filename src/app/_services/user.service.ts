@@ -60,8 +60,7 @@ export class UserService {
 
   updateCapacity(capacity): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    const url = this.userUrl;
-    return this.http.patch(url, capacity, {headers: header, observe: 'response'})
+    return this.http.patch(this.userUrl, capacity, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
@@ -69,7 +68,7 @@ export class UserService {
 
   updatePassword(data): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    return this.http.put(this.changePasswordUrl, data, {headers: header, observe: 'response'})
+    return this.http.patch(this.changePasswordUrl, data, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
@@ -106,6 +105,10 @@ export class UserService {
 
   closeUserProfile(){
     this.userSideNav.close()
+  }
+
+  getUserId(): number {
+    return Number(localStorage.getItem('userId'))
   }
 
   constructor(

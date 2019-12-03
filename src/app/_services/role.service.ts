@@ -5,11 +5,18 @@ import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config'
 import { catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
+  private newRoleSource = new BehaviorSubject(null);
+  newRole = this.newRoleSource.asObservable();
+
+  setNewRole(role) {
+    this.newRoleSource.next(role);
+  }
   
   constructor(
     private http: HttpClient,
@@ -18,7 +25,7 @@ export class RoleService {
   ) { }
 
   getTripRoles(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/role/v1/role/${trip_id}`;
+    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=roles`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(
@@ -30,6 +37,15 @@ export class RoleService {
     const url = BASE_URL + `/role/v1/role`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.post(url, data, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
+  getUserRoles(): Observable<any> {
+    const url = BASE_URL + `/user/v1/user/roles`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

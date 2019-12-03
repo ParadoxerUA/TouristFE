@@ -38,6 +38,7 @@ export class TripListComponent implements OnInit {
 
   ngOnInit() {
     this.getTrips();
+    // console.log(this.tripsDataSource)
   }
   getOtherStatus(status) {
     if (status == 'Open') {
@@ -60,6 +61,7 @@ export class TripListComponent implements OnInit {
         this.trips.push(element as Trip);
       });
       this.tripsDataSource.data = this.trips;
+      console.log(this.tripsDataSource)
     })
   }
 
@@ -105,7 +107,7 @@ export class TripListComponent implements OnInit {
 
     this.tripService.updateTrip(trip.id, this.startDate.value, this.endDate.value, this.status.value).subscribe(
       response => {
-        if(response.data == 'trip updated') {
+        if(response.data == 'Trip was updated') {
           let start_date = this.startDate.value;
           let end_date = this.endDate.value;
           trip.start_date = this.formatDate(start_date);

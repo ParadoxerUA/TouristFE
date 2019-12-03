@@ -3,7 +3,7 @@
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
       <mat-select [formControl]="tagName" [(ngModel)]="tag">
-        <mat-option *ngFor="let role of tripRoles" [style.background-color]="role.color" [value]="role.id">
+        <mat-option *ngFor="let role of userTripRoles" [style.background-color]="role.color" [value]="role.id">
           {{role.name}}
         </mat-option>
       </mat-select>
@@ -52,10 +52,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
       <ng-container matColumnDef="groupHeader">
-        <td colspan="999" mat-cell *matCellDef="let group" [style.background-color]="group.role_color">
-        </td>
+        <td colspan="999" mat-cell *matCellDef="let group" [style.background-color]="group.role_color"></td>
       </ng-container>
 
-      <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
+      <tr mat-row class="tag-color-line" *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
     </table>
   </mat-card>

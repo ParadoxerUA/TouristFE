@@ -92,3 +92,8 @@ p.progress-value {
   margin-bottom: 0px;
   overflow: auto;
 }
+
+.admin-icon {
+  position: relative;
+  margin-left:1vh;
+}

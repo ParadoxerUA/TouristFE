@@ -2,9 +2,10 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material';
 import { ItemService } from '../_services/item.service';
-import { UserService } from '../_services/user.service';
+import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -25,9 +26,10 @@ export class TripItemListComponent implements OnInit {
   @Input() trip: Trip;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
+  userTripRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean
+  isPersonalInventory: Boolean = false
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
   groupByColumns: string[] = ['role_color'];
@@ -36,6 +38,7 @@ export class TripItemListComponent implements OnInit {
 
   constructor(
     private itemService: ItemService,
+    private roleService: RoleService,
     private userService: UserService,
   ) { }
 
@@ -70,23 +73,21 @@ export class TripItemListComponent implements OnInit {
       || this.tagName.invalid);
   }
 
+  setColorToItems() {
+    this.tripItems.map(item => item.role_color =
+      this.tripRoles.find(role => role.id === item.role_id).color);
+  }
+
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
-      .subscribe(response => {
-        this.tripItems = [];
-        response.data.equipment.forEach(element =>
-          this.tripItems.push(element as Item));
+    .subscribe(response => {
+      this.tripItems = [];
+      response.data.equipment.forEach(element =>
+        this.tripItems.push(element as Item));
 
-        this.tripItems.forEach(element =>
-          {for (let role of this.tripRoles) {
-            if (role.id === element.role_id) {
-              element.role_color = role.color;
-            }
-          }});
-
-        this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
-      });
-    }
+      this.getTripRoles();
+    });
+  }
 
   addItem(): void {
     this.itemData = {
@@ -103,16 +104,36 @@ export class TripItemListComponent implements OnInit {
 
     this.itemService.addTripItem(this.itemData)
     .subscribe(data => {
-      console.log(data);
       this.getItems();
     })
   }
 
-  getUserRoles() {
-    this.userService.getUserProfile()
-      .subscribe(response =>{
-        response.body["data"].roles.forEach(element =>
-          this.tripRoles.push(element as Role));
+  getTripRoles() {
+    this.roleService.getTripRoles(this.trip.trip_id)
+    .subscribe(response => {
+      this.tripRoles = [];
+      response.data.roles.forEach(role =>
+        this.tripRoles.push(role as Role));
+      this.getUserTripRoles();
+      this.setColorToItems();
+      this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
+    });
+  }
+
+  setRolesToUser(response) {
+    this.userTripRoles = response.data.filter(user_role =>
+      user_role.trip_id === this.trip.trip_id)
+  }
+
+  getUserTripRoles() {
+    if (this.trip['admin_id'] == this.userService.getUserId()) {
+      this.userTripRoles = this.tripRoles;
+      return;
+    }
+    this.roleService.getUserRoles()
+    .subscribe(response => {
+      this.userTripRoles = [];
+      this.setRolesToUser(response);
     });
   }
 
@@ -164,10 +185,19 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserRoles();
     this.getItems();
     this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
+    this.itemService.isPersonalInventoryStatus
+      .subscribe(status => {
+        this.isPersonalInventory = status
+    });
+    this.roleService.newRole.subscribe(role => {
+      if (role === null) {
+        return;
+      }
+      this.tripRoles.push(role as Role);
+    });
   }
 
 }

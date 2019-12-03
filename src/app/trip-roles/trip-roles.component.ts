@@ -18,8 +18,8 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0
   @Output() roleEvent = new EventEmitter<any>()
-
-  constructor( 
+  
+  constructor(
     private dialog: MatDialog,
     private roleService: RoleService
   ) { }
@@ -28,8 +28,7 @@ export class TripRolesComponent implements OnInit {
     this.tripRoles = []
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        // console.log(response);
-        response.data.forEach(element => 
+        response.data.roles.forEach(element => 
           this.tripRoles.push(element as Role));
       });
     }
@@ -38,12 +37,14 @@ export class TripRolesComponent implements OnInit {
     const dialogRef = this.dialog.open(NewRolePopUpComponent, {
       width: '350px',
       height: '500px',
-      data: {name: this.name, color: this.color}
+      data: {
+        name: this.name,
+        color: this.color
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        // console.log(result);
         result.trip_id = this.trip.trip_id;
         this.addRole(result);
       }
@@ -52,15 +53,21 @@ export class TripRolesComponent implements OnInit {
 
   addRole(data): void {
     this.roleService.addTripRole(data).subscribe(response => {
-      this.tripRoles.push(response.data)
-      this.roleEvent.emit(-1)
+      console.log("some data", data);
+      console.log(response.data);
+      this.tripRoles.push(response.data);
+      this.roleEvent.emit(-1);
+      this.roleService.setNewRole(response.data);
     });
   }
 
   activateRole(roleId) {
-    if (roleId === this.activeRole) {this.activeRole = 0}
-    else {this.activeRole = roleId}
-    this.roleEvent.emit(this.activeRole)
+    if (roleId === this.activeRole) {
+      this.activeRole = 0;
+    } else {
+      this.activeRole = roleId;
+    }
+    this.roleEvent.emit(this.activeRole);
   }
 
   ngOnInit() {
