@@ -1,10 +1,12 @@
-import {Component, OnInit, ViewChild, Injectable} from '@angular/core';
-import {UserService} from "../_services/user.service";
-import {Router} from "@angular/router";
-import {MatSidenav} from "@angular/material/sidenav";
-import {User} from '../user';
+import { Component, OnInit, ViewChild, Injectable} from '@angular/core';
+import { UserService} from "../_services/user.service";
+import { Router} from "@angular/router";
+import { MatSidenav} from "@angular/material/sidenav";
+import { User} from '../user';
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { HttpClient, HttpEventType} from "@angular/common/http";
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 
 @Component({
@@ -21,41 +23,49 @@ export class UserProfileComponent implements OnInit {
   passwordFormOpened = false;
   result: number;
   gender: string;
+  userDataIsIncorrect: boolean;
 
+
+  surnameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
+  nameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30), Validators.required]);
+  capacityControl = new FormControl('', [Validators.min(1), Validators.max(40), Validators.required]);
   userGender = new FormControl('', Validators.required);
   userHeight = this.getUserFormControl();
   userWeight = this.getUserFormControl();
   oldPassword = this.getPasswordFormControl();
   newPassword = this.getPasswordFormControl();
   confirmPassword = this.getPasswordFormControl();
-  passswordGroup = new FormGroup({first: this.newPassword, 
+  passswordGroup = new FormGroup({first: this.newPassword,
     second: this.confirmPassword}, this.passwordMatchValidator);
 
   @ViewChild('sidenav', {static: true}) public userSideNav: MatSidenav;
   public user;
+  public editedUser = new User('','', 0, '', '');
 
   private getUserFormControl(){
-    return new FormControl('', [Validators.required, 
-      Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
+      return new FormControl('', [Validators.required,
+        Validators.pattern("^(?:[1-9][0-9]{2}|[1-9][0-9]|[1-9])$")]);
   }
 
   private getPasswordFormControl(){
-    return new FormControl('', [Validators.required, Validators.minLength(8),
-      Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
+      return new FormControl('', [Validators.required, Validators.minLength(8),
+            Validators.pattern(RegExp('(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\\d]'))]);
   }
 
   private passwordMatchValidator(g: FormGroup) {
-    return g.get('first').value === g.get('second').value
-       ? null : {'mismatch': true};
- }
+      return g.get('first').value === g.get('second').value
+          ? null : {'mismatch': true};
+  }
+
 
   changeCapacity(): void {
     let delta = this.gender === "male" ? 4 : 0;
 
     this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
+    this.editedUser.capacity = this.result;
 
     this.userService.updateCapacity(this.result)
-    .subscribe(() => this.userService.refreshUser());
+            .subscribe(() => this.userService.refreshUser());
     this.calculateFormOpened = false;
   }
 
@@ -64,7 +74,7 @@ export class UserProfileComponent implements OnInit {
     if(this.oldPassword.value !== null){
       data = {'old_password': this.oldPassword.value};
     }
-    data['new_password'] = this.newPassword.value
+    data['new_password'] = this.newPassword.value;
     this.userService.updatePassword(data)
     .subscribe(() => {
       this.userService.refreshUser();
@@ -121,7 +131,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   getPasswordGroupErrorMessage(password){
-    return this.passswordGroup.hasError('mismatch') ? 'Passwords do not match.': 
+    return this.passswordGroup.hasError('mismatch') ? 'Passwords do not match.':
         this.getPasswordErrorMessage(password);
   }
 
@@ -152,12 +162,96 @@ export class UserProfileComponent implements OnInit {
 
   private clearUser(){
     this.user = new User('','', 0, '', '');
+    this.previewUrl = null;
+  }
+
+  numberOnly(event): boolean {
+      const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          return false;
+      }
+      return true;
+  }
+
+  letterOnly(event): boolean {
+      const charCode = (event.which) ? event.which : event.keyCode;
+        // console.log('charCode ', charCode);
+      if ((charCode != 32) && (charCode != 39) && (charCode < 65 || charCode > 122 )) {
+          return false;
+      }
+      return true;
+  }
+
+  editUser() {
+    this.userService.userProfileEditable=true;
+    this.previewUrl = this.user.avatar;
+    this.editedUser.name = this.user.name;
+    this.editedUser.surname = this.user.surname;
+    this.editedUser.capacity = this.user.capacity;
+  }
+
+  submitUserData()
+  {
+    if (this.previewUrl!=this.user.avatar){
+      this.userService.updateUserAvatar(this.fileData)
+          .subscribe(res => {
+            console.log(res);
+            // this.uploadedFilePath = res.data.filePath;
+          });
+    }
+    this.userService.userProfileEditable=false;
+    if(!this.editedUser.surname){this.editedUser.surname=''}
+    this.userService.updateUser(this.editedUser.name, this.editedUser.surname, this.editedUser.capacity)
+        .subscribe(() => this.userService.refreshUser());
+  }
+
+
+  checkUserData()
+  {
+    let nameIsIncorect = this.nameFormControl.hasError('minlength')||
+        this.nameFormControl.hasError('maxlength')||
+        this.nameFormControl.hasError('required');
+    let surnameIsCorrect = this.surnameFormControl.hasError('minlength')||
+        this.surnameFormControl.hasError('maxlength');
+    let capasityIsCorrect = this.capacityControl.hasError('min')||this.capacityControl.hasError('max')||this.capacityControl.hasError('required');
+    this.userDataIsIncorrect = nameIsIncorect||surnameIsCorrect||capasityIsCorrect;
+  }
+
+  CancelEdit(){
+    this.userService.userProfileEditable=false;
+    this.editedUser.name = this.user.name;
+    this.editedUser.surname = this.user.surname;
+    this.editedUser.capacity = this.user.capacity;
+    this.previewUrl = this.user.avatar;
+  }
+
+  fileData: File = null;
+  previewUrl:any = null;
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+  }
+
+  preview() {
+    // Show preview
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (_event) => {
+      this.previewUrl = reader.result;
+      console.log(this.previewUrl);
+    }
   }
 
   constructor(
       private userService: UserService,
       private router: Router,
       private authService: AuthService,
+      private http: HttpClient,
   ){ }
 
   ngOnInit() {

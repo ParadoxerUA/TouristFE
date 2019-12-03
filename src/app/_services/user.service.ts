@@ -14,12 +14,14 @@ import { ErrorService } from './error.service';
 export class UserService {
 
   private userUrl = BASE_URL + '/user/v1/user';
-  private changePasswordUrl = `${this.userUrl}/change_password`
+  private changePasswordUrl = `${this.userUrl}/change_password`;
+  private userAvatarUrl = `${this.userUrl}/avatar`;
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
   userSideNav: MatSidenav;
+  userProfileEditable = false;
 
   setUserProfile(user){
     this.userDataEmitter.emit(user.data);
@@ -64,7 +66,7 @@ export class UserService {
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
-  
+
   updatePassword(data): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
     return this.http.put(this.changePasswordUrl, data, {headers: header, observe: 'response'})
@@ -73,12 +75,37 @@ export class UserService {
     );
   }
 
+  updateUser(name, surname, capacity): Observable<any> {
+      let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+      const url = this.userUrl;
+      return this.http.put(url, {name, surname, capacity}, {headers: header, observe: 'response'})
+      .pipe(
+          catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+      );
+  }
+
+  updateUserAvatar(avatar): Observable<any> {
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    const url = this.userAvatarUrl;
+    const formData = new FormData();
+    formData.append('file', avatar);
+    return this.http.post(url, formData, {headers: header, observe: 'response'})
+        .pipe(
+            catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+        );
+  }
+
   setUserSideNav(sideNav: MatSidenav){
     this.userSideNav = sideNav;
   }
 
   toggleUserProfile(){
     this.userSideNav.toggle();
+    this.userProfileEditable = false;
+  }
+
+  closeUserProfile(){
+    this.userSideNav.close()
   }
 
   constructor(

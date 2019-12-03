@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Trip} from '../trip';
-import {FormControl, Validators} from "@angular/forms";
-import {TripService} from "../_services/trip.service";
-import { Router } from '@angular/router';
+import { Trip } from '../trip';
+import { FormControl, Validators } from "@angular/forms";
+import { TripService } from "../_services/trip.service";
 
 @Component({
   selector: 'app-create-trip-page',
@@ -26,7 +25,6 @@ export class CreateTripPageComponent implements OnInit {
   };
   constructor(
     private tripService : TripService,
-    private router: Router,
     )  { }
 
   create_trip()
