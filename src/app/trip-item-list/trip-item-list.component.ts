@@ -5,6 +5,7 @@ import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -38,6 +39,7 @@ export class TripItemListComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private roleService: RoleService,
+    private userService: UserService,
   ) { }
 
   getTagErrorMessage() {
@@ -124,6 +126,10 @@ export class TripItemListComponent implements OnInit {
   }
 
   getUserTripRoles() {
+    if (this.trip['admin_id'] == this.userService.getUserId()) {
+      this.userTripRoles = this.tripRoles;
+      return;
+    }
     this.roleService.getUserRoles()
     .subscribe(response => {
       this.userTripRoles = [];
@@ -186,10 +192,11 @@ export class TripItemListComponent implements OnInit {
       .subscribe(status => {
         this.isPersonalInventory = status
     });
-    this.roleService.newRole.subscribe(message => {
-      console.log('trip roles', this.tripRoles);
-      console.log('user trip roles', this.userTripRoles);
-      console.log('Message in item-list', message);
+    this.roleService.newRole.subscribe(role => {
+      if (role === null) {
+        return;
+      }
+      this.tripRoles.push(role as Role);
     });
   }
 

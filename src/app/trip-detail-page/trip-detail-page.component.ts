@@ -38,7 +38,6 @@ export class TripDetailPageComponent implements OnInit {
         });
   }
 
-
   ngOnInit() {
     this.getTrip();
     this.userService.getUserProfile()

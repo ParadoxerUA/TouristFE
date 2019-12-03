@@ -23,7 +23,8 @@
           <img mat-card-avatar src="{{user.avatar}}" alt="User Avatar">
           <mat-card-subtitle><strong>{{user.name}}</strong></mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline"><strong>{{user.surname}}</strong></mat-card-subtitle>
-
+          <br>
+          <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
           <mat-card-footer style="text-align: center">
             <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
             <p class="progress-value">10/{{user.capacity}}</p>

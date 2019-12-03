@@ -92,15 +92,19 @@ export class TripUserListComponent implements OnInit {
   }
 
   toggleRole(userId) {
+    if (userId == this.userService.getUserId()) {
+      return;
+    }
     this.tripUserService.toggleRole(this.activeRole, userId)
       .subscribe(response => {
         if (response.status === 201) {
-          this.toggleRoleLocaly(userId, this.activeRole)
+          this.toggleRoleLocaly(userId, this.activeRole);
         }
       })
   }
 
   toggleRoleLocaly(userId, roleId) {
+    //-------------------------------------------ToFIX--------------------------------------//
     this.tripUsers.forEach(user => {
       if (user.user_id === userId) {
         let index = user.roles.indexOf(roleId)
@@ -115,6 +119,10 @@ export class TripUserListComponent implements OnInit {
 
   togglePersonalInventory() {
     this.itemService.togglePersonalInventory()
+  }
+
+  isUserAdmin(user_id: number): boolean {
+    return user_id == this.trip['admin_id'];
   }
 
   ngOnInit() {

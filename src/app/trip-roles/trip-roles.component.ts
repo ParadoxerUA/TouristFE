@@ -37,7 +37,10 @@ export class TripRolesComponent implements OnInit {
     const dialogRef = this.dialog.open(NewRolePopUpComponent, {
       width: '350px',
       height: '500px',
-      data: {name: this.name, color: this.color}
+      data: {
+        name: this.name,
+        color: this.color
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -50,17 +53,21 @@ export class TripRolesComponent implements OnInit {
 
   addRole(data): void {
     this.roleService.addTripRole(data).subscribe(response => {
+      console.log("some data", data);
       console.log(response.data);
-      this.tripRoles.push(response.data)
-      this.roleEvent.emit(-1)
-      this.roleService.setNewRoleId(404);
+      this.tripRoles.push(response.data);
+      this.roleEvent.emit(-1);
+      this.roleService.setNewRole(response.data);
     });
   }
 
   activateRole(roleId) {
-    if (roleId === this.activeRole) {this.activeRole = 0}
-    else {this.activeRole = roleId}
-    this.roleEvent.emit(this.activeRole)
+    if (roleId === this.activeRole) {
+      this.activeRole = 0;
+    } else {
+      this.activeRole = roleId;
+    }
+    this.roleEvent.emit(this.activeRole);
   }
 
   ngOnInit() {
