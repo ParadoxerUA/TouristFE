@@ -71,9 +71,14 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-    clickToggle() {
+  clickToggle() {
     this.userService.toggleUserProfile();
-    }
+  }
+
+  closeProfile(){
+    this.userService.closeUserProfile()
+  }
+
 
     ngOnInit() {
     this.user = new User('','', 0, '', '');
