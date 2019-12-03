@@ -118,16 +118,17 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
-  setRolesToUser(response) {
-    this.userTripRoles = response.data.filter(user_role =>
-      user_role.trip_id === this.trip.trip_id)
-  }
+  // setRolesToUser(response) {
+  //   this.userTripRoles = response.data.filter(user_role =>
+  //     user_role.trip_id === this.trip.trip_id)
+  // }
 
   getUserTripRoles() {
-    this.roleService.getUserRoles()
+    this.roleService.getUserRoles(this.trip.trip_id)
     .subscribe(response => {
       this.userTripRoles = [];
-      this.setRolesToUser(response);
+      console.log(response);
+      // this.setRolesToUser(response);
     });
   }
 
