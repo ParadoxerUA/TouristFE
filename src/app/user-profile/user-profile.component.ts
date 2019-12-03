@@ -64,9 +64,13 @@ export class UserProfileComponent implements OnInit {
     this.result = ((this.userWeight.value * 0.3) + ((this.userHeight.value-100)/5) + delta) / 2;
     this.editedUser.capacity = this.result;
 
-    this.userService.updateCapacity(this.result)
-            .subscribe(() => this.userService.refreshUser());
-    this.calculateFormOpened = false;
+    if (this.result < 0) {
+      alert("New capacity less then zero. Check your inputs.");
+    } else {
+      this.userService.updateCapacity({'capacity': this.result})
+      .subscribe(() => this.userService.refreshUser());
+      this.calculateFormOpened = false;
+    }
   }
 
   updatePassword(){

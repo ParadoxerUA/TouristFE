@@ -68,7 +68,7 @@ export class UserService {
 
   updatePassword(data): Observable<any> {
     let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
-    return this.http.patch(this.userUrl, data, {headers: header, observe: 'response'})
+    return this.http.patch(this.changePasswordUrl, data, {headers: header, observe: 'response'})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

@@ -14,7 +14,7 @@ export class RoleService {
   private newRoleSource = new BehaviorSubject(null);
   newRole = this.newRoleSource.asObservable();
 
-  setNewRoleId(role) {
+  setNewRole(role) {
     this.newRoleSource.next(role);
   }
   
