@@ -103,7 +103,7 @@ export class TripListComponent implements OnInit {
 
     this.tripService.updateTrip(trip.id, this.startDate.value, this.endDate.value, this.status.value).subscribe(
       response => {
-        if(response.data == 'trip updated') {
+        if(response.data == 'Trip was updated') {
           let start_date = this.startDate.value;
           let end_date = this.endDate.value;
           trip.start_date = this.formatDate(start_date);
