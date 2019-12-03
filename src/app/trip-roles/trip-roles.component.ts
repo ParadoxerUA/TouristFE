@@ -50,8 +50,10 @@ export class TripRolesComponent implements OnInit {
 
   addRole(data): void {
     this.roleService.addTripRole(data).subscribe(response => {
+      console.log(response.data);
       this.tripRoles.push(response.data)
       this.roleEvent.emit(-1)
+      this.roleService.setNewRoleId(404);
     });
   }
 

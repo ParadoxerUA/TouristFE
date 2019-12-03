@@ -5,11 +5,18 @@ import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config'
 import { catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
+  private newRoleSource = new BehaviorSubject(null);
+  newRole = this.newRoleSource.asObservable();
+
+  setNewRoleId(role) {
+    this.newRoleSource.next(role);
+  }
   
   constructor(
     private http: HttpClient,
@@ -35,8 +42,8 @@ export class RoleService {
     );
   }
 
-  getUserRoles(): Observable<any> {
-    const url = BASE_URL + `/user/v1/user/roles`;
+  getUserRoles(trip_id): Observable<any> {
+    const url = BASE_URL + `/user/v1/user?fields=roles&trip_id=${trip_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(
