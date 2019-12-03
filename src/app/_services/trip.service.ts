@@ -83,7 +83,7 @@ export class TripService {
 
 
   getTrips(): Observable<any> {
-    const tripListUrl: string = `${BASE_URL}/user/v1/user/trips`;
+    const tripListUrl: string = `${BASE_URL}/user/v1/user?fields=trips`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(tripListUrl, {headers: header})
     .pipe(

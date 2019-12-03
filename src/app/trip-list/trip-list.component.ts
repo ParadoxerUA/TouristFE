@@ -47,8 +47,8 @@ export class TripListComponent implements OnInit {
   getTrips(): void {
     this.tripService.getTrips()
     .subscribe(trips => {
-      console.log(trips)
-      trips.data.forEach(element => {
+      console.log(trips.data.trips)
+      trips.data.trips.forEach(element => {
         if (element['admin'] == '*') {
           this.admin_trips[element['id']] = true;
         }
