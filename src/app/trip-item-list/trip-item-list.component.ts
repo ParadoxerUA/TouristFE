@@ -125,8 +125,8 @@ export class TripItemListComponent implements OnInit {
       this.userTripRoles = this.tripRoles;
       return;
     }
-    this.roleService.getUserRoles()
-    .subscribe(response => {
+    this.roleService.getUserRoles(this.trip.trip_id)
+    .subscribe(roles => {
       this.userTripRoles = [];
       roles.data.roles.forEach(role =>
         this.userTripRoles.push(role as Role));
