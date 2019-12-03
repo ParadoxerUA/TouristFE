@@ -118,17 +118,12 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
-  // setRolesToUser(response) {
-  //   this.userTripRoles = response.data.filter(user_role =>
-  //     user_role.trip_id === this.trip.trip_id)
-  // }
-
   getUserTripRoles() {
     this.roleService.getUserRoles(this.trip.trip_id)
-    .subscribe(response => {
+    .subscribe(roles => {
       this.userTripRoles = [];
-      console.log(response);
-      // this.setRolesToUser(response);
+      roles.data.roles.forEach(role =>
+        this.userTripRoles.push(role as Role));
     });
   }
 
@@ -187,11 +182,6 @@ export class TripItemListComponent implements OnInit {
       .subscribe(status => {
         this.isPersonalInventory = status
     });
-    // this.roleService.newRoleId.subscribe(message => {
-    //   console.log('trip roles', this.tripRoles);
-    //   console.log('user trip roles', this.userTripRoles);
-    //   console.log('Message in item-list', message);
-    // });
   }
 
 }
