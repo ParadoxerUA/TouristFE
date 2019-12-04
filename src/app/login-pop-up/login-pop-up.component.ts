@@ -100,7 +100,6 @@ export class LoginPopUpComponent implements OnInit {
   ngOnInit() {
     // Create subscription on AuthService state
     this.authServiceSubscription = this.socialAuthService.authState.subscribe((user) => {
-      console.log(user);
       // check if authentication is successful (returns user) and user is not authorized
       if ((user != null) && !this.authService.userIsAuthorized()){
         this.subscribeOnLogin(this.getSocialData(user), 'type');
