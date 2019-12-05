@@ -31,7 +31,7 @@ export class TripItemListComponent implements OnInit {
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -106,6 +106,10 @@ export class TripItemListComponent implements OnInit {
     .subscribe(data => {
       this.getItems();
     })
+  }
+
+  deleteItemFromList() {
+    
   }
 
   getTripRoles() {
