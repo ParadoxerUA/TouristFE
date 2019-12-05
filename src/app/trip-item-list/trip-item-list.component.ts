@@ -195,5 +195,12 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
+  selectItem(item: Role) {
+    if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
+      console.log(item);
+    } else {
+      console.log('User has no access to this item');
+    }
+  }
 
 }
