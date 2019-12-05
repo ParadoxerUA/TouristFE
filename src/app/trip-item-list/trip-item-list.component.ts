@@ -108,8 +108,12 @@ export class TripItemListComponent implements OnInit {
     })
   }
 
-  deleteItemFromList() {
-    
+  deleteItemFromList(equipment_id: number) {
+    this.itemService.deleteTripItem(equipment_id)
+    .subscribe(response => {
+      alert(response.data);
+      this.getItems();
+    });
   }
 
   getTripRoles() {
