@@ -15,14 +15,15 @@ import {ItemService} from '../_services/item.service'
 })
 export class TripUserListComponent implements OnInit {
 
-  userId: number
+  userId: number;
   tripUsers: User[];
-  tripRoles: Role[]
-  activeRole: number = 0
-  activeRoleColor: string = 'white'
+  tripRoles: Role[];
+  activeRole: number = 0;
+  activeRoleColor: string = 'white';
+  itemIsSelected: boolean = false;
   @Input() trip: Trip;
   @Input() currentUser: User;
-  isPersonalInventory: Boolean = false
+  isPersonalInventory: Boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -126,12 +127,22 @@ export class TripUserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers()
-    this.userId = this.userService.getUserId()
-    this.tripRoles = this.trip.roles
+    this.getUsers();
+    this.userId = this.userService.getUserId();
+    this.tripRoles = this.trip.roles;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status
-  })
+        this.isPersonalInventory = status;
+    });
+    this.itemService.selectedItem.subscribe(item => {
+      if (item === null) {
+        this.itemIsSelected = false;
+      } else {
+        this.itemIsSelected = true;
+      }
+    });
+  }
+  getUserLoad() {
+    
   }
 }

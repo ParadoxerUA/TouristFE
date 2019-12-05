@@ -4,21 +4,27 @@ import { Observable, of, BehaviorSubject,  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config';
-import { Item } from '../trip';
+import { Item, Role } from '../trip';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
-  private isPersonalInventorySource = new BehaviorSubject(false)
-  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable()
+  private isPersonalInventorySource = new BehaviorSubject(false);
+  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable();
+  private selectedItemSource = new BehaviorSubject(null);
+  selectedItem = this.selectedItemSource.asObservable();
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private errorService: ErrorService,
   ) { }
+
+  selectNewItem(item: Item) {
+    this.selectedItemSource.next(item);
+  }
 
   getTripItems(trip_id: number): Observable<any> {
     const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
