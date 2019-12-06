@@ -1,33 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { UserService } from './user.service';
+import { Observable, of, BehaviorSubject,  } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { ErrorService } from './error.service';
 import { BASE_URL } from './config';
 import { Item } from '../trip';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
+  private isPersonalInventorySource = new BehaviorSubject(false)
+  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable()
 
   constructor(
     private http: HttpClient,
-    private userService: UserService
+    private authService: AuthService,
+    private errorService: ErrorService,
   ) { }
-
-  httpOptions = {
-    headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': this.userService.getSessionId()})
-  };
 
   getTripItems(trip_id: number): Observable<any> {
     const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
-    return this.http.get(url, this.httpOptions);
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
   addTripItem(itemData: Item): Observable<any> {
     const url = BASE_URL + `/equipment/v1/equipment`;
-    return this.http.post(url, itemData, this.httpOptions);
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.post(url, itemData, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
+  togglePersonalInventory() {
+    let nextValue = !this.isPersonalInventorySource.getValue()
+    this.isPersonalInventorySource.next(nextValue)
   }
 }

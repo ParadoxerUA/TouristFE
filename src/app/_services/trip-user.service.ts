@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, observable } from 'rxjs';
-import { User } from '../user';
-import { UserService } from './user.service';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { BASE_URL } from './config'
+import { catchError } from 'rxjs/operators';
+import { ErrorService } from './error.service';
 
 
 @Injectable({
@@ -13,32 +14,38 @@ export class TripUserService {
 
   private tripUrl = BASE_URL + '/trip/v1/trip'
 
-
-  httpOptions = {
-    headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': this.userService.getSessionId()}),
-  };
-
   constructor(
     private http: HttpClient,
-    private userService: UserService
+    private authService: AuthService,
+    private errorService: ErrorService,
     ) { }
 
   getTripUsers(trip_id): Observable<any> {
     const url = `${this.tripUrl}/${trip_id}?fields=users`
-    return this.http.get(url, this.httpOptions)
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.get(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
     
   }
 
   deleteTripUser(trip_id, user_id): Observable<any> {
-    const url = `${BASE_URL}/trip/v1/manage_trip/${trip_id}?user_id=${user_id}`;
-    return this.http.delete(url, this.httpOptions);
+    const url = `${BASE_URL}/user/v1/user?trip_id=${trip_id}&user_id=${user_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.delete(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
   toggleRole(role_id, user_id): Observable<any> {
-    const url = `${BASE_URL}/role/v1/role/${role_id}/${user_id}`;
-    return this.http.put(url, {}, {headers: this.httpOptions.headers, observe: 'response'})
+    const url = `${BASE_URL}/role/v1/role/${role_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.put(url, {'user_id': user_id}, {headers: header, observe: 'response'})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
 }

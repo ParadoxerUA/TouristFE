@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
 import { TripService } from '../_services/trip.service';
-import { AccessService } from '../_services/access.service';
+import { UserService } from "../_services/user.service";
 import { Trip } from '../trip';
 import { Router } from '@angular/router';
 import { FormControl } from "@angular/forms";
@@ -32,13 +32,13 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private tripService: TripService,
+    private userService: UserService,
     private router: Router,
-    private accessService: AccessService,
     ) { }
 
   ngOnInit() {
-    if(!this.accessService.checkUserAccess()){return};
     this.getTrips();
+    // console.log(this.tripsDataSource)
   }
   getOtherStatus(status) {
     if (status == 'Open') {
@@ -49,8 +49,8 @@ export class TripListComponent implements OnInit {
   getTrips(): void {
     this.tripService.getTrips()
     .subscribe(trips => {
-      console.log(trips)
-      trips.data.forEach(element => {
+      console.log(trips.data.trips)
+      trips.data.trips.forEach(element => {
         if (element['admin'] == '*') {
           this.admin_trips[element['id']] = true;
         }
@@ -61,14 +61,17 @@ export class TripListComponent implements OnInit {
         this.trips.push(element as Trip);
       });
       this.tripsDataSource.data = this.trips;
+      console.log(this.tripsDataSource)
     })
   }
 
   redirectToTripDetail(id): void {  
     this.router.navigate([`trip_detail`, id]);
+    this.userService.closeUserProfile();
   }
   redirectToCreateTrip(): void {
     this.router.navigate(['create_trip']);
+    this.userService.closeUserProfile();
   }
   isCurrentUserAdmin(admin): boolean {
     return admin == '*';
@@ -104,7 +107,7 @@ export class TripListComponent implements OnInit {
 
     this.tripService.updateTrip(trip.id, this.startDate.value, this.endDate.value, this.status.value).subscribe(
       response => {
-        if(response.data == 'trip updated') {
+        if(response.data == 'Trip was updated') {
           let start_date = this.startDate.value;
           let end_date = this.endDate.value;
           trip.start_date = this.formatDate(start_date);

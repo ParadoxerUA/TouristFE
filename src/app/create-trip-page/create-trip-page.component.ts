@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Trip} from '../trip';
-import {FormControl, Validators} from "@angular/forms";
-import {TripService} from "../_services/trip.service";
-import { AccessService } from '../_services/access.service';
-import { Router } from '@angular/router';
+import { Trip } from '../trip';
+import { FormControl, Validators } from "@angular/forms";
+import { TripService } from "../_services/trip.service";
 
 @Component({
   selector: 'app-create-trip-page',
@@ -27,8 +25,6 @@ export class CreateTripPageComponent implements OnInit {
   };
   constructor(
     private tripService : TripService,
-    private router: Router,
-    private accessService: AccessService,
     )  { }
 
   create_trip()
@@ -40,10 +36,8 @@ export class CreateTripPageComponent implements OnInit {
     let tripDescription = this.TripDescription.value? this.TripDescription.value : '';// ---fix of null description
     this.tripService.createTrip(this.TripName.value, this.StartDate.value,
         this.EndDate.value, tripDescription);
-  }
-  ngOnInit() {
-    if(!this.accessService.checkUserAccess()){return};
-  }
+  } 
+  ngOnInit() { }
 
    public refreshButtonState():  void {
     let isDateInCorrect = this.EndDate.value < this.StartDate.value;

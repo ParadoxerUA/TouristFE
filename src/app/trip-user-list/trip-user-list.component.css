@@ -90,15 +90,10 @@ p.progress-value {
   height: 65px;
   padding-top: 0px;
   margin-bottom: 0px;
+  overflow: auto;
 }
 
-.glowingBorder {
-  border: 4px solid #dadada;
-  border-radius: 5px;
-}
-
-.glowingBorder:hover { 
-  outline: none;
-  border-color: cyan;
-  box-shadow: 0 0 10px cyan;
+.admin-icon {
+  position: relative;
+  margin-left:1vh;
 }

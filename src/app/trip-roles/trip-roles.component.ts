@@ -18,47 +18,55 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0
   @Output() roleEvent = new EventEmitter<any>()
-
-  constructor( 
+  
+  constructor(
     private dialog: MatDialog,
     private roleService: RoleService
   ) { }
 
   getRoles() {
+    this.tripRoles = []
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        console.log(response);
-        response.data.forEach(element => 
+        response.data.roles.forEach(element => 
           this.tripRoles.push(element as Role));
       });
     }
 
-    openDialog(): void {
-      const dialogRef = this.dialog.open(NewRolePopUpComponent, {
-        width: '350px',
-        height: '500px',
-        data: {name: this.name, color: this.color}
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          console.log(result);
-          result.trip_id = this.trip.trip_id;
-          this.addRole(result);
-          this.tripRoles.push(result);
-        }
-      });
-    }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewRolePopUpComponent, {
+      width: '350px',
+      height: '500px',
+      data: {
+        name: this.name,
+        color: this.color
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        result.trip_id = this.trip.trip_id;
+        this.addRole(result);
+      }
+    });
+  }
 
   addRole(data): void {
-    this.roleService.addTripRole(data)
-    .subscribe();
+    this.roleService.addTripRole(data).subscribe(response => {
+      console.log(response)
+      this.tripRoles.push(response.data);
+      this.roleService.setNewRole(response.data);
+      this.roleEvent.emit(-1);
+    });
   }
 
   activateRole(roleId) {
-    if (roleId === this.activeRole) {this.activeRole = 0}
-    else {this.activeRole = roleId}
-    this.roleEvent.emit(this.activeRole)
+    if (roleId === this.activeRole) {
+      this.activeRole = 0;
+    } else {
+      this.activeRole = roleId;
+    }
+    this.roleEvent.emit(this.activeRole);
   }
 
   ngOnInit() {

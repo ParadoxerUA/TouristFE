@@ -1,12 +1,11 @@
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import {MatSidenav} from "@angular/material/sidenav";
-import {User} from "../user";
-import { CookieService } from 'ngx-cookie-service'
 import { BASE_URL } from './config'
-import { Router } from '@angular/router';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
+import { ErrorService } from './error.service';
 
 
 @Injectable({
@@ -14,24 +13,22 @@ import { retry, catchError } from 'rxjs/operators';
 })
 export class UserService {
 
-  private registerUrl = BASE_URL + '/user/v1/register';
-  private smokeUrl = BASE_URL + '/smoke/v1/smoke';
-  private loginUrl = BASE_URL + '/user/v1/login';
-  private socialLoginUrl = BASE_URL + '/user/v1/social_login';
+  private userUrl = BASE_URL + '/user/v1/user';
+  private changePasswordUrl = `${this.userUrl}`;
+  private userAvatarUrl = `${this.userUrl}/avatar`;
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
-  logoutUrl = BASE_URL + '/user/v1/logout';
-  userProfileUrl = BASE_URL + '/user/v1/user-profile';
 
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
   userSideNav: MatSidenav;
+  userProfileEditable = false;
 
   setUserProfile(user){
     this.userDataEmitter.emit(user.data);
   }
 
   refreshUser(){
-    if(this.userIsAuthorized()){
+    if(this.authService.userIsAuthorized()){
       this.getUserProfile().subscribe(resp => {
         this.setUserProfile(resp.body);
       });
@@ -47,72 +44,54 @@ export class UserService {
   }
 
   postCredentials(data): Observable<any> {
-    return this.http.post(this.registerUrl, data)
+    return this.http.post(this.userUrl, data)
     .pipe(
-      retry(1),
-      catchError(this.handleError)
+      catchError(this.errorService.handleError)
     );
-  }
-
-  userLogin(data, type?): Observable<any> {
-    let loginUrl;
-
-    if(type === undefined){
-      loginUrl = this.loginUrl;
-    } else {
-      loginUrl = this.socialLoginUrl;
-    }
-
-    return this.http.post(loginUrl, data, {observe: 'response'})
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
-  }
-
-  userLogout(): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
-    return this.http.post(this.logoutUrl, null, {headers: header, observe: 'response'});
   }
 
   getUserProfile() {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
-    return this.http.get(this.userProfileUrl, {headers: header, observe: 'response'})
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    return this.http.get(this.userUrl, {headers: header, observe: 'response'})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
   updateCapacity(capacity): Observable<any> {
-    let header = new HttpHeaders({'Authorization': this.cookieService.get('sessionId')});
-    const url = BASE_URL + `/user/v1/user-profile`;
-    return this.http.patch(url, capacity, {headers: header, observe: 'response'});
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    return this.http.patch(this.userUrl, capacity, {headers: header, observe: 'response'})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
-  handleError(error){
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.data}`;
-    }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
+  updatePassword(data): Observable<any> {
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    return this.http.patch(this.changePasswordUrl, data, {headers: header, observe: 'response'})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 
-  setSessionId(sessionId) {
-    this.cookieService.set('sessionId', sessionId);
+  updateUser(name, surname, capacity): Observable<any> {
+      let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+      const url = this.userUrl;
+      return this.http.patch(url, {'name': name, 'surname': surname,'capacity': capacity}, {headers: header, observe: 'response'})
+      .pipe(
+          catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+      );
   }
 
-  userIsAuthorized(): boolean {
-    return this.cookieService.check('sessionId');
-  }
-
-  deleteSessionId() {
-    this.cookieService.delete('sessionId');
-  }
-
-  getSessionId() {
-    return this.cookieService.get('sessionId');
+  updateUserAvatar(avatar): Observable<any> {
+    let header = new HttpHeaders({'Authorization': localStorage.getItem('sessionId')});
+    const url = this.userAvatarUrl;
+    const formData = new FormData();
+    formData.append('file', avatar);
+    return this.http.post(url, formData, {headers: header, observe: 'response'})
+        .pipe(
+            catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+        );
   }
 
   setUserSideNav(sideNav: MatSidenav){
@@ -121,12 +100,21 @@ export class UserService {
 
   toggleUserProfile(){
     this.userSideNav.toggle();
+    this.userProfileEditable = false;
+  }
+
+  closeUserProfile(){
+    this.userSideNav.close()
+  }
+  
+  getUserId(): number {
+    return Number(localStorage.getItem('userId'))
   }
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService,
-    private router: Router,
+    private authService: AuthService,
+    private errorService: ErrorService,
   ) { }
 
 
