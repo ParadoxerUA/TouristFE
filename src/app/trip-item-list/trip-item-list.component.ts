@@ -43,27 +43,23 @@ export class TripItemListComponent implements OnInit {
   ) { }
 
   getTagErrorMessage() {
-    return this.tagName.hasError('required') ? 'Choose a tag' :
-            '';
+    return this.tagName.hasError('required') ? 'Choose a tag' : '';
   }
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
         this.itemName.hasError('maxlength') ? 'Max length 20 characters' :
-        this.itemName.hasError('minlength') ? 'Min length 3 characters' :
-            '';
+        this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' :
-            '';
+        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' :
-            '';
+        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
   }
 
   dataInvalid(): boolean{
@@ -82,9 +78,11 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      response.data.equipment.forEach(element =>
-        this.tripItems.push(element as Item));
-
+      if (response.data.equipment) {
+        response.data.equipment.forEach(element => this.tripItems.push(element as Item));
+      } else {
+        response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
+      }
       this.getTripRoles();
     });
   }
@@ -181,12 +179,11 @@ export class TripItemListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getItems();
-    this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
         this.isPersonalInventory = status
+        this.getItems()
     });
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
