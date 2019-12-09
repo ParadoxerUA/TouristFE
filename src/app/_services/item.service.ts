@@ -13,7 +13,7 @@ import { catchError } from 'rxjs/operators';
 export class ItemService {
   private isPersonalInventorySource = new BehaviorSubject(false);
   isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable();
-  private selectedItemSource = new BehaviorSubject(null);
+  public selectedItemSource = new BehaviorSubject(null);
   selectedItem = this.selectedItemSource.asObservable();
 
   constructor(

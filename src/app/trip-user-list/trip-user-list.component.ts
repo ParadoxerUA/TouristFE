@@ -137,7 +137,9 @@ export class TripUserListComponent implements OnInit {
     this.itemService.selectedItem.subscribe(item => {
       if (item === null) {
         this.itemIsSelected = false;
+        console.log(item);
       } else {
+        console.log(item);
         this.itemIsSelected = true;
       }
     });

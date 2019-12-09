@@ -28,10 +28,11 @@ export class TripItemListComponent implements OnInit {
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
   itemData: Item;
+  selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'action'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -195,12 +196,25 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
-  selectItem(item: Role) {
+  selectItem(item: Item) {
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
-      console.log(item);
+      this.selectedItem = item;
+      this.itemService.selectNewItem(item);
     } else {
       console.log('User has no access to this item');
     }
   }
+  isItemSelected(id: number) {
+    if (this.selectedItem == null) {
+      return false;
+    }
+    return this.selectedItem['equipment_id'] == id;
+  }
+  commitChanges() {
 
+  }
+  cancelChanges() {
+    this.selectedItem = null;
+    this.itemService.selectNewItem(null);
+  }
 }
