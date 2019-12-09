@@ -141,6 +141,7 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  // BEGIN block of code for grouping tags
   addGroups(data: any[], groupByColumns: string[]): any[] {
     var rootGroup = new Group();
     return this.getSublevel(data, 0, groupByColumns, rootGroup);
@@ -187,6 +188,7 @@ export class TripItemListComponent implements OnInit {
   isGroup(index, item): boolean {
     return item.level;
   }
+  // END block of code for grouping tags
 
   ngOnInit() {
     this.getItems();
