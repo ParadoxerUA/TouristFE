@@ -45,60 +45,81 @@ export class TripItemListComponent implements OnInit {
   ) { }
 
   getTagErrorMessage() {
-    return this.tagName.hasError('required') ? 'Choose a tag' :
-            '';
+    return this.tagName.hasError('required') ? 'Choose a tag' : '';
   }
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
         this.itemName.hasError('maxlength') ? 'Max length 20 characters' :
-        this.itemName.hasError('minlength') ? 'Min length 3 characters' :
-            '';
+        this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' :
-            '';
+        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' :
-            '';
+        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
   }
 
   dataInvalid(): boolean{
-    return (this.itemName.invalid
-      || this.itemWeight.invalid
-      || this.itemQuantity.invalid
-      || this.tagName.invalid);
+    if (this.isPersonalInventory) {
+      return (this.itemName.invalid
+        || this.itemWeight.invalid
+        || this.itemQuantity.invalid);
+    } else {
+        return (this.itemName.invalid
+          || this.itemWeight.invalid
+          || this.itemQuantity.invalid
+          || this.tagName.invalid);
+    }
   }
 
   setColorToItems() {
-    this.tripItems.map(item => item.role_color =
-      this.tripRoles.find(role => role.id === item.role_id).color);
+    this.tripItems.map(item => {
+      let role = this.tripRoles.find(role => role.id === item.role_id)
+      if (role == undefined) {
+        item.role_color = 'white'
+      } else {
+        item.role_color = role.color
+      }
+    })
   }
 
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      response.data.equipment.forEach(element =>
-        this.tripItems.push(element as Item));
-
+      if (response.data.equipment) {
+        response.data.equipment.forEach(element => this.tripItems.push(element as Item));
+      } else {
+        response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
+      }
       this.getTripRoles();
     });
   }
 
   addItem(): void {
-    this.itemData = {
-      "name": this.name,
-      "weight": this.weight,
-      "quantity": this.quantity,
-      "trip_id": this.trip.trip_id,
-      "role_id": this.tag
-    };
+    if (this.isPersonalInventory) {
+      this.itemData = {
+        "name": this.name,
+        "weight": this.weight,
+        "quantity": this.quantity,
+        "trip_id": this.trip.trip_id,
+        "owner_id": this.userService.getUserId()
+      };
+    } else {
+        this.itemData = {
+          "name": this.name,
+          "weight": this.weight,
+          "quantity": this.quantity,
+          "trip_id": this.trip.trip_id,
+          "role_id": this.tag
+        };
+    }
+
 
     this.name = "";
     this.weight = 0;
@@ -214,12 +235,11 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
-    this.getItems();
-    this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
         this.isPersonalInventory = status
+        this.getItems()
     });
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
