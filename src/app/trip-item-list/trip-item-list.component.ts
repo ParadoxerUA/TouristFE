@@ -63,15 +63,27 @@ export class TripItemListComponent implements OnInit {
   }
 
   dataInvalid(): boolean{
-    return (this.itemName.invalid
-      || this.itemWeight.invalid
-      || this.itemQuantity.invalid
-      || this.tagName.invalid);
+    if (this.isPersonalInventory) {
+      return (this.itemName.invalid
+        || this.itemWeight.invalid
+        || this.itemQuantity.invalid);
+    } else {
+        return (this.itemName.invalid
+          || this.itemWeight.invalid
+          || this.itemQuantity.invalid
+          || this.tagName.invalid);
+    }
   }
 
   setColorToItems() {
-    this.tripItems.map(item => item.role_color =
-      this.tripRoles.find(role => role.id === item.role_id).color);
+    this.tripItems.map(item => {
+      let role = this.tripRoles.find(role => role.id === item.role_id)
+      if (role == undefined) {
+        item.role_color = 'white'
+      } else {
+        item.role_color = role.color
+      }
+    })
   }
 
   getItems() {
@@ -88,13 +100,24 @@ export class TripItemListComponent implements OnInit {
   }
 
   addItem(): void {
-    this.itemData = {
-      "name": this.name,
-      "weight": this.weight,
-      "quantity": this.quantity,
-      "trip_id": this.trip.trip_id,
-      "role_id": this.tag
-    };
+    if (this.isPersonalInventory) {
+      this.itemData = {
+        "name": this.name,
+        "weight": this.weight,
+        "quantity": this.quantity,
+        "trip_id": this.trip.trip_id,
+        "owner_id": this.userService.getUserId()
+      };
+    } else {
+        this.itemData = {
+          "name": this.name,
+          "weight": this.weight,
+          "quantity": this.quantity,
+          "trip_id": this.trip.trip_id,
+          "role_id": this.tag
+        };
+    }
+
 
     this.name = "";
     this.weight = 0;

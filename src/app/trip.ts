@@ -25,8 +25,9 @@ export class Item {
   weight: number;
   quantity: number;
   trip_id: number;
-  role_id: number;
+  role_id?: number;
   role_color?: string;
+  owner_id?: number;
 }
 
 export class Role {
