@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TripService} from "../_services/trip.service";
-import {FormControl, Validators} from "@angular/forms";
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 interface Marker {
   order: number;
@@ -124,6 +124,20 @@ export class MapComponent implements OnInit {
     }
     marker.editable = true;
   }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.location.markers, event.previousIndex, event.currentIndex);
+    for (let _i = 0; _i < this.location.markers.length; _i++) {
+      let baseName = "Point ";
+      if (this.location.markers[_i].name.search(baseName) != -1)
+      {
+        this.location.markers[_i].name = "Point " + (_i+1).toString();
+      }
+      this.location.markers[_i].order = (_i+1);
+    }
+    this.tripService.updateCheckpointList(this.location.markers);
+  }
+
   constructor(private tripService : TripService) { }
   ngOnInit() {
 
