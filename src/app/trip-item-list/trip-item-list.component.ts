@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
+import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -40,6 +41,7 @@ export class TripItemListComponent implements OnInit {
     private itemService: ItemService,
     private roleService: RoleService,
     private userService: UserService,
+    public dialog: MatDialog,
   ) { }
 
   getTagErrorMessage() {
@@ -113,6 +115,19 @@ export class TripItemListComponent implements OnInit {
     .subscribe(response => {
       alert(response.data);
       this.getItems();
+    });
+  }
+
+  openDeleteDialog(item: Item): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      height: '150px',
+      data: `Do you really want to remove ${item.name}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteItemFromList(item.equipment_id);
+      }
     });
   }
 

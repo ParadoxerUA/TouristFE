@@ -51,7 +51,7 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let item">
           <div *ngIf="isUserWithTag(item.role_id); else without_tag">
-            <button mat-icon-button (click)="deleteItemFromList(item.equipment_id)">
+            <button mat-icon-button (click)="openDeleteDialog(item)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
