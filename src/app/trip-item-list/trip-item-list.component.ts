@@ -116,6 +116,14 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  isUserWithTag(role_id: number) {
+    if (this.userTripRoles.some(role => role.id === role_id)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getTripRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
     .subscribe(response => {
