@@ -60,6 +60,14 @@ export class TripRolesComponent implements OnInit {
     });
   }
 
+  deleteRole(role: Role): void {
+    this.roleService.deleteTripRole(role.id).subscribe();
+    var role_index = this.tripRoles.indexOf(role);
+    if (role_index > -1) {
+    this.tripRoles.splice(role_index, 1);
+    }
+  }
+
   activateRole(roleId) {
     if (roleId === this.activeRole) {
       this.activeRole = 0;

@@ -50,4 +50,13 @@ export class RoleService {
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
   }
+
+  deleteTripRole(role_id): Observable<any> {
+    const url = BASE_URL + `/role/v1/role/` + role_id;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.delete(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
 }
