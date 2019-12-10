@@ -38,3 +38,6 @@ th {
 .tag-color-line {
   height: 5px !important;
 }
+.item-buttons {
+  float: right;
+}
