@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
+import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -31,7 +32,7 @@ export class TripItemListComponent implements OnInit {
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -40,63 +41,85 @@ export class TripItemListComponent implements OnInit {
     private itemService: ItemService,
     private roleService: RoleService,
     private userService: UserService,
+    public dialog: MatDialog,
   ) { }
 
   getTagErrorMessage() {
-    return this.tagName.hasError('required') ? 'Choose a tag' :
-            '';
+    return this.tagName.hasError('required') ? 'Choose a tag' : '';
   }
 
   getNameErrorMessage() {
     return this.itemName.hasError('required') ? 'Enter a value' :
         this.itemName.hasError('maxlength') ? 'Max length 20 characters' :
-        this.itemName.hasError('minlength') ? 'Min length 3 characters' :
-            '';
+        this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' :
-            '';
+        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' :
-            '';
+        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
   }
 
   dataInvalid(): boolean{
-    return (this.itemName.invalid
-      || this.itemWeight.invalid
-      || this.itemQuantity.invalid
-      || this.tagName.invalid);
+    if (this.isPersonalInventory) {
+      return (this.itemName.invalid
+        || this.itemWeight.invalid
+        || this.itemQuantity.invalid);
+    } else {
+        return (this.itemName.invalid
+          || this.itemWeight.invalid
+          || this.itemQuantity.invalid
+          || this.tagName.invalid);
+    }
   }
 
   setColorToItems() {
-    this.tripItems.map(item => item.role_color =
-      this.tripRoles.find(role => role.id === item.role_id).color);
+    this.tripItems.map(item => {
+      let role = this.tripRoles.find(role => role.id === item.role_id)
+      if (role == undefined) {
+        item.role_color = 'white'
+      } else {
+        item.role_color = role.color
+      }
+    })
   }
 
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      response.data.equipment.forEach(element =>
-        this.tripItems.push(element as Item));
-
+      if (response.data.equipment) {
+        response.data.equipment.forEach(element => this.tripItems.push(element as Item));
+      } else {
+        response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
+      }
       this.getTripRoles();
     });
   }
 
   addItem(): void {
-    this.itemData = {
-      "name": this.name,
-      "weight": this.weight,
-      "quantity": this.quantity,
-      "trip_id": this.trip.trip_id,
-      "role_id": this.tag
-    };
+    if (this.isPersonalInventory) {
+      this.itemData = {
+        "name": this.name,
+        "weight": this.weight,
+        "quantity": this.quantity,
+        "trip_id": this.trip.trip_id,
+        "owner_id": this.userService.getUserId()
+      };
+    } else {
+        this.itemData = {
+          "name": this.name,
+          "weight": this.weight,
+          "quantity": this.quantity,
+          "trip_id": this.trip.trip_id,
+          "role_id": this.tag
+        };
+    }
+
 
     this.name = "";
     this.weight = 0;
@@ -106,6 +129,35 @@ export class TripItemListComponent implements OnInit {
     .subscribe(data => {
       this.getItems();
     })
+  }
+
+  deleteItemFromList(equipment_id: number) {
+    this.itemService.deleteTripItem(equipment_id)
+    .subscribe(response => {
+      alert(response.data);
+      this.getItems();
+    });
+  }
+
+  openDeleteDialog(item: Item): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      height: '150px',
+      data: `Do you really want to remove ${item.name}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteItemFromList(item.equipment_id);
+      }
+    });
+  }
+
+  isUserWithTag(role_id: number) {
+    if (this.userTripRoles.some(role => role.id === role_id)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getTripRoles() {
@@ -133,6 +185,7 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  // BEGIN block of code for grouping tags
   addGroups(data: any[], groupByColumns: string[]): any[] {
     var rootGroup = new Group();
     return this.getSublevel(data, 0, groupByColumns, rootGroup);
@@ -179,14 +232,14 @@ export class TripItemListComponent implements OnInit {
   isGroup(index, item): boolean {
     return item.level;
   }
+  // END block of code for grouping tags
 
   ngOnInit() {
-    this.getItems();
-    this.isPersonalInventory = false;
     this.itemsDataSource.sort = this.sort;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
         this.isPersonalInventory = status
+        this.getItems()
     });
     this.roleService.newRole.subscribe(role => {
       if (role === null) {

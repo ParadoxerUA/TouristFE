@@ -100,18 +100,14 @@ export class TripUserListComponent implements OnInit {
       })
   }
 
-  toggleRoleLocally(userId, roleId) {
-    //-------------------------------------------ToFIX--------------------------------------//
-    this.tripUsers.forEach(user => {
-      if (user.user_id === userId) {
-        let index = user.roles.indexOf(roleId);
-        if (index > -1) {
-          user.roles.splice(index, 1)
-        } else {
-          user.roles.push(roleId)
-        }
-      }
-    })
+  toggleRoleLocaly(userId, roleId) {
+    let user = this.tripUsers.find(user => user.user_id === userId);
+    let index = user.roles.indexOf(roleId);
+    if (index > -1) {
+      user.roles.splice(index, 1)
+    } else {
+      user.roles.push(roleId)
+    }
   }
 
   togglePersonalInventory() {

@@ -31,7 +31,7 @@ import { NewRolePopUpComponent } from './new-role-pop-up/new-role-pop-up.compone
 import { JoinToTripComponent } from './join-to-trip/join-to-trip.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ColorSketchModule } from 'ngx-color/sketch';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AvatarModule } from 'ngx-avatar';
 
 
@@ -87,7 +87,7 @@ export function provideConfig() {
     ReactiveFormsModule,
     SocialLoginModule,
     ColorSketchModule,
-    ImageCropperModule,
+    DragDropModule,
     AvatarModule,
   ],
   entryComponents: [
