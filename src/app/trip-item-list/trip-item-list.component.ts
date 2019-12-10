@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
+import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
 import { RoleService } from '../_services/role.service';
 import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-trip-item-list',
@@ -31,7 +32,7 @@ export class TripItemListComponent implements OnInit {
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -40,6 +41,7 @@ export class TripItemListComponent implements OnInit {
     private itemService: ItemService,
     private roleService: RoleService,
     private userService: UserService,
+    public dialog: MatDialog,
   ) { }
 
   getTagErrorMessage() {
@@ -129,6 +131,35 @@ export class TripItemListComponent implements OnInit {
     })
   }
 
+  deleteItemFromList(equipment_id: number) {
+    this.itemService.deleteTripItem(equipment_id)
+    .subscribe(response => {
+      alert(response.data);
+      this.getItems();
+    });
+  }
+
+  openDeleteDialog(item: Item): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      height: '150px',
+      data: `Do you really want to remove ${item.name}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteItemFromList(item.equipment_id);
+      }
+    });
+  }
+
+  isUserWithTag(role_id: number) {
+    if (this.userTripRoles.some(role => role.id === role_id)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getTripRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
     .subscribe(response => {
@@ -154,6 +185,7 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  // BEGIN block of code for grouping tags
   addGroups(data: any[], groupByColumns: string[]): any[] {
     var rootGroup = new Group();
     return this.getSublevel(data, 0, groupByColumns, rootGroup);
@@ -200,6 +232,7 @@ export class TripItemListComponent implements OnInit {
   isGroup(index, item): boolean {
     return item.level;
   }
+  // END block of code for grouping tags
 
   ngOnInit() {
     this.itemsDataSource.sort = this.sort;

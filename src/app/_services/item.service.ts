@@ -45,6 +45,15 @@ export class ItemService {
     );
   }
 
+  deleteTripItem(equipment_id: number): Observable<any> {
+    const url = BASE_URL + `/equipment/v1/equipment/${equipment_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.delete(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
   togglePersonalInventory() {
     let nextValue = !this.isPersonalInventorySource.getValue()
     this.isPersonalInventorySource.next(nextValue)
