@@ -100,7 +100,7 @@ export class TripUserListComponent implements OnInit {
       })
   }
 
-  toggleRoleLocaly(userId, roleId) {
+  toggleRoleLocally(userId, roleId) {
     let user = this.tripUsers.find(user => user.user_id === userId);
     let index = user.roles.indexOf(roleId);
     if (index > -1) {
