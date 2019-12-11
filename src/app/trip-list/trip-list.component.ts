@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from "@angular/material";
 import { TripService } from '../_services/trip.service';
 import { UserService } from "../_services/user.service";
+import { TripUserService} from "../_services/trip-user.service";
 import { Trip } from '../trip';
 import { Router } from '@angular/router';
 import { FormControl } from "@angular/forms";
+import { User } from "../user";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-trip-list',
@@ -14,6 +18,7 @@ import { FormControl } from "@angular/forms";
 export class TripListComponent implements OnInit {
   today: Date = new Date();
   trips: Trip[] = [];
+  currentUser: User;
   status = new FormControl();
   tripsDataSource = new MatTableDataSource(this.trips);
   current_editable: number = null;
@@ -26,19 +31,26 @@ export class TripListComponent implements OnInit {
     'status',
     'start_date',
     'end_date',
-    'action'
+    'action',
+    'left'
   ];
   admin_trips: {[id: number]: boolean;} = {};
 
   constructor(
+    public dialog: MatDialog,
     private tripService: TripService,
     private userService: UserService,
     private router: Router,
+    private tripUserService: TripUserService,
     ) { }
 
   ngOnInit() {
     this.getTrips();
     // console.log(this.tripsDataSource)
+    this.userService.getUserProfile()
+        .subscribe(response =>
+            this.currentUser = response.body["data"]
+        );
   }
   getOtherStatus(status) {
     if (status == 'Open') {
@@ -47,9 +59,10 @@ export class TripListComponent implements OnInit {
     return 'Open';
   }
   getTrips(): void {
+    this.trips = [];
     this.tripService.getTrips()
     .subscribe(trips => {
-      console.log(trips.data.trips)
+      console.log(trips.data.trips);
       trips.data.trips.forEach(element => {
         if (element['admin'] == '*') {
           this.admin_trips[element['id']] = true;
@@ -115,7 +128,7 @@ export class TripListComponent implements OnInit {
           trip.status = this.status.value;
         }
       }
-    )
+    );
     return trip;
   }
   cancelChanges(id) {
@@ -127,5 +140,21 @@ export class TripListComponent implements OnInit {
   }
   private formatDate(date: Date): string {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+  }
+
+
+  leftTrip(trip_id, trip_name): void {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '350px',
+        height: '150px',
+        data: `Are You sure that You want to left the trip: ${trip_name}?`
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        console.log('Yes clicked');
+        this.tripUserService.deleteTripUser(trip_id, this.currentUser.user_id).subscribe(result => this.getTrips());
+      }
+    });
+
   }
 }

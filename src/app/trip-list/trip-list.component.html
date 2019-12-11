@@ -92,6 +92,15 @@
     </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="left">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let trip">
+        <div *ngIf="trip.participants==1 || !isCurrentUserAdmin(trip.admin) ">
+        <button mat-icon-button matSuffix (click)="leftTrip(trip.id, trip.name);$event.stopPropagation()" > <mat-icon>exit_to_app</mat-icon></button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row [className]="current_editable == null ? 'active-row' : 'disabled-row'" (click)="current_editable == null ? redirectToTripDetail(row.id) : null" *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
