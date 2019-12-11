@@ -21,7 +21,7 @@ export class TripUserListComponent implements OnInit {
   activeRole: number = 0;
   @Input() trip: Trip;
   @Input() currentUser: User;
-  isPersonalInventory: Boolean = false;
+  personalInventory: number = 0;
 
   constructor(
     public dialog: MatDialog,
@@ -40,7 +40,6 @@ export class TripUserListComponent implements OnInit {
           element.roles = rolesList.map(role => role.id);
           this.tripUsers.push(element as User);
         });
-        console.log(this.tripUsers)
       });
   }
 
@@ -110,8 +109,8 @@ export class TripUserListComponent implements OnInit {
     }
   }
 
-  togglePersonalInventory() {
-    this.itemService.togglePersonalInventory()
+  togglePersonalInventory(userId) {
+    this.itemService.togglePersonalInventory(userId)
   }
 
   isUserAdmin(user_id: number): boolean {
@@ -122,9 +121,9 @@ export class TripUserListComponent implements OnInit {
     this.getUsers();
     this.userId = this.userService.getUserId();
     this.tripRoles = this.trip.roles;
-    this.itemService.isPersonalInventoryStatus
+    this.itemService.personalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status
+        this.personalInventory = status
   })
   }
 }

@@ -30,7 +30,7 @@ export class TripItemListComponent implements OnInit {
   userTripRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean = false
+  personalInventory: number = 0
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
   groupByColumns: string[] = ['role_color'];
@@ -65,7 +65,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   dataInvalid(): boolean{
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
@@ -102,7 +102,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   addItem(): void {
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       this.itemData = {
         "name": this.name,
         "weight": this.weight,
@@ -236,9 +236,9 @@ export class TripItemListComponent implements OnInit {
 
   ngOnInit() {
     this.itemsDataSource.sort = this.sort;
-    this.itemService.isPersonalInventoryStatus
+    this.itemService.personalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status
+        this.personalInventory = status
         this.getItems()
     });
     this.roleService.newRole.subscribe(role => {
