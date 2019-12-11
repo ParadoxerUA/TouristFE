@@ -21,18 +21,34 @@ export class ItemService {
   ) { }
 
   getTripItems(trip_id: number): Observable<any> {
-    const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
-    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
-    return this.http.get(url, {headers: header})
-    .pipe(
-      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
-    );
-  }
+    if (!this.isPersonalInventorySource.getValue()) {
+      const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
+      let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+      return this.http.get(url, {headers: header})
+      .pipe(
+        catchError((err) => this.errorService.handleError(err, this.authService.getSessionId())))
+      } else {
+        const url = BASE_URL + `/user/v1/user?fields=personal_stuff&trip_id=${trip_id}`;
+        let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+        return this.http.get(url, {headers: header})
+        .pipe(
+          catchError((err) => this.errorService.handleError(err, this.authService.getSessionId())))
+      }
+    }
 
   addTripItem(itemData: Item): Observable<any> {
     const url = BASE_URL + `/equipment/v1/equipment`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.post(url, itemData, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
+  deleteTripItem(equipment_id: number): Observable<any> {
+    const url = BASE_URL + `/equipment/v1/equipment/${equipment_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.delete(url, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

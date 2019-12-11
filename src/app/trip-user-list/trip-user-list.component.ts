@@ -15,14 +15,13 @@ import {ItemService} from '../_services/item.service'
 })
 export class TripUserListComponent implements OnInit {
 
-  userId: number
+  userId: number;
   tripUsers: User[];
-  tripRoles: Role[]
-  activeRole: number = 0
-  activeRoleColor: string = 'white'
+  tripRoles: Role[];
+  activeRole: number = 0;
   @Input() trip: Trip;
   @Input() currentUser: User;
-  isPersonalInventory: Boolean = false
+  isPersonalInventory: Boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -33,15 +32,15 @@ export class TripUserListComponent implements OnInit {
   ) {}
 
   getUsers(): void {
-    this.tripUsers = []
+    this.tripUsers = [];
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
         response.data.users.forEach(element => {
-          let rolesList = element.roles.filter(role => role.trip_id === this.trip.trip_id)
-          element.roles = rolesList.map(role => role.id)
+          let rolesList = element.roles.filter(role => role.trip_id === this.trip.trip_id);
+          element.roles = rolesList.map(role => role.id);
           this.tripUsers.push(element as User);
         });
-        // console.log(this.tripUsers)
+        console.log(this.tripUsers)
       });
   }
 
@@ -52,7 +51,7 @@ export class TripUserListComponent implements OnInit {
     // console.log(roleId)
     this.tripRoles.forEach(role => {
       if (role.id === roleId) {color = role.color;}
-    })
+    });
     return color;
   }
 
@@ -76,7 +75,7 @@ export class TripUserListComponent implements OnInit {
     });
   }
 
-  recieveRole($event) {
+  receiveRole($event) {
     console.log($event);
     // will refresh roles after new role was created
     if ($event === -1) {
@@ -86,9 +85,7 @@ export class TripUserListComponent implements OnInit {
         })
         
     }
-    this.activeRole = $event
-    this.activeRoleColor = this.getRoleColor($event)
-    console.log('activeRoleColor=' + this.activeRoleColor)
+    this.activeRole = $event;
   }
 
   toggleRole(userId) {
@@ -98,23 +95,19 @@ export class TripUserListComponent implements OnInit {
     this.tripUserService.toggleRole(this.activeRole, userId)
       .subscribe(response => {
         if (response.status === 201) {
-          this.toggleRoleLocaly(userId, this.activeRole);
+          this.toggleRoleLocally(userId, this.activeRole);
         }
       })
   }
 
-  toggleRoleLocaly(userId, roleId) {
-    //-------------------------------------------ToFIX--------------------------------------//
-    this.tripUsers.forEach(user => {
-      if (user.user_id === userId) {
-        let index = user.roles.indexOf(roleId)
-        if (index > -1) {
-          user.roles.splice(index, 1)
-        } else {
-          user.roles.push(roleId)
-        }
-      }
-    })
+  toggleRoleLocally(userId, roleId) {
+    let user = this.tripUsers.find(user => user.user_id === userId);
+    let index = user.roles.indexOf(roleId);
+    if (index > -1) {
+      user.roles.splice(index, 1)
+    } else {
+      user.roles.push(roleId)
+    }
   }
 
   togglePersonalInventory() {
@@ -126,9 +119,9 @@ export class TripUserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers()
-    this.userId = this.userService.getUserId()
-    this.tripRoles = this.trip.roles
+    this.getUsers();
+    this.userId = this.userService.getUserId();
+    this.tripRoles = this.trip.roles;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
         this.isPersonalInventory = status

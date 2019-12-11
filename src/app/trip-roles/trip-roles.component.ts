@@ -16,8 +16,8 @@ export class TripRolesComponent implements OnInit {
   tripRoles: Role[] = [];
   name: string;
   color: string;
-  activeRole: number = 0
-  @Output() roleEvent = new EventEmitter<any>()
+  activeRole: number = 0;
+  @Output() roleEvent = new EventEmitter<any>();
   
   constructor(
     private dialog: MatDialog,
@@ -25,7 +25,7 @@ export class TripRolesComponent implements OnInit {
   ) { }
 
   getRoles() {
-    this.tripRoles = []
+    this.tripRoles = [];
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
         response.data.roles.forEach(element => 
@@ -53,7 +53,7 @@ export class TripRolesComponent implements OnInit {
 
   addRole(data): void {
     this.roleService.addTripRole(data).subscribe(response => {
-      console.log(response)
+      console.log(response);
       this.tripRoles.push(response.data);
       this.roleService.setNewRole(response.data);
       this.roleEvent.emit(-1);
