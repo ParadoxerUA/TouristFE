@@ -54,10 +54,11 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let item">
           <div class="item-buttons" *ngIf="isUserWithTag(item.role_id); else without_tag">
-            <div *ngIf="notInEditMode; else edit_mode" (click)=changeEditModeStatus()>
+            <div *ngIf="isNotInEditMode(item.equipment_id); else edit_mode" (click)=startEditMode(item)>
               <button mat-icon-button>
                 <mat-icon>edit</mat-icon>
               </button>
+              <!-- TODO: fix state change on clicking delete button -->
               <button mat-icon-button (click)="openDeleteDialog(item)">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -67,10 +68,10 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="submitChanges()">
           <mat-icon>done</mat-icon>
         </button>
-        <button mat-icon-button (click)="changeEditModeStatus()">
+        <button mat-icon-button (click)="endEditMode()">
           <mat-icon>cancel</mat-icon>
         </button>
       </ng-template>

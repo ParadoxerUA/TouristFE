@@ -31,7 +31,7 @@ export class TripItemListComponent implements OnInit {
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false;
-  notInEditMode: Boolean = true;
+  currentItem: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
@@ -161,13 +161,26 @@ export class TripItemListComponent implements OnInit {
     }
   }
 
-  changeEditModeStatus() {
-    if (this.notInEditMode) {
-      this.notInEditMode = false;
-    } else {
-      this.notInEditMode = true;
+  isNotInEditMode(id: number) {
+    if (this.currentItem === null) {
+      return true;
     }
-    return this.notInEditMode;
+    if (this.currentItem === id) {
+      return false;
+    }
+    return true;
+  }
+
+  startEditMode(item) {
+    this.currentItem = item.equipment_id;
+  }
+
+  endEditMode() {
+    this.currentItem = null;
+  }
+
+  submitChanges() {
+    this.currentItem = null;
   }
 
   getTripRoles() {
