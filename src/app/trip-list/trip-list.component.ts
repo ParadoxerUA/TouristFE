@@ -143,16 +143,20 @@ export class TripListComponent implements OnInit {
   }
 
 
-  leftTrip(trip_id, trip_name): void {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        width: '350px',
-        height: '150px',
-        data: `Are You sure that You want to left the trip: ${trip_name}?`
-      });
+  leftTrip(trip): void {
+    let cautionMessege ='';
+    if (this.isCurrentUserAdmin(trip.admin)){
+      cautionMessege = ' This trip will be deleted! '
+    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      height: '150px',
+      data: `Are You sure that You want to left the trip: ${trip.name}?` + cautionMessege
+    });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         console.log('Yes clicked');
-        this.tripUserService.deleteTripUser(trip_id, this.currentUser.user_id).subscribe(result => this.getTrips());
+        this.tripUserService.deleteTripUser(trip.id, this.currentUser.user_id).subscribe(result => this.getTrips());
       }
     });
 

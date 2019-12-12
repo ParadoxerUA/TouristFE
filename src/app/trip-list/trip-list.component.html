@@ -95,8 +95,11 @@
     <ng-container matColumnDef="left">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let trip">
-        <div *ngIf="trip.participants==1 || !isCurrentUserAdmin(trip.admin) ">
-        <button mat-icon-button matSuffix (click)="leftTrip(trip.id, trip.name);$event.stopPropagation()" > <mat-icon>exit_to_app</mat-icon></button>
+        <div *ngIf="!isCurrentUserAdmin(trip.admin) ">
+          <button mat-icon-button matSuffix (click)="leftTrip(trip);$event.stopPropagation()" > <mat-icon>exit_to_app</mat-icon></button>
+        </div>
+        <div *ngIf="trip.participants==1  && isCurrentUserAdmin(trip.admin) ">
+          <button mat-icon-button matSuffix (click)="leftTrip(trip);$event.stopPropagation()" > <mat-icon>delete</mat-icon></button>
         </div>
       </mat-cell>
     </ng-container>
