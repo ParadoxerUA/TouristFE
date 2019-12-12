@@ -40,7 +40,8 @@ export class TripUserListComponent implements OnInit {
           element.roles = rolesList.map(role => role.id);
           this.tripUsers.push(element as User);
         });
-        console.log(this.tripUsers)
+        // console.log(this.tripUsers)
+        this.calculateCarryingItems();
       });
   }
 
@@ -83,7 +84,6 @@ export class TripUserListComponent implements OnInit {
         .subscribe(response => {
           this.tripRoles = response.data['roles'];
         })
-        
     }
     this.activeRole = $event;
   }
@@ -118,6 +118,14 @@ export class TripUserListComponent implements OnInit {
     return user_id == this.trip['admin_id'];
   }
 
+  calculateCarryingItems()
+  {
+    for (let _i = 0; _i < this.tripUsers.length; _i++){
+      this.tripUsers[_i].carrying = 10;
+
+    }
+  }
+
   ngOnInit() {
     this.getUsers();
     this.userId = this.userService.getUserId();
@@ -125,6 +133,6 @@ export class TripUserListComponent implements OnInit {
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
         this.isPersonalInventory = status
-  })
+  });
   }
 }

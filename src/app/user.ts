@@ -1,15 +1,17 @@
 export class User {
     public user_id?: number;
+    public carrying?: number;
     public name: string;
     public surname?: string;
     public capacity?: number;
     public email?: string;
     public avatar?: string;
-    public roles?: Array<any>
+    public roles?: Array<any>;
 
-    constructor(name, surname?, capacity?, email?, avatar?, roles?){
+    constructor(name, surname?, capacity?, carrying?, email?, avatar?, roles?){
         this.name = name;
         this.surname = surname;
+        this.carrying = carrying? carrying : 10;
         this.capacity = capacity;
         this.email = email;
         this.avatar = avatar;
