@@ -155,10 +155,11 @@ export class TripListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        console.log('Yes clicked');
-        this.tripUserService.deleteTripUser(trip.id, this.currentUser.user_id).subscribe(result => this.getTrips());
+        this.tripUserService.deleteTripUser(trip.id, this.currentUser.user_id).subscribe(result => {
+          this.trips.splice(this.trips.indexOf(trip), 1);
+          this.tripsDataSource = new MatTableDataSource(this.trips);
+          });
       }
     });
-
   }
 }
