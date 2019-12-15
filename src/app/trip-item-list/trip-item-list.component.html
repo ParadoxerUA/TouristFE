@@ -58,8 +58,7 @@
               <button mat-icon-button>
                 <mat-icon>edit</mat-icon>
               </button>
-              <!-- TODO: fix state change on clicking delete button -->
-              <button mat-icon-button (click)="openDeleteDialog(item)">
+              <button mat-icon-button (click)="openDeleteDialog(item);$event.stopPropagation()">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
