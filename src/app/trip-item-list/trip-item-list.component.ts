@@ -20,9 +20,13 @@ export class TripItemListComponent implements OnInit {
   tag: number;
 
   itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+  itemNameEdit = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
+  itemWeightEdit = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  itemQuantityEdit = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
+  tagNameEdit = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
