@@ -62,7 +62,7 @@ export class TripListComponent implements OnInit {
     this.trips = [];
     this.tripService.getTrips()
     .subscribe(trips => {
-      console.log(trips.data.trips);
+      // console.log(trips.data.trips);
       trips.data.trips.forEach(element => {
         if (element['admin'] == '*') {
           this.admin_trips[element['id']] = true;
@@ -74,7 +74,7 @@ export class TripListComponent implements OnInit {
         this.trips.push(element as Trip);
       });
       this.tripsDataSource.data = this.trips;
-      console.log(this.tripsDataSource)
+      // console.log(this.tripsDataSource)
     })
   }
 
