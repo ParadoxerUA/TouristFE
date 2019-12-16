@@ -73,24 +73,24 @@ export class TripItemListComponent implements OnInit {
         this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
   }
 
-  dataInvalid(): boolean{
+  inputDataInvalid(): boolean{
     if (this.isPersonalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
-    }
-    // TODO: Fix item add button activation
-    else if (this.currentItem) {
-      return (this.itemNameEdit.invalid
-        || this.itemWeightEdit.invalid
-        || this.itemQuantityEdit.invalid
-        || this.tagNameEdit.invalid);
     } else {
         return (this.itemName.invalid
           || this.itemWeight.invalid
           || this.itemQuantity.invalid
           || this.tagName.invalid);
     }
+  }
+
+  editDataInvalid(): boolean{
+    return (this.itemNameEdit.invalid
+      || this.itemWeightEdit.invalid
+      || this.itemQuantityEdit.invalid
+      || this.tagNameEdit.invalid);
   }
 
   setColorToItems() {

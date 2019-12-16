@@ -27,7 +27,7 @@
       <input matInput type="number" placeholder="units" [formControl]="itemQuantity" [(ngModel)]="quantity">
       <mat-error *ngIf="itemQuantity.invalid">{{ getQuantityErrorMessage() }}</mat-error>
     </mat-form-field>
-    <button mat-mini-fab (click)="addItem()" [disabled]="dataInvalid()">
+    <button mat-mini-fab (click)="addItem()" [disabled]="inputDataInvalid()">
       <i class="material-icons">add</i>
     </button>
   </mat-card>
@@ -105,7 +105,7 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button (click)="submitChanges(item)" [disabled]="dataInvalid()">
+        <button mat-icon-button (click)="submitChanges(item)" [disabled]="editDataInvalid()">
           <mat-icon>done</mat-icon>
         </button>
         <button mat-icon-button (click)="endEditMode()">
