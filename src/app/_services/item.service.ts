@@ -55,7 +55,7 @@ export class ItemService {
   }
 
   togglePersonalInventory() {
-    let nextValue = !this.isPersonalInventorySource.getValue()
+    let nextValue = !this.isPersonalInventorySource.getValue();
     this.isPersonalInventorySource.next(nextValue)
   }
 }

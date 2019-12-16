@@ -2,7 +2,7 @@
     <mat-sidenav-container>
         <mat-sidenav #sidenav mode="side" position="end">
             <mat-list class="user-information">
-                <div *ngIf="this.userService.userProfileEditable;else staticAvatar">
+                <div *ngIf="this.editable; else staticAvatar">
                     <mat-list-item  class="avatar-container">
                         {{user.email}}
                         <input type="file" name="image" style="display: none;" id="selectedFile"   (change)="fileProgress($event)" />
@@ -16,7 +16,7 @@
                         <ngx-avatar class="my-avatar" size="70" src="{{user.avatar}}"></ngx-avatar>
                     </mat-list-item>
                 </ng-template>
-                <div *ngIf="this.userService.userProfileEditable;else logout">
+                <div *ngIf="this.editable;else logout">
                     <mat-list-item>
                         <button mat-raised-button class="react" (click)="CancelEdit()">Cancel changes</button>
                     </mat-list-item>
@@ -28,7 +28,7 @@
                     </mat-list-item>
                 </ng-template>
 
-                <div *ngIf="this.userService.userProfileEditable;else staticValue">
+                <div *ngIf="this.editable;else staticValue">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Name"
                                [(ngModel)]="editedUser.name"
@@ -49,7 +49,7 @@
                     <mat-list-item>Name: {{user.name}}</mat-list-item>
                 </ng-template>
 
-                <div *ngIf="this.userService.userProfileEditable;else surname">
+                <div *ngIf="this.editable;else surname">
                     <mat-form-field mat-line class="input-edit">
                         <input matInput placeholder="Surname"
                                [(ngModel)]="editedUser.surname"
@@ -67,7 +67,7 @@
                     <mat-list-item *ngIf="user.surname">Surname: {{user.surname}}</mat-list-item>
                 </ng-template>
 
-                <div *ngIf="this.userService.userProfileEditable;else capacity">
+                <div *ngIf="this.editable; else capacity">
                     <mat-form-field mat-line class="input-edit">
                         <input placeholder="Capacity"
                                (keypress)="numberOnly($event)" type="text"
@@ -106,7 +106,7 @@
                       <button mat-raised-button class="confirm" (click)="changeCapacity()" [disabled]="capacityDataInvalid()">OK</button>
                       <button mat-raised-button class="cancel" (click)="toggleCalculateForm()">Cancel</button>
                 </mat-card>
-                <div *ngIf="this.userService.userProfileEditable;else edit">
+                <div *ngIf="this.editable;else edit">
                     <mat-list-item><button mat-raised-button class="react" (click)="submitUserData()" [disabled]=userDataIsIncorrect>Submit changes</button></mat-list-item>
                 </div>
                 <ng-template #edit>

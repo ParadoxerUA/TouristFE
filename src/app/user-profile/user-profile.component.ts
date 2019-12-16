@@ -6,7 +6,7 @@ import { User} from '../user';
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient, HttpEventType} from "@angular/common/http";
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+
 
 
 @Component({
@@ -24,6 +24,7 @@ export class UserProfileComponent implements OnInit {
   result: number;
   gender: string;
   userDataIsIncorrect: boolean;
+  editable: boolean;
 
 
   surnameFormControl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
@@ -148,12 +149,6 @@ export class UserProfileComponent implements OnInit {
       || this.confirmPassword.invalid || this.passswordGroup.invalid);
   }
 
-  navigateToTripList(): void
-  {
-    this.router.navigate(['trip-list']);
-    this.userSideNav.close();
-  }
-
   logoutUser(): void {
     this.authService.userLogout()
       .subscribe(res => {
@@ -185,7 +180,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   editUser() {
-    this.userService.userProfileEditable=true;
+    this.userService.startEditUser();
     this.previewUrl = this.user.avatar;
     this.editedUser.name = this.user.name;
     this.editedUser.surname = this.user.surname;
@@ -201,7 +196,7 @@ export class UserProfileComponent implements OnInit {
             // this.uploadedFilePath = res.data.filePath;
           });
     }
-    this.userService.userProfileEditable=false;
+    this.userService.stopEditUser();
     if(!this.editedUser.surname){this.editedUser.surname=''}
     this.userService.updateUser(this.editedUser.name, this.editedUser.surname, this.editedUser.capacity)
         .subscribe(() => this.userService.refreshUser());
@@ -220,7 +215,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   CancelEdit(){
-    this.userService.userProfileEditable=false;
+    this.userService.stopEditUser();
     this.editedUser.name = this.user.name;
     this.editedUser.surname = this.user.surname;
     this.editedUser.capacity = this.user.capacity;
@@ -258,6 +253,10 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.clearUser();
+    this.userService.isUserProfileEditable
+        .subscribe(status => {
+          this.editable = status;
+        });
     this.userService.refreshUser();
     this.userService.setUserSideNav(this.userSideNav);
     this.userService.getEmittedValue()

@@ -47,9 +47,9 @@
         <div *ngIf="isUneditable(trip.id);else other_content">{{trip.start_date}}</div>
         <ng-template #other_content>
           <mat-form-field class="date-field">
-            <input matInput [matDatepicker]="picker1" [min] ="today" [formControl]="startDate">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1 ></mat-datepicker>
+            <input matInput [matDatepicker]="picker3" [min] ="today" [formControl]="startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3 ></mat-datepicker>
           </mat-form-field>
         </ng-template>
       </mat-cell>
@@ -61,9 +61,9 @@
         <div *ngIf="isUneditable(trip.id);else other_content">{{trip.end_date}}</div>
         <ng-template #other_content>
           <mat-form-field class="date-field">
-            <input matInput [matDatepicker]="picker2" [min] = "startDate.value" [formControl]="endDate">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2 ></mat-datepicker>
+            <input matInput [matDatepicker]="picker4" [min] = "startDate.value" [formControl]="endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
         </ng-template>
       </mat-cell>
