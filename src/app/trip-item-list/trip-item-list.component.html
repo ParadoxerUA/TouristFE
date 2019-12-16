@@ -58,7 +58,7 @@
           <div *ngIf="isNotInEditMode(item.equipment_id); else name_editing">{{item.name}}</div>
           <ng-template #name_editing>
             <mat-form-field class="edit-field edit-item-name-width">
-              <input matInput type="text" [value]="item.name" [formControl]="itemNameEdit" [(ngModel)]="edited_name">
+              <input matInput type="text" [formControl]="itemNameEdit" [(ngModel)]="edited_name">
               <mat-error *ngIf="itemNameEdit.invalid">{{ getNameErrorMessage() }}</mat-error>
             </mat-form-field>
           </ng-template>

@@ -15,9 +15,13 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 })
 export class TripItemListComponent implements OnInit {
   name: string;
+  edited_name: string;
   weight: number;
+  edited_weight: number;
   quantity: number;
+  edited_quantity: number;
   tag: number;
+  edited_tag: number;
 
   itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemNameEdit = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
@@ -183,6 +187,10 @@ export class TripItemListComponent implements OnInit {
 
   startEditMode(item) {
     this.currentItem = item.equipment_id;
+    this.edited_name = item.name;
+    this.edited_weight = item.weight;
+    this.edited_quantity = item.quantity;
+    this.edited_tag = item.role_id;
   }
 
   endEditMode() {
