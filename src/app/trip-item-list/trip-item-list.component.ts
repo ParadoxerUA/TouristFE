@@ -74,6 +74,12 @@ export class TripItemListComponent implements OnInit {
       return (this.itemName.invalid
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
+    }
+    else if (this.currentItem) {
+      return (this.itemNameEdit.invalid
+        || this.itemWeightEdit.invalid
+        || this.itemQuantityEdit.invalid
+        || this.tagNameEdit.invalid);
     } else {
         return (this.itemName.invalid
           || this.itemWeight.invalid
