@@ -105,7 +105,7 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button (click)="submitChanges()" [disabled]="dataInvalid()">
+        <button mat-icon-button (click)="submitChanges(item)" [disabled]="dataInvalid()">
           <mat-icon>done</mat-icon>
         </button>
         <button mat-icon-button (click)="endEditMode()">

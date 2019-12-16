@@ -79,6 +79,7 @@ export class TripItemListComponent implements OnInit {
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
     }
+    // TODO: Fix item add button activation
     else if (this.currentItem) {
       return (this.itemNameEdit.invalid
         || this.itemWeightEdit.invalid
@@ -185,7 +186,7 @@ export class TripItemListComponent implements OnInit {
     return true;
   }
 
-  startEditMode(item) {
+  startEditMode(item: Item) {
     this.currentItem = item.equipment_id;
     this.edited_name = item.name;
     this.edited_weight = item.weight;
@@ -198,6 +199,19 @@ export class TripItemListComponent implements OnInit {
   }
 
   submitChanges() {
+    this.itemData = {
+      "name": this.edited_name,
+      "weight": this.edited_weight,
+      "quantity": this.edited_quantity,
+      "trip_id": this.trip.trip_id,
+      "role_id": this.edited_tag
+    };
+
+    this.itemService.changeTripItem(this.currentItem, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
     this.currentItem = null;
   }
 

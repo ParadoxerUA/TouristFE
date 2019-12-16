@@ -54,6 +54,15 @@ export class ItemService {
     );
   }
 
+  changeTripItem(equipment_id: number, itemData: Item): Observable<any> {
+    const url = BASE_URL + `/equipment/v1/equipment/${equipment_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.put(url, itemData, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
   togglePersonalInventory() {
     let nextValue = !this.isPersonalInventorySource.getValue()
     this.isPersonalInventorySource.next(nextValue)
