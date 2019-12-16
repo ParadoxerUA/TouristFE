@@ -11,8 +11,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ItemService {
-  private isPersonalInventorySource = new BehaviorSubject(false)
-  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable()
+  private isPersonalInventorySource = new BehaviorSubject(false);
+  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable();
 
   constructor(
     private http: HttpClient,

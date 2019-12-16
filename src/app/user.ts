@@ -1,6 +1,5 @@
 export class User {
     public user_id?: number;
-    public carrying?: number;
     public name: string;
     public surname?: string;
     public capacity?: number;
@@ -11,7 +10,6 @@ export class User {
     constructor(name, surname?, capacity?, carrying?, email?, avatar?, roles?){
         this.name = name;
         this.surname = surname;
-        this.carrying = carrying? carrying : 10;
         this.capacity = capacity;
         this.email = email;
         this.avatar = avatar;

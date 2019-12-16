@@ -41,7 +41,6 @@ export class TripUserListComponent implements OnInit {
           this.tripUsers.push(element as User);
         });
         // console.log(this.tripUsers)
-        this.calculateCarryingItems();
       });
   }
 
@@ -116,14 +115,6 @@ export class TripUserListComponent implements OnInit {
 
   isUserAdmin(user_id: number): boolean {
     return user_id == this.trip['admin_id'];
-  }
-
-  calculateCarryingItems()
-  {
-    for (let _i = 0; _i < this.tripUsers.length; _i++){
-      this.tripUsers[_i].carrying = 10;
-
-    }
   }
 
   ngOnInit() {
