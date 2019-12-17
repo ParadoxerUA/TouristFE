@@ -21,7 +21,7 @@ export class TripUserListComponent implements OnInit {
   activeRole: number = 0;
   activeRoleColor: string = 'white';
   itemIsSelected: boolean = false;
-  items: {[id: number]: Array<any>} = {}
+  items: Map<number, Array<any>> = new Map();
   @Input() trip: Trip;
   @Input() currentUser: User;
   isPersonalInventory: Boolean = false;
@@ -175,8 +175,11 @@ export class TripUserListComponent implements OnInit {
       console.log(this.items);
     })
   }
-  getUserLoad() {
-    
+  getUserLoad(user_id: number) {
+    for (let item of this.items) {}
+    this.items.forEach((value: Array<any>, id: number) => {
+      
+    });
   }
   getItemsAmount(userId: number): number {
     let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;

@@ -123,6 +123,7 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
+      console.log(response);
       if (response.data.equipment) {
         let itemUsers = [];
         response.data.equipment.forEach(element =>{
