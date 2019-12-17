@@ -91,7 +91,7 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let item">
           <div class="item-buttons" *ngIf="isItemSelected(item.equipment_id)">
-            <button mat-icon-button matSuffix (click)="trip=commitChanges(item);$event.stopPropagation()">
+            <button mat-icon-button matSuffix (click)="commitChanges(item);$event.stopPropagation()">
               <mat-icon>done</mat-icon>
             </button>
             <button mat-icon-button matSuffix (click)="cancelChanges();$event.stopPropagation()">
@@ -112,7 +112,7 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button (click)="submitChanges(item);$event.stopPropagation()" [disabled]="editDataInvalid()">
+        <button mat-icon-button (click)="submitChanges();$event.stopPropagation()" [disabled]="editDataInvalid()">
           <mat-icon>done</mat-icon>
         </button>
         <button mat-icon-button (click)="endEditMode();$event.stopPropagation()">
