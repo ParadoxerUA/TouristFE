@@ -14,10 +14,10 @@
           (click)="(activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
             (user.user_id === userId && activeRole === 0 && togglePersonalInventory())">
           <button class="close" (click)="openDialog(user)" 
-          *ngIf="(user.user_id != currentUser.user_id) && (currentUser.user_id == trip.admin_id)">
+          *ngIf="(user.user_id != currentUser.user_id) && (isUserAdmin(currentUser.user_id))">
             <i class="material-icons">close</i>
           </button>
-          <!-- <p>{{user.user_id}} and {{currentUser.user_id}} and {{trip.admin_id}}</p> -->
+<!--           <p>{{user.user_id}} and {{currentUser.user_id}} and {{trip.admin_id}}</p>-->
           <img mat-card-avatar src="{{user.avatar}}" alt="User Avatar">
           <mat-card-subtitle><strong>{{user.name}}</strong></mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline"><strong>{{user.surname}}</strong></mat-card-subtitle>
@@ -25,15 +25,15 @@
           <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
           <div *ngIf="user.roles">
             <mat-chip-list>
-                  <mat-chip *ngFor="let role of user.roles; let i = index"
+                  <mat-chip *ngFor="let role of user.roles "
                             [style.background-color]="getRoleColor(role)"
                             class="user-role">
                   </mat-chip>
             </mat-chip-list>
           </div>
           <mat-card-footer style="text-align: center">
-            <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-            <p class="progress-value">10/{{user.capacity}}</p>
+            <mat-progress-bar mode="determinate" value="{{20}}"></mat-progress-bar>
+            <p class="progress-value">{{10}}/{{user.capacity}}</p>
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>

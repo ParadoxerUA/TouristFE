@@ -30,7 +30,7 @@ export class TripItemListComponent implements OnInit {
   userTripRoles: Role[] = [];
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean = false
+  isPersonalInventory: Boolean = false;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
   groupByColumns: string[] = ['role_color'];
@@ -217,7 +217,7 @@ export class TripItemListComponent implements OnInit {
       let subGroup = this.getSublevel(rowsInGroup, level + 1, groupByColumns, group);
       subGroup.unshift(group);
       subGroups = subGroups.concat(subGroup);
-    })
+    });
     return subGroups;
   }
 
@@ -238,7 +238,7 @@ export class TripItemListComponent implements OnInit {
     this.itemsDataSource.sort = this.sort;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status
+        this.isPersonalInventory = status;
         this.getItems()
     });
     this.roleService.newRole.subscribe(role => {

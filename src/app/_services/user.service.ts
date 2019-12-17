@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {MatSidenav} from "@angular/material/sidenav";
 import { BASE_URL } from './config'
 import { catchError } from 'rxjs/operators';
@@ -18,10 +18,12 @@ export class UserService {
   private userAvatarUrl = `${this.userUrl}/avatar`;
   private confirmationUrl = BASE_URL + '/otc/v1/otc/';
 
+  private userProfileEditable = new BehaviorSubject(false);
+  isUserProfileEditable = this.userProfileEditable.asObservable();
+
   @Output() userDataEmitter: EventEmitter<any> = new EventEmitter();
 
   userSideNav: MatSidenav;
-  userProfileEditable = false;
 
   setUserProfile(user){
     this.userDataEmitter.emit(user.data);
@@ -100,11 +102,22 @@ export class UserService {
 
   toggleUserProfile(){
     this.userSideNav.toggle();
-    this.userProfileEditable = false;
+    this.stopEditUser();
   }
 
   closeUserProfile(){
-    this.userSideNav.close()
+    this.userSideNav.close();
+    this.stopEditUser();
+  }
+
+  startEditUser()
+  {
+    this.userProfileEditable.next(true);
+  }
+
+  stopEditUser()
+  {
+    this.userProfileEditable.next(false);
   }
   
   getUserId(): number {

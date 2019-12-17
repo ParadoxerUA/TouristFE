@@ -116,7 +116,7 @@ export class TripService {
   }
 
   joinToTrip(trip_uuid): Observable<any> {
-    const tripInviteUrl: string = `${BASE_URL}/otc/v1/otc/${trip_uuid}`
+    const tripInviteUrl: string = `${BASE_URL}/otc/v1/otc/${trip_uuid}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.patch(tripInviteUrl, null, {headers: header})
     .pipe(
