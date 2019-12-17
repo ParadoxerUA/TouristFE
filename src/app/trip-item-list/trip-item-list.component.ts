@@ -328,6 +328,9 @@ export class TripItemListComponent implements OnInit {
     });
   }
   selectItem(item: Item) {
+    if (this.currentItem !== null) {
+      return;
+    }
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
       this.selectedItem = item;
       this.itemService.selectNewItem(item);
