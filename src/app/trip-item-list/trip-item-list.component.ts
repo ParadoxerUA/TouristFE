@@ -15,13 +15,20 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 })
 export class TripItemListComponent implements OnInit {
   name: string;
+  edited_name: string;
   weight: number;
+  edited_weight: number;
   quantity: number;
+  edited_quantity: number;
   tag: number;
+  edited_tag: number;
 
   itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+  itemNameEdit = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
+  itemWeightEdit = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  itemQuantityEdit = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
@@ -31,8 +38,9 @@ export class TripItemListComponent implements OnInit {
   itemData: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false;
+  currentItem: number = null;
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -54,17 +62,33 @@ export class TripItemListComponent implements OnInit {
         this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
+  getNameEditErrorMessage() {
+    return this.itemNameEdit.hasError('required') ? 'Enter a value' :
+        this.itemNameEdit.hasError('maxlength') ? 'Max length 20 characters' :
+        this.itemNameEdit.hasError('minlength') ? 'Min length 3 characters' : '';
+  }
+
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
+        this.itemWeight.hasError('pattern') ? 'Greater or equal 0' : '';
+  }
+
+  getWeightEditErrorMessage() {
+    return this.itemWeightEdit.hasError('required') ? 'Enter a value' :
+        this.itemWeightEdit.hasError('pattern') ? 'Greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
+        this.itemQuantity.hasError('pattern') ? 'Greater or equal 1' : '';
   }
 
-  dataInvalid(): boolean{
+  getQuantityEditErrorMessage() {
+    return this.itemQuantityEdit.hasError('required') ? 'Enter a value' :
+        this.itemQuantityEdit.hasError('pattern') ? 'Greater or equal 1' : '';
+  }
+
+  inputDataInvalid(): boolean{
     if (this.isPersonalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
@@ -75,6 +99,12 @@ export class TripItemListComponent implements OnInit {
           || this.itemQuantity.invalid
           || this.tagName.invalid);
     }
+  }
+
+  editDataInvalid(): boolean{
+    return (this.itemNameEdit.invalid
+      || this.itemWeightEdit.invalid
+      || this.itemQuantityEdit.invalid);
   }
 
   setColorToItems() {
@@ -158,6 +188,45 @@ export class TripItemListComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  isNotInEditMode(id: number) {
+    if (this.currentItem === null) {
+      return true;
+    }
+    if (this.currentItem === id) {
+      return false;
+    }
+    return true;
+  }
+
+  startEditMode(item: Item) {
+    this.currentItem = item.equipment_id;
+    this.edited_name = item.name;
+    this.edited_weight = item.weight;
+    this.edited_quantity = item.quantity;
+    this.edited_tag = item.role_id;
+  }
+
+  endEditMode() {
+    this.currentItem = null;
+  }
+
+  submitChanges() {
+    this.itemData = {
+      "name": this.edited_name,
+      "weight": this.edited_weight,
+      "quantity": this.edited_quantity,
+      "trip_id": this.trip.trip_id,
+      "role_id": this.edited_tag
+    };
+
+    this.itemService.changeTripItem(this.currentItem, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
+    this.currentItem = null;
   }
 
   getTripRoles() {
