@@ -83,10 +83,15 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
+      let itemUsers = [];
       response.data.equipment.forEach(element =>{
         this.tripItems.push(element as Item)
+        itemUsers.push({
+          item_id: element.equipment_id,
+          users: element.users
+        });
       });
-      this.itemService.addUserItems(response.data.equipment);
+      this.itemService.addUserItems(itemUsers);
       this.getTripRoles();
     });
   }
@@ -211,8 +216,9 @@ export class TripItemListComponent implements OnInit {
     }
     return this.selectedItem['equipment_id'] == id;
   }
-  commitChanges() {
-
+  commitChanges(item) {
+    this.itemService.selectNewItem(item);
+    this.selectedItem = null;
   }
   cancelChanges() {
     this.selectedItem = null;

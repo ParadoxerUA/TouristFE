@@ -64,7 +64,7 @@
   
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectItem(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="cancelChanges();selectItem(row)"></tr>
 
       <ng-container matColumnDef="groupHeader">
         <td colspan="999" mat-cell *matCellDef="let group" [style.background-color]="group.role_color"></td>

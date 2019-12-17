@@ -26,7 +26,7 @@
           <br>
           <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
           <mat-card-subtitle *ngIf="itemIsSelected">
-            <input matInput type="number" placeholder="Value" [(ngModel)]="user.user_id">
+            <input matInput type="number" min="0" placeholder="Value" [(ngModel)]="user.itemsAmount">
           </mat-card-subtitle>
           <mat-card-footer style="text-align: center">
             <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>

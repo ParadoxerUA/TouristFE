@@ -136,12 +136,39 @@ export class TripUserListComponent implements OnInit {
         this.isPersonalInventory = status;
     });
     this.itemService.selectedItem.subscribe(item => {
-      if (item === null) {
+      if (item == null) {
         this.itemIsSelected = false;
-        console.log(item);
-      } else {
-        console.log(item);
+      }
+      else if (this.itemIsSelected == false) {
+        this.tripUsers.forEach(
+          u => u.itemsAmount = this.getItemsAmount(u.user_id)
+        );
         this.itemIsSelected = true;
+      } else {
+        this.itemIsSelected = false;
+        let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
+        let dispensedItems = {
+          users_eq_amount: []
+        };
+        let newFrontDispensedItems = [];
+        this.tripUsers.forEach(user => {
+          dispensedItems.users_eq_amount.push({
+            equipment_amount: user.itemsAmount,
+            user_id: user.user_id
+          });
+          newFrontDispensedItems.push({
+            amount: user.itemsAmount,
+            user_id: user.user_id
+          });
+        });
+        this.itemService.dispenseItems(dispensedItems, selectedItemId).subscribe(res => {
+          if (Number(res.data[1]) >= 400) {
+            console.log(res.data[0]);
+            alert(res.data[0]);
+            return;
+          }
+          this.items[selectedItemId] = newFrontDispensedItems;
+        });
       }
     });
     this.itemService.userItems.subscribe(userItems => {
@@ -150,12 +177,23 @@ export class TripUserListComponent implements OnInit {
       }
       console.log(userItems);
       userItems.forEach(userItem => {
-        this.items[userItem.equipment_id] = userItem.users;
+        this.items[userItem.item_id] = userItem.users;
       });
       console.log(this.items);
     })
   }
   getUserLoad() {
     
+  }
+  getItemsAmount(userId: number): number {
+    let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
+    let result = 0;
+    this.items[selectedItemId].forEach(i => {
+      if (i.user_id == userId) {
+        result = i.amount;
+        return;
+      }
+    })
+    return result;
   }
 }

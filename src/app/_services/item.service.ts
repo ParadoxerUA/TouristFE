@@ -53,4 +53,13 @@ export class ItemService {
     let nextValue = !this.isPersonalInventorySource.getValue()
     this.isPersonalInventorySource.next(nextValue)
   }
+
+  dispenseItems(dispensedItems, item_id): Observable<any> {
+    const url = `${BASE_URL}/equipment/v1/equipment/${item_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.patch(url, dispensedItems, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
 }
