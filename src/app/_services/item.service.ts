@@ -14,7 +14,9 @@ export class ItemService {
   private isPersonalInventorySource = new BehaviorSubject(false);
   isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable();
   public selectedItemSource = new BehaviorSubject(null);
+  public userItemsSource = new BehaviorSubject(null);
   selectedItem = this.selectedItemSource.asObservable();
+  userItems = this.userItemsSource.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -24,6 +26,9 @@ export class ItemService {
 
   selectNewItem(item: Item) {
     this.selectedItemSource.next(item);
+  }
+  addUserItems(items) {
+    this.userItemsSource.next(items)
   }
 
   getTripItems(trip_id: number): Observable<any> {

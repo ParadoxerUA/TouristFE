@@ -21,6 +21,7 @@ export class TripUserListComponent implements OnInit {
   activeRole: number = 0;
   activeRoleColor: string = 'white';
   itemIsSelected: boolean = false;
+  items: {[id: number]: Array<any>} = {}
   @Input() trip: Trip;
   @Input() currentUser: User;
   isPersonalInventory: Boolean = false;
@@ -143,6 +144,16 @@ export class TripUserListComponent implements OnInit {
         this.itemIsSelected = true;
       }
     });
+    this.itemService.userItems.subscribe(userItems => {
+      if (userItems == null) {
+        return;
+      }
+      console.log(userItems);
+      userItems.forEach(userItem => {
+        this.items[userItem.equipment_id] = userItem.users;
+      });
+      console.log(this.items);
+    })
   }
   getUserLoad() {
     
