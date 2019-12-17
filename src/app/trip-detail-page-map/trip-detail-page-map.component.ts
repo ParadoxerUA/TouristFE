@@ -48,6 +48,8 @@ export class TripDetailPageMapComponent implements OnInit {
   constructor(private tripService : TripService) { }
   ngOnInit() {
     this.createCheckpointsList();
+    this.location.lat = this.trip.points[0].latitude;
+    this.location.lng = this.trip.points[0].longitude;
   }
 
 }

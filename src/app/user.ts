@@ -8,7 +8,8 @@ export class User {
     public roles?: Array<any>;
     public itemsAmount?: number;
     
-    constructor(name, surname?, capacity?, email?, avatar?, roles?){
+
+    constructor(name, surname?, capacity?, carrying?, email?, avatar?, roles?){
         this.name = name;
         this.surname = surname;
         this.capacity = capacity;

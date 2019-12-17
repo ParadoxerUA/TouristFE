@@ -5,6 +5,7 @@ export class Trip {
   end_date?: string;
   description?: string;
   points? : Checkpoint[];
+  admin_id?: number;
   admin?: string;
   participants?: number;
   status?: string;
@@ -25,8 +26,9 @@ export class Item {
   weight: number;
   quantity: number;
   trip_id: number;
-  role_id: number;
+  role_id?: number;
   role_color?: string;
+  owner_id?: number;
 }
 
 export class Role {
