@@ -30,7 +30,6 @@ export class TripItemListComponent implements OnInit {
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   itemQuantityEdit = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
-  tagNameEdit = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
   tripItems: Item[] = [];
@@ -63,14 +62,30 @@ export class TripItemListComponent implements OnInit {
         this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
+  getNameEditErrorMessage() {
+    return this.itemNameEdit.hasError('required') ? 'Enter a value' :
+        this.itemNameEdit.hasError('maxlength') ? 'Max length 20 characters' :
+        this.itemNameEdit.hasError('minlength') ? 'Min length 3 characters' : '';
+  }
+
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
+        this.itemWeight.hasError('pattern') ? 'Greater or equal 0' : '';
+  }
+
+  getWeightEditErrorMessage() {
+    return this.itemWeightEdit.hasError('required') ? 'Enter a value' :
+        this.itemWeightEdit.hasError('pattern') ? 'Greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
+        this.itemQuantity.hasError('pattern') ? 'Greater or equal 1' : '';
+  }
+
+  getQuantityEditErrorMessage() {
+    return this.itemQuantityEdit.hasError('required') ? 'Enter a value' :
+        this.itemQuantityEdit.hasError('pattern') ? 'Greater or equal 1' : '';
   }
 
   inputDataInvalid(): boolean{
@@ -89,8 +104,7 @@ export class TripItemListComponent implements OnInit {
   editDataInvalid(): boolean{
     return (this.itemNameEdit.invalid
       || this.itemWeightEdit.invalid
-      || this.itemQuantityEdit.invalid
-      || this.tagNameEdit.invalid);
+      || this.itemQuantityEdit.invalid);
   }
 
   setColorToItems() {

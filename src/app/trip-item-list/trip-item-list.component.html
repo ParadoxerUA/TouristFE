@@ -42,12 +42,11 @@
             </div>
             <ng-template #tag_editing>
               <mat-form-field class="edit-field edit-tag-width">
-                <mat-select [formControl]="tagNameEdit" [(ngModel)]="edited_tag">
+                <mat-select [(ngModel)]="edited_tag">
                   <mat-option *ngFor="let role of userTripRoles" [style.background-color]="role.color" [value]="role.id">
                     {{role.name}}
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="tagNameEdit.invalid">{{ getTagErrorMessage() }}</mat-error>
               </mat-form-field>
             </ng-template>
           </td>
@@ -59,7 +58,7 @@
           <ng-template #name_editing>
             <mat-form-field class="edit-field edit-item-name-width">
               <input matInput type="text" [formControl]="itemNameEdit" [(ngModel)]="edited_name">
-              <mat-error *ngIf="itemNameEdit.invalid">{{ getNameErrorMessage() }}</mat-error>
+              <mat-error *ngIf="itemNameEdit.invalid">{{ getNameEditErrorMessage() }}</mat-error>
             </mat-form-field>
           </ng-template>
         </td>
@@ -72,7 +71,7 @@
         <ng-template #weight_editing>
           <mat-form-field class="edit-field edit-example-margin">
             <input matInput type="number" [formControl]="itemWeightEdit" [(ngModel)]="edited_weight">
-            <mat-error *ngIf="itemWeightEdit.invalid">{{ getWeightErrorMessage() }}</mat-error>
+            <mat-error *ngIf="itemWeightEdit.invalid">{{ getWeightEditErrorMessage() }}</mat-error>
           </mat-form-field>
         </ng-template>
       </ng-container>
@@ -83,7 +82,7 @@
           <ng-template #quantity_field>
             <mat-form-field class="edit-field edit-example-margin">
               <input matInput type="number" [formControl]="itemQuantityEdit" [(ngModel)]="edited_quantity">
-              <mat-error *ngIf="itemQuantityEdit.invalid">{{ getQuantityErrorMessage() }}</mat-error>
+              <mat-error *ngIf="itemQuantityEdit.invalid">{{ getQuantityEditErrorMessage() }}</mat-error>
             </mat-form-field>
           </ng-template>
         </td>
