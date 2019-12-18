@@ -28,8 +28,10 @@ export class TripRolesComponent implements OnInit {
     this.tripRoles = [];
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        response.data.roles.forEach(element => 
-          this.tripRoles.push(element as Role));
+        if (response.data.roles) {
+          response.data.roles.forEach(element => 
+            this.tripRoles.push(element as Role));
+        }
       });
     }
 
