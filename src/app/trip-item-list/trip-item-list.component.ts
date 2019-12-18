@@ -38,7 +38,7 @@ export class TripItemListComponent implements OnInit {
   itemData: Item;
   selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean = false;
+  personalInventory: number = 0
   currentItem: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
@@ -90,7 +90,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   inputDataInvalid(): boolean{
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
@@ -134,6 +134,16 @@ export class TripItemListComponent implements OnInit {
             weight: element.weight
           });
         });
+        if (response.data.personal_stuff) {
+          response.data.personal_stuff.forEach(element =>{
+          this.tripItems.push(element as Item);
+          itemUsers.push({
+            item_id: element.equipment_id,
+            users: element.users,
+            weight: element.weight
+            });
+          });
+        }
         this.itemService.addUserItems(itemUsers);
       } else {
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
@@ -143,7 +153,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   addItem(): void {
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       this.itemData = {
         "name": this.name,
         "weight": this.weight,
@@ -316,9 +326,9 @@ export class TripItemListComponent implements OnInit {
 
   ngOnInit() {
     this.itemsDataSource.sort = this.sort;
-    this.itemService.isPersonalInventoryStatus
+    this.itemService.personalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status;
+        this.personalInventory = status
         this.getItems()
     });
     this.roleService.newRole.subscribe(role => {

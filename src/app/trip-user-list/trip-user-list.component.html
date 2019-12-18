@@ -9,10 +9,10 @@
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card
-          [ngClass]="{glowingBorder: ((activeRole > 0 && isUserAdmin(this.userService.getUserId())) || (user.user_id === userId && activeRole === 0)),
-            activeBorder: isPersonalInventory}"
-          (click)="!itemIsSelected && ( (activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
-            (user.user_id === userId && activeRole === 0 && togglePersonalInventory()))">
+          [ngClass]="{glowingBorder: ((activeRole > 0 && isUserAdmin(this.userService.getUserId())) || (user.user_id === userId && activeRole === 0) || (user.user_id === personalInventory)),
+            activeBorder: user.user_id === personalInventory}"
+          (click)="(activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
+            (activeRole === 0 && togglePersonalInventory(user.user_id))">
           <button class="close" (click)="openDialog(user)" 
           *ngIf="(user.user_id != currentUser.user_id) && (isUserAdmin(currentUser.user_id))">
             <i class="material-icons">close</i>

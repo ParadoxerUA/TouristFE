@@ -11,8 +11,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ItemService {
-  private isPersonalInventorySource = new BehaviorSubject(false);
-  isPersonalInventoryStatus = this.isPersonalInventorySource.asObservable();
+  private personalInventorySource = new BehaviorSubject(0)
+  personalInventoryStatus = this.personalInventorySource.asObservable()
   public selectedItemSource = new BehaviorSubject(null);
   public userItemsSource = new BehaviorSubject(null);
   selectedItem = this.selectedItemSource.asObservable();
@@ -32,14 +32,15 @@ export class ItemService {
   }
 
   getTripItems(trip_id: number): Observable<any> {
-    if (!this.isPersonalInventorySource.getValue()) {
+    if (!this.personalInventorySource.getValue()) {
       const url = BASE_URL + `/trip/v1/trip/${trip_id}?fields=equipment`;
       let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
       return this.http.get(url, {headers: header})
       .pipe(
         catchError((err) => this.errorService.handleError(err, this.authService.getSessionId())))
       } else {
-        const url = BASE_URL + `/user/v1/user?fields=personal_stuff&trip_id=${trip_id}`;
+        const userId = this.personalInventorySource.getValue()
+        const url = BASE_URL + `/user/v1/user?fields=personal_stuff,equipment&trip_id=${trip_id}&user_id=${userId}`;
         let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
         return this.http.get(url, {headers: header})
         .pipe(
@@ -65,6 +66,14 @@ export class ItemService {
     );
   }
 
+  togglePersonalInventory(userId) {
+    if (userId === this.personalInventorySource.getValue()) {
+      this.personalInventorySource.next(0)
+    } else {
+      this.personalInventorySource.next(userId)
+    }
+  }
+
   changeTripItem(equipment_id: number, itemData: Item): Observable<any> {
     const url = BASE_URL + `/equipment/v1/equipment/${equipment_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
@@ -72,11 +81,6 @@ export class ItemService {
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );
-  }
-
-  togglePersonalInventory() {
-    let nextValue = !this.isPersonalInventorySource.getValue();
-    this.isPersonalInventorySource.next(nextValue)
   }
 
   dispenseItems(dispensedItems, item_id): Observable<any> {
