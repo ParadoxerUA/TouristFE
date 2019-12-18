@@ -2,12 +2,12 @@
   <mat-card class="input-card">
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
-      <mat-select *ngIf="!isPersonalInventory" [formControl]="tagName" [(ngModel)]="tag">
+      <mat-select *ngIf="!personalInventory" [formControl]="tagName" [(ngModel)]="tag">
         <mat-option *ngFor="let role of userTripRoles" [style.background-color]="role.color" [value]="role.id">
           {{role.name}}
         </mat-option>
       </mat-select>
-      <select *ngIf="isPersonalInventory" matNativeControl required>
+      <select *ngIf="personalInventory" matNativeControl required>
         <option value="personal">Personal</option>
       </select>
       <mat-error *ngIf="tagName.invalid">{{ getTagErrorMessage() }}</mat-error>
