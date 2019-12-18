@@ -35,6 +35,7 @@ export class TripUserListComponent implements OnInit {
   ) {}
 
   getUsers(): void {
+
     this.tripUsers = [];
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
@@ -43,7 +44,6 @@ export class TripUserListComponent implements OnInit {
           element.roles = rolesList.map(role => role.id);
           this.tripUsers.push(element as User);
         });
-        // console.log(this.tripUsers)
       });
   }
 
@@ -121,6 +121,7 @@ export class TripUserListComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.itemIsSelected);
     this.getUsers();
     this.userId = this.userService.getUserId();
     this.tripRoles = this.trip.roles;
