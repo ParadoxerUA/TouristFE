@@ -22,21 +22,24 @@
           <mat-card-subtitle><strong>{{user.name}}</strong></mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline"><strong>{{user.surname}}</strong></mat-card-subtitle>
           <br>
-          <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
-          <mat-card-subtitle *ngIf="itemIsSelected">
-            <input matInput type="number" min="0" placeholder="Value" [(ngModel)]="user.itemsAmount">
+          <mat-card-subtitle style="text-align: center;" *ngIf="itemIsSelected; else role_div">
+            <input matInput class='dispense_input' type="number" min="0" placeholder="Value" [(ngModel)]="user.itemsAmount">
           </mat-card-subtitle>
-          <div *ngIf="user.roles">
-            <mat-chip-list>
-                  <mat-chip *ngFor="let role of user.roles "
-                            [style.background-color]="getRoleColor(role)"
-                            class="user-role">
-                  </mat-chip>
-            </mat-chip-list>
-          </div>
+          <ng-template #role_div>
+            <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
+            <div *ngIf="user.roles">
+              <mat-chip-list>
+                    <mat-chip *ngFor="let role of user.roles "
+                              [style.background-color]="getRoleColor(role)"
+                              class="user-role">
+                    </mat-chip>
+              </mat-chip-list>
+            </div>
+          </ng-template>
+
           <mat-card-footer style="text-align: center">
-            <mat-progress-bar mode="determinate" value="{{20}}"></mat-progress-bar>
-            <p class="progress-value">{{10}}/{{user.capacity}}</p>
+            <mat-progress-bar mode="determinate" value="{{100*user.load/user.capacity}}"></mat-progress-bar>
+            <p class="progress-value">{{user.load}}/{{user.capacity}}</p>
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>

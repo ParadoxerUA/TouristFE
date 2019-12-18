@@ -110,7 +110,7 @@ export class TripItemListComponent implements OnInit {
 
   setColorToItems() {
     this.tripItems.map(item => {
-      let role = this.tripRoles.find(role => role.id === item.role_id)
+      let role = this.tripRoles.find(role => role.id === item.role_id);
       if (role == undefined) {
         item.role_color = 'white'
       } else {
@@ -123,14 +123,15 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      console.log(response);
+      // console.log(response);
       if (response.data.equipment) {
         let itemUsers = [];
         response.data.equipment.forEach(element =>{
-          this.tripItems.push(element as Item)
+          this.tripItems.push(element as Item);
           itemUsers.push({
             item_id: element.equipment_id,
-            users: element.users
+            users: element.users,
+            weight: element.weight
           });
         });
         this.itemService.addUserItems(itemUsers);
