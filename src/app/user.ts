@@ -7,6 +7,7 @@ export class User {
     public avatar?: string;
     public roles?: Array<any>;
     public itemsAmount?: number;
+    public load?: number;
     
 
     constructor(name, surname?, capacity?, carrying?, email?, avatar?, roles?){
