@@ -145,7 +145,7 @@ export class TripItemListComponent implements OnInit {
           });
         }
         this.itemService.addUserItems(itemUsers);
-      } else {
+      } else if(response.data.personal_stuff){
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
       }
       this.getTripRoles();
@@ -254,8 +254,10 @@ export class TripItemListComponent implements OnInit {
     this.roleService.getTripRoles(this.trip.trip_id)
     .subscribe(response => {
       this.tripRoles = [];
-      response.data.roles.forEach(role =>
-        this.tripRoles.push(role as Role));
+      if (response.data.roles) {
+        response.data.roles.forEach(role =>
+          this.tripRoles.push(role as Role));
+      }
       this.getUserTripRoles();
       this.setColorToItems();
       this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
