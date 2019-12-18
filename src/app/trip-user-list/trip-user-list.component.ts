@@ -140,6 +140,8 @@ export class TripUserListComponent implements OnInit {
       } else {
         this.itemIsSelected = false;
         let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
+        let selectedItemWeight = this.itemService.selectedItemSource.getValue().weight;
+
         let dispensedItems = {
           users_eq_amount: []
         };
@@ -149,47 +151,64 @@ export class TripUserListComponent implements OnInit {
             equipment_amount: user.itemsAmount,
             user_id: user.user_id
           });
+
           newFrontDispensedItems.push({
             amount: user.itemsAmount,
-            user_id: user.user_id
+            user_id: user.user_id,
           });
         });
         this.itemService.dispenseItems(dispensedItems, selectedItemId).subscribe(res => {
           if (Number(res.data[1]) >= 400) {
-            console.log(res.data[0]);
+            // console.log(res.data[0]);
             alert(res.data[0]);
             return;
           }
-          this.items[selectedItemId] = newFrontDispensedItems;
+          this.items.set(selectedItemId, [selectedItemWeight, newFrontDispensedItems]);
+          this.calculateLoadForUsers();
         });
+        console.log(this.items);
+
       }
     });
     this.itemService.userItems.subscribe(userItems => {
       if (userItems == null) {
         return;
       }
-      console.log(userItems);
       userItems.forEach(userItem => {
-        this.items[userItem.item_id] = userItem.users;
+        this.items.set(userItem.item_id, [userItem.weight, userItem.users]);
       });
-      console.log(this.items);
+      // console.log(this.items);
+      this.calculateLoadForUsers();
     })
   }
   getUserLoad(user_id: number) {
-    for (let item of this.items) {}
-    this.items.forEach((value: Array<any>, id: number) => {
-      
-    });
+    let load = 0;
+    // console.log("User ", user_id);
+    for (let [key, value] of this.items) {
+      for(let i = 0; i < value[1].length; i++){
+        if (value[1][i].user_id == user_id)
+        {
+          load += value[0] * value[1][i].amount;
+          // console.log('item ', key, 'weight ', value[0], '*', "amount", value[1][i].amount, "load ",load)
+        }
+      }
+    };
+    return load;
+  }
+  calculateLoadForUsers()
+  {
+    for (let user of this.tripUsers){
+      user.load = this.getUserLoad(user.user_id);
+    }
   }
   getItemsAmount(userId: number): number {
     let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
     let result = 0;
-    this.items[selectedItemId].forEach(i => {
-      if (i.user_id == userId) {
-        result = i.amount;
-        return;
+    for (let element of this.items.get(selectedItemId)[1]) {
+      if (element.user_id == userId) {
+        result = element.amount;
       }
-    })
+    };
     return result;
   }
 }
