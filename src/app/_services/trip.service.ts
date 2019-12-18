@@ -38,6 +38,7 @@ export class TripService {
     this.currentTrip.points = this.listOfCheckpoints;
     this.addTrip(this.currentTrip).subscribe(g => {
       this.router.navigate(['trip-list']);
+      this.listOfCheckpoints = [];
     })
   }
   addCheckpointToList(lat,lng,name,orderNumber) {
