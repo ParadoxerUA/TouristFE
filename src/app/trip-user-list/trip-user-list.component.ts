@@ -165,7 +165,7 @@ export class TripUserListComponent implements OnInit {
             return;
           }
           this.items.set(selectedItemId, [selectedItemWeight, newFrontDispensedItems]);
-          this.calculateLoadForUsers();
+          // this.calculateLoadForUsers();
         });
         console.log(this.items);
 
@@ -179,7 +179,7 @@ export class TripUserListComponent implements OnInit {
         this.items.set(userItem.item_id, [userItem.weight, userItem.users]);
       });
       // console.log(this.items);
-      this.calculateLoadForUsers();
+      // this.calculateLoadForUsers();
     })
   }
   getUserLoad(user_id: number) {
@@ -205,6 +205,7 @@ export class TripUserListComponent implements OnInit {
   getItemsAmount(userId: number): number {
     let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
     let result = 0;
+    console.log(this.items)
     for (let element of this.items.get(selectedItemId)[1]) {
       if (element.user_id == userId) {
         result = element.amount;
