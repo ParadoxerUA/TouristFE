@@ -36,6 +36,7 @@ export class TripItemListComponent implements OnInit {
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
   itemData: Item;
+  selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   isPersonalInventory: Boolean = false;
   currentItem: number = null;
@@ -122,8 +123,17 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
+      console.log(response);
       if (response.data.equipment) {
-        response.data.equipment.forEach(element => this.tripItems.push(element as Item));
+        let itemUsers = [];
+        response.data.equipment.forEach(element =>{
+          this.tripItems.push(element as Item)
+          itemUsers.push({
+            item_id: element.equipment_id,
+            users: element.users
+          });
+        });
+        this.itemService.addUserItems(itemUsers);
       } else {
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
       }
@@ -317,5 +327,32 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
-
+  selectItem(item: Item) {
+    if (this.currentItem !== null) {
+      return;
+    }
+    if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
+      this.selectedItem = item;
+      this.itemService.selectNewItem(item);
+    } else {
+      console.log('User has no access to this item');
+    }
+  }
+  isItemSelected(id: number) {
+    if (this.selectedItem == null) {
+      return false;
+    }
+    return this.selectedItem['equipment_id'] == id;
+  }
+  isAnySelected(): boolean {
+    return this.selectedItem == null;
+  }
+  commitChanges(item) {
+    this.itemService.selectNewItem(item);
+    this.selectedItem = null;
+  }
+  cancelChanges() {
+    this.selectedItem = null;
+    this.itemService.selectNewItem(null);
+  }
 }

@@ -6,6 +6,8 @@ export class User {
     public email?: string;
     public avatar?: string;
     public roles?: Array<any>;
+    public itemsAmount?: number;
+    
 
     constructor(name, surname?, capacity?, carrying?, email?, avatar?, roles?){
         this.name = name;

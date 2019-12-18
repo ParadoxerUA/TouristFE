@@ -19,6 +19,9 @@ export class TripUserListComponent implements OnInit {
   tripUsers: User[];
   tripRoles: Role[];
   activeRole: number = 0;
+  activeRoleColor: string = 'white';
+  itemIsSelected: boolean = false;
+  items: Map<number, Array<any>> = new Map();
   @Input() trip: Trip;
   @Input() currentUser: User;
   isPersonalInventory: Boolean = false;
@@ -123,7 +126,70 @@ export class TripUserListComponent implements OnInit {
     this.tripRoles = this.trip.roles;
     this.itemService.isPersonalInventoryStatus
       .subscribe(status => {
-        this.isPersonalInventory = status
-  });
+        this.isPersonalInventory = status;
+    });
+    this.itemService.selectedItem.subscribe(item => {
+      if (item == null) {
+        this.itemIsSelected = false;
+      }
+      else if (this.itemIsSelected == false) {
+        this.tripUsers.forEach(
+          u => u.itemsAmount = this.getItemsAmount(u.user_id)
+        );
+        this.itemIsSelected = true;
+      } else {
+        this.itemIsSelected = false;
+        let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
+        let dispensedItems = {
+          users_eq_amount: []
+        };
+        let newFrontDispensedItems = [];
+        this.tripUsers.forEach(user => {
+          dispensedItems.users_eq_amount.push({
+            equipment_amount: user.itemsAmount,
+            user_id: user.user_id
+          });
+          newFrontDispensedItems.push({
+            amount: user.itemsAmount,
+            user_id: user.user_id
+          });
+        });
+        this.itemService.dispenseItems(dispensedItems, selectedItemId).subscribe(res => {
+          if (Number(res.data[1]) >= 400) {
+            console.log(res.data[0]);
+            alert(res.data[0]);
+            return;
+          }
+          this.items[selectedItemId] = newFrontDispensedItems;
+        });
+      }
+    });
+    this.itemService.userItems.subscribe(userItems => {
+      if (userItems == null) {
+        return;
+      }
+      console.log(userItems);
+      userItems.forEach(userItem => {
+        this.items[userItem.item_id] = userItem.users;
+      });
+      console.log(this.items);
+    })
+  }
+  getUserLoad(user_id: number) {
+    for (let item of this.items) {}
+    this.items.forEach((value: Array<any>, id: number) => {
+      
+    });
+  }
+  getItemsAmount(userId: number): number {
+    let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
+    let result = 0;
+    this.items[selectedItemId].forEach(i => {
+      if (i.user_id == userId) {
+        result = i.amount;
+        return;
+      }
+    })
+    return result;
   }
 }
