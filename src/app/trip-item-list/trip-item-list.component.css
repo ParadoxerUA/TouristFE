@@ -57,3 +57,6 @@ th {
 .item-buttons {
   float: right;
 }
+.mat-row:hover {
+  background-color: lightgray;
+}
