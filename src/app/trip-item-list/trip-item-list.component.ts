@@ -327,6 +327,7 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
+    this.cancelChanges();
     this.itemsDataSource.sort = this.sort;
     this.itemService.personalInventoryStatus
       .subscribe(status => {
