@@ -1,5 +1,5 @@
 
-  <mat-card class="input-card">
+  <mat-card class="input-card" *ngIf="personalInventory === userService.getUserId() || personalInventory === 0">
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
       <mat-select *ngIf="!personalInventory" [formControl]="tagName" [(ngModel)]="tag">
