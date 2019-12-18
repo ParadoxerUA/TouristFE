@@ -123,7 +123,6 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      // console.log(response);
       if (response.data.equipment) {
         let itemUsers = [];
         response.data.equipment.forEach(element =>{
@@ -152,6 +151,13 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  getDispensedItemsAmount(equipment_id: number) {
+    let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
+    let totalItemAmount = 0;
+    itemData[0].users.forEach(user => totalItemAmount += user.amount);
+    return totalItemAmount;
+  }
+
   addItem(): void {
     if (this.personalInventory) {
       this.itemData = {
@@ -170,7 +176,6 @@ export class TripItemListComponent implements OnInit {
           "role_id": this.tag
         };
     }
-
 
     this.name = "";
     this.weight = 0;
@@ -241,7 +246,7 @@ export class TripItemListComponent implements OnInit {
       "trip_id": this.trip.trip_id,
       "role_id": this.edited_tag
     };
-
+ 
     this.itemService.changeTripItem(this.currentItem, this.itemData)
     .subscribe(response => {
       this.getItems();
@@ -361,6 +366,19 @@ export class TripItemListComponent implements OnInit {
     return this.selectedItem == null;
   }
   commitChanges(item) {
+    this.itemData = {
+      "name": item.name,
+      "weight": item.weight,
+      "quantity": item.quantity,
+      "trip_id": item.trip_id,
+      "role_id": item.role_id
+    };
+
+    this.itemService.changeTripItem(item.equipment_id, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
     this.itemService.selectNewItem(item);
     this.selectedItem = null;
   }
