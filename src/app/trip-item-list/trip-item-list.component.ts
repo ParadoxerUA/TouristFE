@@ -15,13 +15,20 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 })
 export class TripItemListComponent implements OnInit {
   name: string;
+  edited_name: string;
   weight: number;
+  edited_weight: number;
   quantity: number;
+  edited_quantity: number;
   tag: number;
+  edited_tag: number;
 
   itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+  itemNameEdit = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
+  itemWeightEdit = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  itemQuantityEdit = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
@@ -29,10 +36,12 @@ export class TripItemListComponent implements OnInit {
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
   itemData: Item;
+  selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   personalInventory: number = 0
+  currentItem: number = null;
 
-  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'delete'];
+  displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -54,17 +63,33 @@ export class TripItemListComponent implements OnInit {
         this.itemName.hasError('minlength') ? 'Min length 3 characters' : '';
   }
 
+  getNameEditErrorMessage() {
+    return this.itemNameEdit.hasError('required') ? 'Enter a value' :
+        this.itemNameEdit.hasError('maxlength') ? 'Max length 20 characters' :
+        this.itemNameEdit.hasError('minlength') ? 'Min length 3 characters' : '';
+  }
+
   getWeightErrorMessage() {
     return this.itemWeight.hasError('required') ? 'Enter a value' :
-        this.itemWeight.hasError('pattern') ? 'Number greater or equal 0' : '';
+        this.itemWeight.hasError('pattern') ? 'Greater or equal 0' : '';
+  }
+
+  getWeightEditErrorMessage() {
+    return this.itemWeightEdit.hasError('required') ? 'Enter a value' :
+        this.itemWeightEdit.hasError('pattern') ? 'Greater or equal 0' : '';
   }
 
   getQuantityErrorMessage() {
     return this.itemQuantity.hasError('required') ? 'Enter a value' :
-        this.itemQuantity.hasError('pattern') ? 'Number greater or equal 1' : '';
+        this.itemQuantity.hasError('pattern') ? 'Greater or equal 1' : '';
   }
 
-  dataInvalid(): boolean{
+  getQuantityEditErrorMessage() {
+    return this.itemQuantityEdit.hasError('required') ? 'Enter a value' :
+        this.itemQuantityEdit.hasError('pattern') ? 'Greater or equal 1' : '';
+  }
+
+  inputDataInvalid(): boolean{
     if (this.personalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
@@ -77,9 +102,15 @@ export class TripItemListComponent implements OnInit {
     }
   }
 
+  editDataInvalid(): boolean{
+    return (this.itemNameEdit.invalid
+      || this.itemWeightEdit.invalid
+      || this.itemQuantityEdit.invalid);
+  }
+
   setColorToItems() {
     this.tripItems.map(item => {
-      let role = this.tripRoles.find(role => role.id === item.role_id)
+      let role = this.tripRoles.find(role => role.id === item.role_id);
       if (role == undefined) {
         item.role_color = 'white'
       } else {
@@ -92,8 +123,18 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
+      // console.log(response);
       if (response.data.equipment) {
-        response.data.equipment.forEach(element => this.tripItems.push(element as Item));
+        let itemUsers = [];
+        response.data.equipment.forEach(element =>{
+          this.tripItems.push(element as Item);
+          itemUsers.push({
+            item_id: element.equipment_id,
+            users: element.users,
+            weight: element.weight
+          });
+        });
+        this.itemService.addUserItems(itemUsers);
       } else {
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
       }
@@ -160,6 +201,45 @@ export class TripItemListComponent implements OnInit {
     }
   }
 
+  isNotInEditMode(id: number) {
+    if (this.currentItem === null) {
+      return true;
+    }
+    if (this.currentItem === id) {
+      return false;
+    }
+    return true;
+  }
+
+  startEditMode(item: Item) {
+    this.currentItem = item.equipment_id;
+    this.edited_name = item.name;
+    this.edited_weight = item.weight;
+    this.edited_quantity = item.quantity;
+    this.edited_tag = item.role_id;
+  }
+
+  endEditMode() {
+    this.currentItem = null;
+  }
+
+  submitChanges() {
+    this.itemData = {
+      "name": this.edited_name,
+      "weight": this.edited_weight,
+      "quantity": this.edited_quantity,
+      "trip_id": this.trip.trip_id,
+      "role_id": this.edited_tag
+    };
+
+    this.itemService.changeTripItem(this.currentItem, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
+    this.currentItem = null;
+  }
+
   getTripRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
     .subscribe(response => {
@@ -217,7 +297,7 @@ export class TripItemListComponent implements OnInit {
       let subGroup = this.getSublevel(rowsInGroup, level + 1, groupByColumns, group);
       subGroup.unshift(group);
       subGroups = subGroups.concat(subGroup);
-    })
+    });
     return subGroups;
   }
 
@@ -248,5 +328,32 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
-
+  selectItem(item: Item) {
+    if (this.currentItem !== null) {
+      return;
+    }
+    if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
+      this.selectedItem = item;
+      this.itemService.selectNewItem(item);
+    } else {
+      console.log('User has no access to this item');
+    }
+  }
+  isItemSelected(id: number) {
+    if (this.selectedItem == null) {
+      return false;
+    }
+    return this.selectedItem['equipment_id'] == id;
+  }
+  isAnySelected(): boolean {
+    return this.selectedItem == null;
+  }
+  commitChanges(item) {
+    this.itemService.selectNewItem(item);
+    this.selectedItem = null;
+  }
+  cancelChanges() {
+    this.selectedItem = null;
+    this.itemService.selectNewItem(null);
+  }
 }

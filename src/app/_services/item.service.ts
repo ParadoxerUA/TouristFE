@@ -4,7 +4,7 @@ import { Observable, of, BehaviorSubject,  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ErrorService } from './error.service';
 import { BASE_URL } from './config';
-import { Item } from '../trip';
+import { Item, Role } from '../trip';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -13,12 +13,23 @@ import { catchError } from 'rxjs/operators';
 export class ItemService {
   private personalInventorySource = new BehaviorSubject(0)
   personalInventoryStatus = this.personalInventorySource.asObservable()
+  public selectedItemSource = new BehaviorSubject(null);
+  public userItemsSource = new BehaviorSubject(null);
+  selectedItem = this.selectedItemSource.asObservable();
+  userItems = this.userItemsSource.asObservable();
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private errorService: ErrorService,
   ) { }
+
+  selectNewItem(item: Item) {
+    this.selectedItemSource.next(item);
+  }
+  addUserItems(items) {
+    this.userItemsSource.next(items)
+  }
 
   getTripItems(trip_id: number): Observable<any> {
     if (!this.personalInventorySource.getValue()) {
@@ -61,5 +72,23 @@ export class ItemService {
     } else {
       this.personalInventorySource.next(userId)
     }
+  }
+
+  changeTripItem(equipment_id: number, itemData: Item): Observable<any> {
+    const url = BASE_URL + `/equipment/v1/equipment/${equipment_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.put(url, itemData, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
+  dispenseItems(dispensedItems, item_id): Observable<any> {
+    const url = `${BASE_URL}/equipment/v1/equipment/${item_id}`;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.patch(url, dispensedItems, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
   }
 }
