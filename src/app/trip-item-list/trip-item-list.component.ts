@@ -39,7 +39,7 @@ export class TripItemListComponent implements OnInit {
   selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   personalInventory: number = 0
-  currentItem: number = null;
+  currentItemId: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
@@ -151,11 +151,11 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
-  getDispensedItemsAmount(equipment_id: number) {
+  getDispensedItemAmount(equipment_id: number) {
     let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
-    let totalItemAmount = 0;
-    itemData[0].users.forEach(user => totalItemAmount += user.amount);
-    return totalItemAmount;
+    let dispensedItemAmount = 0;
+    itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    return dispensedItemAmount;
   }
 
   addItem(): void {
@@ -217,17 +217,17 @@ export class TripItemListComponent implements OnInit {
   }
 
   isNotInEditMode(id: number) {
-    if (this.currentItem === null) {
+    if (this.currentItemId === null) {
       return true;
     }
-    if (this.currentItem === id) {
+    if (this.currentItemId === id) {
       return false;
     }
     return true;
   }
 
   startEditMode(item: Item) {
-    this.currentItem = item.equipment_id;
+    this.currentItemId = item.equipment_id;
     this.edited_name = item.name;
     this.edited_weight = item.weight;
     this.edited_quantity = item.quantity;
@@ -235,7 +235,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   endEditMode() {
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   submitChanges() {
@@ -247,12 +247,12 @@ export class TripItemListComponent implements OnInit {
       "role_id": this.edited_tag
     };
  
-    this.itemService.changeTripItem(this.currentItem, this.itemData)
+    this.itemService.changeTripItem(this.currentItemId, this.itemData)
     .subscribe(response => {
       this.getItems();
     });
 
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   getTripRoles() {
@@ -347,7 +347,7 @@ export class TripItemListComponent implements OnInit {
     });
   }
   selectItem(item: Item) {
-    if (this.currentItem !== null) {
+    if (this.currentItemId !== null) {
       return;
     }
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
