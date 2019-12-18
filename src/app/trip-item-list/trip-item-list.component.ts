@@ -134,6 +134,16 @@ export class TripItemListComponent implements OnInit {
             weight: element.weight
           });
         });
+        if (response.data.personal_stuff) {
+          response.data.personal_stuff.forEach(element =>{
+          this.tripItems.push(element as Item);
+          itemUsers.push({
+            item_id: element.equipment_id,
+            users: element.users,
+            weight: element.weight
+            });
+          });
+        }
         this.itemService.addUserItems(itemUsers);
       } else {
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
