@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injectable} from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable, OnDestroy} from '@angular/core';
 import { UserService} from "../_services/user.service";
 import { Router} from "@angular/router";
 import { MatSidenav} from "@angular/material/sidenav";
@@ -6,6 +6,7 @@ import { User} from '../user';
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient, HttpEventType} from "@angular/common/http";
+import { Subscription } from 'rxjs';
 
 
 
@@ -19,6 +20,8 @@ import { HttpClient, HttpEventType} from "@angular/common/http";
   providedIn: 'root',
 })
 export class UserProfileComponent implements OnInit {
+
+  private profileSubscription: Subscription = new Subscription();
   calculateFormOpened = false;
   passwordFormOpened = false;
   result: number;
@@ -253,14 +256,18 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.clearUser();
-    this.userService.isUserProfileEditable
+    this.profileSubscription.add(this.userService.isUserProfileEditable
         .subscribe(status => {
           this.editable = status;
-        });
+        }));
     this.userService.refreshUser();
     this.userService.setUserSideNav(this.userSideNav);
-    this.userService.getEmittedValue()
-        .subscribe(item => this.user=item);
+    this.profileSubscription.add(this.userService.getEmittedValue()
+        .subscribe(item => this.user=item));
+  }
+
+  ngOnDestroy() {
+    this.profileSubscription.unsubscribe();
   }
 
 }
