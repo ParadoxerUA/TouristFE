@@ -359,7 +359,7 @@ export class TripItemListComponent implements OnInit {
   }
   
   selectItem(item: Item) {
-    if (this.currentItemId !== null) {
+    if (this.currentItemId !== null || this.personalInventory != 0) {
       return;
     }
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
