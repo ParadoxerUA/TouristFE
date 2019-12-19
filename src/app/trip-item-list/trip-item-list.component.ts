@@ -127,8 +127,8 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
+      let itemUsers = [];
       if (response.data.equipment) {
-        let itemUsers = [];
         response.data.equipment.forEach(element =>{
           this.tripItems.push(element as Item);
           itemUsers.push({
@@ -150,6 +150,8 @@ export class TripItemListComponent implements OnInit {
         this.itemService.addUserItems(itemUsers);
       } else if(response.data.personal_stuff){
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
+      } else {
+        this.itemService.addUserItems([]);
       }
       this.getTripRoles();
     });
@@ -339,6 +341,8 @@ export class TripItemListComponent implements OnInit {
 
   ngOnInit() {
     this.itemService.togglePersonalInventory(0)
+    this.itemService.selectNewItem(null);
+    this.tripItems = [];
     this.cancelChanges();
     this.itemsDataSource.sort = this.sort;
     this.subscription.add(
