@@ -39,7 +39,7 @@ export class TripItemListComponent implements OnInit {
   selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
   personalInventory: number = 0
-  currentItem: number = null;
+  currentItemId: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
@@ -123,7 +123,6 @@ export class TripItemListComponent implements OnInit {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      // console.log(response);
       if (response.data.equipment) {
         let itemUsers = [];
         response.data.equipment.forEach(element =>{
@@ -152,6 +151,13 @@ export class TripItemListComponent implements OnInit {
     });
   }
 
+  getDispensedItemAmount(equipment_id: number) {
+    let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
+    let dispensedItemAmount = 0;
+    itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    return dispensedItemAmount;
+  }
+
   addItem(): void {
     if (this.personalInventory) {
       this.itemData = {
@@ -170,7 +176,6 @@ export class TripItemListComponent implements OnInit {
           "role_id": this.tag
         };
     }
-
 
     this.name = "";
     this.weight = 0;
@@ -212,17 +217,17 @@ export class TripItemListComponent implements OnInit {
   }
 
   isNotInEditMode(id: number) {
-    if (this.currentItem === null) {
+    if (this.currentItemId === null) {
       return true;
     }
-    if (this.currentItem === id) {
+    if (this.currentItemId === id) {
       return false;
     }
     return true;
   }
 
   startEditMode(item: Item) {
-    this.currentItem = item.equipment_id;
+    this.currentItemId = item.equipment_id;
     this.edited_name = item.name;
     this.edited_weight = item.weight;
     this.edited_quantity = item.quantity;
@@ -230,7 +235,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   endEditMode() {
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   submitChanges() {
@@ -241,13 +246,13 @@ export class TripItemListComponent implements OnInit {
       "trip_id": this.trip.trip_id,
       "role_id": this.edited_tag
     };
-
-    this.itemService.changeTripItem(this.currentItem, this.itemData)
+ 
+    this.itemService.changeTripItem(this.currentItemId, this.itemData)
     .subscribe(response => {
       this.getItems();
     });
 
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   getTripRoles() {
@@ -342,7 +347,7 @@ export class TripItemListComponent implements OnInit {
     });
   }
   selectItem(item: Item) {
-    if (this.currentItem !== null) {
+    if (this.currentItemId !== null) {
       return;
     }
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
@@ -362,6 +367,19 @@ export class TripItemListComponent implements OnInit {
     return this.selectedItem == null;
   }
   commitChanges(item) {
+    this.itemData = {
+      "name": item.name,
+      "weight": item.weight,
+      "quantity": item.quantity,
+      "trip_id": item.trip_id,
+      "role_id": item.role_id
+    };
+
+    this.itemService.changeTripItem(item.equipment_id, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
     this.itemService.selectNewItem(item);
     this.selectedItem = null;
   }
