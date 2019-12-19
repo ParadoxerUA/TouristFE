@@ -157,7 +157,9 @@ export class TripItemListComponent implements OnInit {
   getDispensedItemAmount(equipment_id: number) {
     let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
     let dispensedItemAmount = 0;
-    itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    if(itemData[0] && itemData[0].users){
+      itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    }
     return dispensedItemAmount;
   }
 
