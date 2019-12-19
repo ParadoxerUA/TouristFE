@@ -57,8 +57,6 @@ export class TripUserListComponent implements OnInit, OnDestroy {
 
   getRoleColor(roleId) {
     let color = 'white';
-    // console.log(this.tripRoles)
-    // console.log(roleId)
     this.tripRoles.forEach(role => {
       if (role.id === roleId) {color = role.color;}
     });
@@ -128,8 +126,8 @@ export class TripUserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.itemService.togglePersonalInventory(0)
-    console.log(this.itemIsSelected);
+    this.itemService.togglePersonalInventory(0);
+    this.items = new Map();
     this.getUsers();
     this.userId = this.userService.getUserId();
     this.tripRoles = this.trip.roles;
@@ -177,7 +175,8 @@ export class TripUserListComponent implements OnInit, OnDestroy {
       }
     }));
     this.subscription.add(this.itemService.userItems.subscribe(userItems => {
-      if (userItems == null) {
+      this.items = new Map();
+      if (userItems === null) {
         return;
       }
       userItems.forEach(userItem => {
@@ -195,7 +194,6 @@ export class TripUserListComponent implements OnInit, OnDestroy {
     let load = 0;
 
     if(this.items){
-      console.log(this.items)
       
       for (let [key, value] of this.items) {
         if(value[1]){
@@ -223,7 +221,6 @@ export class TripUserListComponent implements OnInit, OnDestroy {
   getItemsAmount(userId: number): number {
     let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
     let result = 0;
-    console.log(this.items);
     for (let element of this.items.get(selectedItemId)[1]) {
       if (element.user_id == userId) {
         result = element.amount;
