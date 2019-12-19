@@ -128,7 +128,7 @@ export class TripUserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.itemService.togglePersonalInventory(0)
     console.log(this.itemIsSelected);
     this.getUsers();
     this.userId = this.userService.getUserId();

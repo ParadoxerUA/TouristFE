@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
@@ -7,6 +7,8 @@ import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import {Subscription} from 'rxjs';
+
 
 @Component({
   selector: 'app-trip-item-list',
@@ -14,6 +16,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrls: ['./trip-item-list.component.css'],
 })
 export class TripItemListComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
   name: string;
   edited_name: string;
   weight: number;
@@ -334,13 +337,15 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
+    this.itemService.togglePersonalInventory(0)
     this.cancelChanges();
     this.itemsDataSource.sort = this.sort;
-    this.itemService.personalInventoryStatus
-      .subscribe(status => {
-        this.personalInventory = status
-        this.getItems()
-    });
+    this.subscription.add(
+      this.itemService.personalInventoryStatus
+        .subscribe(status => {
+          this.personalInventory = status
+          this.getItems()})
+    )//; but why?
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
         return;
@@ -388,5 +393,9 @@ export class TripItemListComponent implements OnInit {
   cancelChanges() {
     this.selectedItem = null;
     this.itemService.selectNewItem(null);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

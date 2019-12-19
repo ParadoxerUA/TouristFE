@@ -13,11 +13,10 @@
             activeBorder: user.user_id === personalInventory}"
           (click)="!itemIsSelected && ((activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
             (activeRole === 0 && togglePersonalInventory(user.user_id)))">
-          <button class="close" (click)="openDialog(user)" 
+          <button class="close" (click)="openDialog(user);$event.stopPropagation()"
           *ngIf="(user.user_id != currentUser.user_id) && (isUserAdmin(currentUser.user_id))">
             <i class="material-icons">close</i>
           </button>
-<!--           <p>{{user.user_id}} and {{currentUser.user_id}} and {{trip.admin_id}}</p>-->
           <img mat-card-avatar src="{{user.avatar}}" alt="User Avatar">
           <mat-card-subtitle><strong>{{user.name}}</strong></mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline"><strong>{{user.surname}}</strong></mat-card-subtitle>
