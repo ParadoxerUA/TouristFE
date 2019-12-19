@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Observable } from "rxjs";
 import { MatTableDataSource } from '@angular/material';
 import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
@@ -25,6 +26,7 @@ export class TripItemListComponent implements OnInit {
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
+  @Input() delEvent: Observable<void>;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
@@ -87,7 +89,7 @@ export class TripItemListComponent implements OnInit {
       }
     })
   }
-
+  
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
@@ -247,6 +249,7 @@ export class TripItemListComponent implements OnInit {
       }
       this.tripRoles.push(role as Role);
     });
+    this.delEvent.subscribe(() => this.getItems());
   }
 
 }

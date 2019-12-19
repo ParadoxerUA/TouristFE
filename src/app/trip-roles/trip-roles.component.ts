@@ -18,6 +18,7 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0;
   @Output() roleEvent = new EventEmitter<any>();
+  @Output() roleDeleteEvent = new EventEmitter<any>();
   
   constructor(
     private dialog: MatDialog,
@@ -61,7 +62,9 @@ export class TripRolesComponent implements OnInit {
   }
 
   deleteRole(role: Role): void {
-    this.roleService.deleteTripRole(role.id).subscribe();
+    this.roleService.deleteTripRole(role.id).subscribe(response => {
+      this.roleDeleteEvent.emit(role);
+    });
     var role_index = this.tripRoles.indexOf(role);
     if (role_index > -1) {
     this.tripRoles.splice(role_index, 1);

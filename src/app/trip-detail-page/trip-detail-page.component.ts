@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../_services/trip.service';
 import { UserService } from '../_services/user.service';
 import { Role, Trip} from '../trip';
-import { User} from "../user";
+import { User } from "../user";
+
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -11,10 +13,14 @@ import { User} from "../user";
   styleUrls: ['./trip-detail-page.component.css']
 })
 export class TripDetailPageComponent implements OnInit {
+  
+
   trip: Trip;
   trip_id = +this.route.snapshot.paramMap.get('trip_id');
   readyToRefresh: boolean = true;
   currentUser: User;
+  eventsSubject: Subject<void> = new Subject<void>();
+  public roleDelEvent;
 
   constructor(
     private tripService: TripService,
@@ -29,6 +35,9 @@ export class TripDetailPageComponent implements OnInit {
       });
   }
 
+  processRoleDeletion($event): void {;
+    this.eventsSubject.next();
+  }
 
   refreshInviteLink(trip_id : number): void {
       this.readyToRefresh = false;

@@ -17,7 +17,7 @@ export class RoleService {
   setNewRole(role) {
     this.newRoleSource.next(role);
   }
-  
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,

@@ -31,9 +31,9 @@
   </mat-card>
 
   <div class="left">
-      <app-trip-item-list [trip]="trip"></app-trip-item-list>
+      <app-trip-item-list [delEvent]="eventsSubject.asObservable()" [trip]="trip"></app-trip-item-list>
   </div>
   <div class="right">
-      <app-trip-user-list [trip]="trip" [currentUser]="currentUser"></app-trip-user-list>
+      <app-trip-user-list (roleDeleteEvent)="processRoleDeletion($event)" [trip]="trip" [currentUser]="currentUser"></app-trip-user-list>
   </div>
 </div>

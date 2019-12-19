@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TripUserService } from '../_services/trip-user.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -22,6 +22,7 @@ export class TripUserListComponent implements OnInit {
   @Input() trip: Trip;
   @Input() currentUser: User;
   isPersonalInventory: Boolean = false;
+  @Output() roleDeleteEvent = new EventEmitter<any>();
 
   constructor(
     public dialog: MatDialog,
@@ -43,7 +44,10 @@ export class TripUserListComponent implements OnInit {
         console.log(this.tripUsers)
       });
   }
-
+  processRoleDeletion($event): void {
+    this.getUsers();
+    this.roleDeleteEvent.emit($event);
+  }
 
   getRoleColor(roleId) {
     let color = 'white';
