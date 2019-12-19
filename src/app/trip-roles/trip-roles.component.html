@@ -4,7 +4,7 @@
         [ngClass]="{activeBorder: activeRole === role.id}"
         (click)="activateRole(role.id)"
         [style.background-color]="role.color"
-        (removed)="deleteRole(role)">
+        (removed)="deleteRoleDialog(role)">
         {{role.name}}
         <mat-icon matChipRemove  *ngIf="currentUser.user_id == trip.admin_id">cancel</mat-icon>
     </mat-chip>

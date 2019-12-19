@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Observable } from "rxjs";
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
 import { MatTableDataSource } from '@angular/material';
 import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
@@ -34,6 +34,7 @@ export class TripItemListComponent implements OnInit {
 
   @Input() trip: Trip;
   @Input() delEvent: Observable<void>;
+  private eventsSubscription: Subscription;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
@@ -347,8 +348,13 @@ export class TripItemListComponent implements OnInit {
       }
       this.tripRoles.push(role as Role);
     });
-    this.delEvent.subscribe(() => this.getItems());
+    this.eventsSubscription = this.delEvent.subscribe(() => this.getItems());
   }
+
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+  }
+  
   selectItem(item: Item) {
     if (this.currentItemId !== null) {
       return;

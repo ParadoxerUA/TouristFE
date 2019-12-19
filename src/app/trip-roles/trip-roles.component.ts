@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { RoleService } from '../_services/role.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRolePopUpComponent } from '../new-role-pop-up/new-role-pop-up.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { Role, Trip } from '../trip';
 import { User } from '../user'
 
@@ -82,6 +83,18 @@ export class TripRolesComponent implements OnInit {
     this.roleEvent.emit(this.activeRole);
   }
 
+  deleteRoleDialog(role: Role): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      height: '160px',
+      data: `Are you sure to remove ${role.name} from this trip? All items of this category will be deleted`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteRole(role);
+      }
+    });
+  }
   ngOnInit() {
     this.getRoles();
   }
