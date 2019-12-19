@@ -12,7 +12,7 @@ import { ErrorService } from './error.service';
 })
 export class TripUserService {
 
-  private tripUrl = BASE_URL + '/trip/v1/trip'
+  private tripUrl = BASE_URL + '/trip/v1/trip';
 
   constructor(
     private http: HttpClient,
@@ -21,7 +21,7 @@ export class TripUserService {
     ) { }
 
   getTripUsers(trip_id): Observable<any> {
-    const url = `${this.tripUrl}/${trip_id}?fields=users`
+    const url = `${this.tripUrl}/${trip_id}?fields=users`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
     .pipe(

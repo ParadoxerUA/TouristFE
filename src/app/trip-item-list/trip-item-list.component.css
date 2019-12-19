@@ -9,12 +9,28 @@
   margin: 0px;
   margin-left: 10px;
 }
+.edit-field {
+  height: 70px;
+}
+.edit-item-name-width {
+  width: 70px;
+  padding: 0px;
+  margin: 0px;
+  margin-left: 10px;
+}
 .tag-width {
   width: 20%;
+}
+.edit-tag-width {
+  width: 60px;
 }
 .example-margin {
   margin-left: 10px;
   width: 15%;
+}
+.edit-example-margin {
+  margin-left: 10px;
+  width: 50px;
 }
 button.mat-mini-fab {
   background-color: green;
@@ -37,4 +53,10 @@ th {
 }
 .tag-color-line {
   height: 5px !important;
+}
+.item-buttons {
+  float: right;
+}
+.mat-row:hover {
+  background-color: lightgray;
 }
