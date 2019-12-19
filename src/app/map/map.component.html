@@ -1,5 +1,5 @@
 <div id="container">
-    <div id="left1">
+    <div id="left1" *ngIf="location.markers.length != 0; else no_markers">
         <h3 align="center">Checkpoints</h3>
         <div #scrollEl  cdk-scrollable style="height:89%; overflow-y:scroll">
             <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" >
@@ -25,6 +25,11 @@
             </div>
         </div>
     </div>
+    <ng-template #no_markers>
+        <div id="left1">
+            <h3 align="center">Create route choosing checkpoints on the map</h3>
+        </div>
+    </ng-template>
     <div id="right1">
         <agm-map  style="display: block; width: 100%" (mapClick)="placeMarker($event)"
                   [(latitude)]="location.lat"
