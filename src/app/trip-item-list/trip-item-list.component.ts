@@ -248,7 +248,7 @@ export class TripItemListComponent implements OnInit {
       "trip_id": this.trip.trip_id,
       "role_id": this.edited_tag
     };
- 
+
     this.itemService.changeTripItem(this.currentItemId, this.itemData)
     .subscribe(response => {
       this.getItems();

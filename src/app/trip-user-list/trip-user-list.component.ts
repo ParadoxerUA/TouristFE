@@ -1,25 +1,29 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import { TripUserService } from '../_services/trip-user.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { User } from '../user';
 import { Trip, Role } from '../trip';
-import {RoleService} from '../_services/role.service'
-import {UserService} from '../_services/user.service'
-import {ItemService} from '../_services/item.service'
+import { RoleService } from '../_services/role.service';
+import { UserService } from '../_services/user.service';
+import { ItemService } from '../_services/item.service';
+import { Subscription } from 'rxjs';
+
+
+
 
 @Component({
   selector: 'app-trip-user-list',
   templateUrl: './trip-user-list.component.html',
   styleUrls: ['./trip-user-list.component.css']
 })
-export class TripUserListComponent implements OnInit {
+export class TripUserListComponent implements OnInit, OnDestroy {
 
+  private subscription: Subscription = new Subscription();
   userId: number;
   tripUsers: User[];
   tripRoles: Role[];
   activeRole: number = 0;
-  activeRoleColor: string = 'white';
   itemIsSelected: boolean = false;
   items: Map<number, Array<any>> = new Map();
   @Input() trip: Trip;
@@ -35,7 +39,6 @@ export class TripUserListComponent implements OnInit {
   ) {}
 
   getUsers(): void {
-
     this.tripUsers = [];
     this.tripUserService.getTripUsers(this.trip.trip_id)
       .subscribe(response => {
@@ -44,6 +47,7 @@ export class TripUserListComponent implements OnInit {
           element.roles = rolesList.map(role => role.id);
           this.tripUsers.push(element as User);
         });
+      for (let user of  this.tripUsers ){user.load = 0}
       });
   }
 
@@ -61,7 +65,7 @@ export class TripUserListComponent implements OnInit {
   deleteUser(userToDelete: User): void {
     this.tripUsers = this.tripUsers.filter(user => user !== userToDelete);
     // delete user_id from trip below
-    this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.user_id).subscribe();
+    this.subscription.add(this.tripUserService.deleteTripUser(this.trip.trip_id, userToDelete.user_id).subscribe());
   }
 
   openDialog(user: User): void {
@@ -121,21 +125,21 @@ export class TripUserListComponent implements OnInit {
   }
 
   ngOnInit() {
+
     console.log(this.itemIsSelected);
     this.getUsers();
     this.userId = this.userService.getUserId();
     this.tripRoles = this.trip.roles;
-    this.itemService.personalInventoryStatus
+    this.subscription.add(this.itemService.personalInventoryStatus
       .subscribe(status => {
         this.personalInventory = status
-    });
-    this.itemService.selectedItem.subscribe(item => {
+    }));
+    this.subscription.add(this.itemService.selectedItem.subscribe(item => {
       if (item == null) {
         this.itemIsSelected = false;
-      }
-      else if (this.itemIsSelected == false) {
+      } else if (this.itemIsSelected == false) {
         this.tripUsers.forEach(
-          u => u.itemsAmount = this.getItemsAmount(u.user_id)
+            u => u.itemsAmount = this.getItemsAmount(u.user_id)
         );
         this.itemIsSelected = true;
       } else {
@@ -165,13 +169,13 @@ export class TripUserListComponent implements OnInit {
             return;
           }
           this.items.set(selectedItemId, [selectedItemWeight, newFrontDispensedItems]);
-          // this.calculateLoadForUsers();
+          this.calculateLoadForUsers();
         });
         console.log(this.items);
 
       }
-    });
-    this.itemService.userItems.subscribe(userItems => {
+    }));
+    this.subscription.add(this.itemService.userItems.subscribe(userItems => {
       if (userItems == null) {
         return;
       }
@@ -179,9 +183,14 @@ export class TripUserListComponent implements OnInit {
         this.items.set(userItem.item_id, [userItem.weight, userItem.users]);
       });
       // console.log(this.items);
-      // this.calculateLoadForUsers();
-    })
+      this.calculateLoadForUsers();
+    }));
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   getUserLoad(user_id: number) {
     let load = 0;
     // console.log("User ", user_id);
@@ -193,7 +202,7 @@ export class TripUserListComponent implements OnInit {
           // console.log('item ', key, 'weight ', value[0], '*', "amount", value[1][i].amount, "load ",load)
         }
       }
-    };
+    }
     return load;
   }
   calculateLoadForUsers()
@@ -205,12 +214,12 @@ export class TripUserListComponent implements OnInit {
   getItemsAmount(userId: number): number {
     let selectedItemId = this.itemService.selectedItemSource.getValue().equipment_id;
     let result = 0;
-    console.log(this.items)
+    console.log(this.items);
     for (let element of this.items.get(selectedItemId)[1]) {
       if (element.user_id == userId) {
         result = element.amount;
       }
-    };
+    }
     return result;
   }
 }
