@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
 import { MatTableDataSource } from '@angular/material';
 import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
@@ -7,7 +8,6 @@ import { Item, Trip, Role, Group } from '../trip';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -35,6 +35,7 @@ export class TripItemListComponent implements OnInit {
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
+  @Input() delEvent: Observable<void>;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
@@ -121,7 +122,7 @@ export class TripItemListComponent implements OnInit {
       }
     })
   }
-
+  
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
@@ -350,6 +351,9 @@ export class TripItemListComponent implements OnInit {
           this.personalInventory = status
           this.getItems()})
     )//; but why?
+    this.subscription.add(
+      this.delEvent.subscribe(() => this.getItems())
+    )
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
         return;
@@ -357,6 +361,7 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
+  
   selectItem(item: Item) {
     if (this.currentItemId !== null || this.personalInventory != 0) {
       return;

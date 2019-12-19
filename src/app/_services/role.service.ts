@@ -17,7 +17,7 @@ export class RoleService {
   setNewRole(role) {
     this.newRoleSource.next(role);
   }
-  
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -46,6 +46,15 @@ export class RoleService {
     const url = BASE_URL + `/user/v1/user?fields=roles&trip_id=${trip_id}`;
     let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
     return this.http.get(url, {headers: header})
+    .pipe(
+      catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
+    );
+  }
+
+  deleteTripRole(role_id): Observable<any> {
+    const url = BASE_URL + `/role/v1/role/` + role_id;
+    let header = new HttpHeaders({'Authorization': this.authService.getSessionId()});
+    return this.http.delete(url, {headers: header})
     .pipe(
       catchError((err) => this.errorService.handleError(err, this.authService.getSessionId()))
     );

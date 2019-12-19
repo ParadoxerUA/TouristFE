@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { TripUserService } from '../_services/trip-user.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -28,7 +28,9 @@ export class TripUserListComponent implements OnInit, OnDestroy {
   items: Map<number, Array<any>> = new Map();
   @Input() trip: Trip;
   @Input() currentUser: User;
+  @Output() roleDeleteEvent = new EventEmitter<any>();
   personalInventory: number = 0;
+
 
   constructor(
     public dialog: MatDialog,
@@ -53,7 +55,10 @@ export class TripUserListComponent implements OnInit, OnDestroy {
       this.calculateLoadForUsers();
       });
   }
-
+  processRoleDeletion($event): void {
+    this.getUsers();
+    this.roleDeleteEvent.emit($event);
+  }
 
   getRoleColor(roleId) {
     let color = 'white';
