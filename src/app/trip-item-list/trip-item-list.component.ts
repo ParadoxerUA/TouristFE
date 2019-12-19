@@ -9,12 +9,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
+
 @Component({
   selector: 'app-trip-item-list',
   templateUrl: './trip-item-list.component.html',
   styleUrls: ['./trip-item-list.component.css'],
 })
 export class TripItemListComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
   name: string;
   edited_name: string;
   weight: number;
@@ -34,7 +36,6 @@ export class TripItemListComponent implements OnInit {
 
   @Input() trip: Trip;
   @Input() delEvent: Observable<void>;
-  private eventsSubscription: Subscription;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
@@ -157,7 +158,9 @@ export class TripItemListComponent implements OnInit {
   getDispensedItemAmount(equipment_id: number) {
     let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
     let dispensedItemAmount = 0;
-    itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    if(itemData[0] && itemData[0].users){
+      itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    }
     return dispensedItemAmount;
   }
 
@@ -335,24 +338,24 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
+    this.itemService.togglePersonalInventory(0)
     this.cancelChanges();
     this.itemsDataSource.sort = this.sort;
-    this.itemService.personalInventoryStatus
-      .subscribe(status => {
-        this.personalInventory = status
-        this.getItems()
-    });
+    this.subscription.add(
+      this.itemService.personalInventoryStatus
+        .subscribe(status => {
+          this.personalInventory = status
+          this.getItems()})
+    )//; but why?
+    this.subscription.add(
+      this.delEvent.subscribe(() => this.getItems())
+    )
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
         return;
       }
       this.tripRoles.push(role as Role);
     });
-    this.eventsSubscription = this.delEvent.subscribe(() => this.getItems());
-  }
-
-  ngOnDestroy() {
-    this.eventsSubscription.unsubscribe();
   }
   
   selectItem(item: Item) {
@@ -395,5 +398,9 @@ export class TripItemListComponent implements OnInit {
   cancelChanges() {
     this.selectedItem = null;
     this.itemService.selectNewItem(null);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
