@@ -115,7 +115,7 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button (click)="submitChanges();$event.stopPropagation()" [disabled]="editDataInvalid()">
+        <button mat-icon-button (click)="submitChanges();$event.stopPropagation()" [disabled]="editDataInvalid() || dispensedItemValidatorInvalid()">
           <mat-icon>done</mat-icon>
         </button>
         <button mat-icon-button (click)="endEditMode();$event.stopPropagation()">
