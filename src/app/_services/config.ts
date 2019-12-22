@@ -1,2 +1,4 @@
-export const BASE_URL = 'http://localhost:5000/api';
-export const BASE_FRONT_URL = 'http://localhost:4200/api';
+let base_url = window.location.origin + '/be/api';
+console.log("Conf", base_url);
+
+export const BASE_URL = base_url;
