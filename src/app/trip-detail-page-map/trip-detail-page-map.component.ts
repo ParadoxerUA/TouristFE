@@ -32,24 +32,27 @@ export class TripDetailPageMapComponent implements OnInit {
   };
 
   createCheckpointsList(): void {
-    for(var counter:number = 0; counter<this.trip.points.length; counter++){
-      let marker = this.trip.points[counter];
-      const newMarker: Marker = {
-        order: counter +1,
-        name: marker.name,
-        lat: marker.latitude,
-        lng:  marker.longitude,
-        selected: false,};
-      this.location.markers.push(newMarker);
-    }
+    if (this.trip.points) {
+      for(var counter:number = 0; counter<this.trip.points.length; counter++){
+        let marker = this.trip.points[counter];
+        const newMarker: Marker = {
+          order: counter +1,
+          name: marker.name,
+          lat: marker.latitude,
+          lng:  marker.longitude,
+          selected: false,};
+        this.location.markers.push(newMarker);
+      }
     this.tripService.updateCheckpointList(this.location.markers);
+
+    this.location.lat = this.trip.points[0].latitude;
+    this.location.lng = this.trip.points[0].longitude;
+    }
   }
 
   constructor(private tripService : TripService) { }
   ngOnInit() {
     this.createCheckpointsList();
-    this.location.lat = this.trip.points[0].latitude;
-    this.location.lng = this.trip.points[0].longitude;
   }
 
 }

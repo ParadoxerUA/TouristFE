@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { RoleService } from '../_services/role.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRolePopUpComponent } from '../new-role-pop-up/new-role-pop-up.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { Role, Trip } from '../trip';
 import { User } from '../user'
 
@@ -18,6 +19,7 @@ export class TripRolesComponent implements OnInit {
   color: string;
   activeRole: number = 0;
   @Output() roleEvent = new EventEmitter<any>();
+  @Output() roleDeleteEvent = new EventEmitter<any>();
   
   constructor(
     private dialog: MatDialog,
@@ -28,8 +30,10 @@ export class TripRolesComponent implements OnInit {
     this.tripRoles = [];
     this.roleService.getTripRoles(this.trip.trip_id)
       .subscribe(response => {
-        response.data.roles.forEach(element => 
-          this.tripRoles.push(element as Role));
+        if (response.data.roles) {
+          response.data.roles.forEach(element => 
+            this.tripRoles.push(element as Role));
+        }
       });
     }
 
@@ -60,6 +64,16 @@ export class TripRolesComponent implements OnInit {
     });
   }
 
+  deleteRole(role: Role): void {
+    this.roleService.deleteTripRole(role.id).subscribe(response => {
+      this.roleDeleteEvent.emit(role);
+    });
+    var role_index = this.tripRoles.indexOf(role);
+    if (role_index > -1) {
+    this.tripRoles.splice(role_index, 1);
+    }
+  }
+
   activateRole(roleId) {
     if (roleId === this.activeRole) {
       this.activeRole = 0;
@@ -69,6 +83,18 @@ export class TripRolesComponent implements OnInit {
     this.roleEvent.emit(this.activeRole);
   }
 
+  deleteRoleDialog(role: Role): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      height: '160px',
+      data: `Are you sure to remove ${role.name} from this trip? All items of this category will be deleted`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteRole(role);
+      }
+    });
+  }
   ngOnInit() {
     this.getRoles();
   }

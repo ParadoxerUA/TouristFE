@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
 import { MatTableDataSource } from '@angular/material';
 import { MatSort, MatDialog } from '@angular/material';
 import { ItemService } from '../_services/item.service';
@@ -8,12 +9,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
+
 @Component({
   selector: 'app-trip-item-list',
   templateUrl: './trip-item-list.component.html',
   styleUrls: ['./trip-item-list.component.css'],
 })
 export class TripItemListComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
   name: string;
   edited_name: string;
   weight: number;
@@ -32,14 +35,15 @@ export class TripItemListComponent implements OnInit {
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
+  @Input() delEvent: Observable<void>;
   tripItems: Item[] = [];
   tripRoles: Role[] = [];
   userTripRoles: Role[] = [];
   itemData: Item;
   selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  isPersonalInventory: Boolean = false;
-  currentItem: number = null;
+  personalInventory: number = 0
+  currentItemId: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];
   groupByColumns: string[] = ['role_color'];
@@ -90,7 +94,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   inputDataInvalid(): boolean{
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       return (this.itemName.invalid
         || this.itemWeight.invalid
         || this.itemQuantity.invalid);
@@ -118,14 +122,13 @@ export class TripItemListComponent implements OnInit {
       }
     })
   }
-
+  
   getItems() {
     this.itemService.getTripItems(this.trip.trip_id)
     .subscribe(response => {
       this.tripItems = [];
-      // console.log(response);
+      let itemUsers = [];
       if (response.data.equipment) {
-        let itemUsers = [];
         response.data.equipment.forEach(element =>{
           this.tripItems.push(element as Item);
           itemUsers.push({
@@ -134,16 +137,37 @@ export class TripItemListComponent implements OnInit {
             weight: element.weight
           });
         });
+        if (response.data.personal_stuff) {
+          response.data.personal_stuff.forEach(element =>{
+          this.tripItems.push(element as Item);
+          itemUsers.push({
+            item_id: element.equipment_id,
+            users: element.users,
+            weight: element.weight
+            });
+          });
+        }
         this.itemService.addUserItems(itemUsers);
-      } else {
+      } else if(response.data.personal_stuff){
         response.data.personal_stuff.forEach(element => this.tripItems.push(element as Item));
+      } else {
+        this.itemService.addUserItems([]);
       }
       this.getTripRoles();
     });
   }
 
+  getDispensedItemAmount(equipment_id: number) {
+    let itemData = this.itemService.userItemsSource.getValue().filter(element => element.item_id === equipment_id);
+    let dispensedItemAmount = 0;
+    if(itemData[0] && itemData[0].users){
+      itemData[0].users.forEach(user => dispensedItemAmount += user.amount);
+    }
+    return dispensedItemAmount;
+  }
+
   addItem(): void {
-    if (this.isPersonalInventory) {
+    if (this.personalInventory) {
       this.itemData = {
         "name": this.name,
         "weight": this.weight,
@@ -160,7 +184,6 @@ export class TripItemListComponent implements OnInit {
           "role_id": this.tag
         };
     }
-
 
     this.name = "";
     this.weight = 0;
@@ -202,17 +225,17 @@ export class TripItemListComponent implements OnInit {
   }
 
   isNotInEditMode(id: number) {
-    if (this.currentItem === null) {
+    if (this.currentItemId === null) {
       return true;
     }
-    if (this.currentItem === id) {
+    if (this.currentItemId === id) {
       return false;
     }
     return true;
   }
 
   startEditMode(item: Item) {
-    this.currentItem = item.equipment_id;
+    this.currentItemId = item.equipment_id;
     this.edited_name = item.name;
     this.edited_weight = item.weight;
     this.edited_quantity = item.quantity;
@@ -220,7 +243,7 @@ export class TripItemListComponent implements OnInit {
   }
 
   endEditMode() {
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   submitChanges() {
@@ -232,20 +255,22 @@ export class TripItemListComponent implements OnInit {
       "role_id": this.edited_tag
     };
 
-    this.itemService.changeTripItem(this.currentItem, this.itemData)
+    this.itemService.changeTripItem(this.currentItemId, this.itemData)
     .subscribe(response => {
       this.getItems();
     });
 
-    this.currentItem = null;
+    this.currentItemId = null;
   }
 
   getTripRoles() {
     this.roleService.getTripRoles(this.trip.trip_id)
     .subscribe(response => {
       this.tripRoles = [];
-      response.data.roles.forEach(role =>
-        this.tripRoles.push(role as Role));
+      if (response.data.roles) {
+        response.data.roles.forEach(role =>
+          this.tripRoles.push(role as Role));
+      }
       this.getUserTripRoles();
       this.setColorToItems();
       this.itemsDataSource.data = this.addGroups(this.tripItems, this.groupByColumns);
@@ -315,12 +340,20 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
+    this.itemService.togglePersonalInventory(0)
+    this.itemService.selectNewItem(null);
+    this.tripItems = [];
+    this.cancelChanges();
     this.itemsDataSource.sort = this.sort;
-    this.itemService.isPersonalInventoryStatus
-      .subscribe(status => {
-        this.isPersonalInventory = status;
-        this.getItems()
-    });
+    this.subscription.add(
+      this.itemService.personalInventoryStatus
+        .subscribe(status => {
+          this.personalInventory = status
+          this.getItems()})
+    )//; but why?
+    this.subscription.add(
+      this.delEvent.subscribe(() => this.getItems())
+    )
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
         return;
@@ -328,8 +361,9 @@ export class TripItemListComponent implements OnInit {
       this.tripRoles.push(role as Role);
     });
   }
+  
   selectItem(item: Item) {
-    if (this.currentItem !== null) {
+    if (this.currentItemId !== null || this.personalInventory != 0) {
       return;
     }
     if (this.userTripRoles.map(role => role.id).includes(item['role_id'])) {
@@ -349,11 +383,28 @@ export class TripItemListComponent implements OnInit {
     return this.selectedItem == null;
   }
   commitChanges(item) {
+    this.itemData = {
+      "name": item.name,
+      "weight": item.weight,
+      "quantity": item.quantity,
+      "trip_id": item.trip_id,
+      "role_id": item.role_id
+    };
+
+    this.itemService.changeTripItem(item.equipment_id, this.itemData)
+    .subscribe(response => {
+      this.getItems();
+    });
+
     this.itemService.selectNewItem(item);
     this.selectedItem = null;
   }
   cancelChanges() {
     this.selectedItem = null;
     this.itemService.selectNewItem(null);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

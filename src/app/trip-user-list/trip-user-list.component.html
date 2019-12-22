@@ -1,6 +1,6 @@
 <mat-card class="input-card">
   <div class="tags">
-    <app-trip-roles (roleEvent)="receiveRole($event)" [currentUser]="currentUser" [trip]="trip"></app-trip-roles>
+    <app-trip-roles (roleEvent)="receiveRole($event)" (roleDeleteEvent)="processRoleDeletion($event)" [currentUser]="currentUser" [trip]="trip"></app-trip-roles>
   </div>
 </mat-card>
 
@@ -9,15 +9,14 @@
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
         <mat-card
-          [ngClass]="{glowingBorder: ((activeRole > 0 && isUserAdmin(this.userService.getUserId())) || (user.user_id === userId && activeRole === 0)),
-            activeBorder: isPersonalInventory}"
-          (click)="!itemIsSelected && ( (activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
-            (user.user_id === userId && activeRole === 0 && togglePersonalInventory()))">
-          <button class="close" (click)="openDialog(user)" 
+          [ngClass]="{glowingBorder: ((activeRole > 0 && isUserAdmin(this.userService.getUserId())) || (user.user_id === userId && activeRole === 0) || (user.user_id === personalInventory)),
+            activeBorder: user.user_id === personalInventory}"
+          (click)="!itemIsSelected && ((activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
+            (activeRole === 0 && togglePersonalInventory(user.user_id)))">
+          <button class="close" (click)="openDialog(user);$event.stopPropagation()"
           *ngIf="(user.user_id != currentUser.user_id) && (isUserAdmin(currentUser.user_id))">
             <i class="material-icons">close</i>
           </button>
-<!--           <p>{{user.user_id}} and {{currentUser.user_id}} and {{trip.admin_id}}</p>-->
           <img mat-card-avatar src="{{user.avatar}}" alt="User Avatar">
           <mat-card-subtitle><strong>{{user.name}}</strong></mat-card-subtitle>
           <mat-card-subtitle *ngIf="user.surname" style="display: inline"><strong>{{user.surname}}</strong></mat-card-subtitle>
@@ -26,7 +25,7 @@
             <input matInput class='dispense_input' type="number" min="0" placeholder="Value" [(ngModel)]="user.itemsAmount">
           </mat-card-subtitle>
           <ng-template #role_div>
-            <mat-card-subtitle *ngIf="activeRole > 0 && isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
+            <mat-card-subtitle *ngIf="isUserAdmin(user.user_id)" class="admin-icon"><mat-icon>star</mat-icon></mat-card-subtitle>
             <div *ngIf="user.roles">
               <mat-chip-list>
                     <mat-chip *ngFor="let role of user.roles "
