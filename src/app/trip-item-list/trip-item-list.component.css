@@ -60,3 +60,6 @@ th {
 .mat-row:hover {
   background-color: lightgray;
 }
+.quantity-warning {
+  color: red;
+}

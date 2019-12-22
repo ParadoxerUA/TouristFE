@@ -84,7 +84,7 @@
           </ng-template>
           <ng-template #quantity_field>
             <mat-form-field class="edit-field edit-example-margin">
-              <input matInput type="number" [formControl]="itemQuantityEdit" [(ngModel)]="edited_quantity">
+              <input matInput type="number" [class.quantity-warning]="dispensed_item_amount > edited_quantity" [formControl]="itemQuantityEdit" [(ngModel)]="edited_quantity">
               <mat-error *ngIf="itemQuantityEdit.invalid">{{ getQuantityEditErrorMessage() }}</mat-error>
             </mat-form-field>
           </ng-template>
