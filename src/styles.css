@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+/*@import '@angular/material/prebuilt-themes/deeppurple-amber.css';*/
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -20,6 +20,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .glowingBorder:hover, .activeBorder {
   outline: none;
-  border-color: cyan;
-  box-shadow: 0 0 10px cyan;
+  border-color: #a5d0f0;
+  box-shadow: 0 0 10px #a5d0f0;
 }

@@ -47,6 +47,7 @@ th {
 .mat-card.main-card {
   overflow: auto;
   max-height: 70%;
+  background-image: url(../../assets/images/gear.jpg);
 }
 .role-color {
   width: 33px;

@@ -31,7 +31,7 @@ export class TripItemListComponent implements OnInit {
   itemWeight = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemWeightEdit = new FormControl('', [Validators.required, Validators.pattern("([0-9]*[.])?[0-9]+")]);
   itemQuantity = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
-  itemQuantityEdit = new FormControl('', [Validators.required, Validators.pattern("[1-9]|10+")]);
+  itemQuantityEdit = new FormControl('', [Validators.required,  Validators.pattern("[1-9]|10+")]);
   tagName = new FormControl('', Validators.required);
 
   @Input() trip: Trip;
@@ -42,7 +42,7 @@ export class TripItemListComponent implements OnInit {
   itemData: Item;
   selectedItem: Item;
   itemsDataSource = new MatTableDataSource(this.tripItems);
-  personalInventory: number = 0
+  personalInventory: number = 0;
   currentItemId: number = null;
 
   displayedColumns: string[] = ['tag', 'name', 'weight', 'quantity', 'buttons'];

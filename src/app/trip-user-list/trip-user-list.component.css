@@ -83,6 +83,8 @@ p.progress-value {
   flex-wrap: wrap;
   align-items: flex-start;
   overflow: auto;
+  background-image: url(../../assets/images/gear.jpg);
+
 }
 
 .input-card {
