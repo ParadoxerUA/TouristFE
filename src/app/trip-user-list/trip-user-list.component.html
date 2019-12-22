@@ -4,11 +4,11 @@
   </div>
 </mat-card>
 
-  <mat-card class="mat-card-user">
+
 
     <mat-grid-list cols="4" rowHeight="3:4" gutterSize="1%" >
       <mat-grid-tile *ngFor="let user of tripUsers">
-        <mat-card
+        <mat-card class="user_cart"
           [ngClass]="{glowingBorder: ((activeRole > 0 && isUserAdmin(this.userService.getUserId())) || (user.user_id === userId && activeRole === 0) || (user.user_id === personalInventory)),
             activeBorder: user.user_id === personalInventory}"
           (click)="!itemIsSelected && ((activeRole > 0 && isUserAdmin(this.userService.getUserId()) && toggleRole(user.user_id)) ||
@@ -43,4 +43,4 @@
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
-  </mat-card>
+

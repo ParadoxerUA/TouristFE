@@ -1,5 +1,5 @@
 
-  <mat-card class="input-card" *ngIf="personalInventory === userService.getUserId() || personalInventory === 0">
+  <mat-card class="input-card" *ngIf="personalInventory === getUserId() || personalInventory === 0">
     <mat-form-field class="tag-width">
       <mat-label>Tag</mat-label>
       <mat-select *ngIf="!personalInventory" [formControl]="tagName" [(ngModel)]="tag">
@@ -32,7 +32,7 @@
     </button>
   </mat-card>
 
-  <mat-card class="main-card">
+
     <table mat-table [dataSource]="itemsDataSource" matSort class="mat-elevation-z4">
       <ng-container matColumnDef="tag">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Tag </th>
@@ -132,4 +132,4 @@
 
       <tr mat-row class="tag-color-line" *matRowDef="let row; columns: ['groupHeader']; when: isGroup"></tr>
     </table>
-  </mat-card>
+

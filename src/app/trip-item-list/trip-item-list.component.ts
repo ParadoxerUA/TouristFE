@@ -166,6 +166,11 @@ export class TripItemListComponent implements OnInit {
     return dispensedItemAmount;
   }
 
+  getUserId(): number {
+    return this.userService.getUserId()
+  }
+
+
   addItem(): void {
     if (this.personalInventory) {
       this.itemData = {
