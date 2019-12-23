@@ -1,37 +1,35 @@
 
-  <mat-card class="input-card zero-border">
-    <div *ngIf="personalInventory === getUserId() || personalInventory === 0">
-      <mat-form-field class="tag-width">
-        <mat-label>Tag</mat-label>
-        <mat-select *ngIf="!personalInventory" [formControl]="tagName" [(ngModel)]="tag">
-          <mat-option *ngFor="let role of userTripRoles" [style.background-color]="role.color" [value]="role.id">
-            {{role.name}}
-          </mat-option>
-        </mat-select>
-        <select *ngIf="personalInventory" matNativeControl required>
-          <option value="personal">Personal</option>
-        </select>
-        <mat-error *ngIf="tagName.invalid">{{ getTagErrorMessage() }}</mat-error>
-      </mat-form-field>
-      <mat-form-field class="item-name-width">
-        <input matInput type="text" placeholder="Item name" [formControl]="itemName" [(ngModel)]="name">
-        <mat-error *ngIf="itemName.invalid">{{ getNameErrorMessage() }}</mat-error>
-        <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="kg" [formControl]="itemWeight" [(ngModel)]="weight">
-        <mat-error *ngIf="itemWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="units" [formControl]="itemQuantity" [(ngModel)]="quantity">
-        <mat-error *ngIf="itemQuantity.invalid">{{ getQuantityErrorMessage() }}</mat-error>
-      </mat-form-field>
-      <button mat-mini-fab (click)="addItem()" [disabled]="inputDataInvalid()">
-        <i class="material-icons">add</i>
+  <mat-card class="input-card" *ngIf="personalInventory === userService.getUserId() || personalInventory === 0">
+    <mat-form-field class="tag-width">
+      <mat-label>Tag</mat-label>
+      <mat-select *ngIf="!personalInventory" [formControl]="tagName" [(ngModel)]="tag">
+        <mat-option *ngFor="let role of userTripRoles" [style.background-color]="role.color" [value]="role.id">
+          {{role.name}}
+        </mat-option>
+      </mat-select>
+      <select *ngIf="personalInventory" matNativeControl required>
+        <option value="personal">Personal</option>
+      </select>
+      <mat-error *ngIf="tagName.invalid">{{ getTagErrorMessage() }}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="item-name-width">
+      <input matInput type="text" placeholder="Item name" [formControl]="itemName" [(ngModel)]="name">
+      <mat-error *ngIf="itemName.invalid">{{ getNameErrorMessage() }}</mat-error>
+      <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+        <mat-icon>close</mat-icon>
       </button>
-    </div>
+    </mat-form-field>
+    <mat-form-field class="example-margin">
+      <input matInput type="number" placeholder="kg" [formControl]="itemWeight" [(ngModel)]="weight">
+      <mat-error *ngIf="itemWeight.invalid">{{ getWeightErrorMessage() }}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-margin">
+      <input matInput type="number" placeholder="units" [formControl]="itemQuantity" [(ngModel)]="quantity">
+      <mat-error *ngIf="itemQuantity.invalid">{{ getQuantityErrorMessage() }}</mat-error>
+    </mat-form-field>
+    <button mat-mini-fab (click)="addItem()" [disabled]="inputDataInvalid()">
+      <i class="material-icons">add</i>
+    </button>
   </mat-card>
 
 
@@ -86,7 +84,7 @@
           </ng-template>
           <ng-template #quantity_field>
             <mat-form-field class="edit-field edit-example-margin">
-              <input matInput type="number" min="getDispensedItemAmount(item.equipment_id)" [formControl]="itemQuantityEdit" [(ngModel)]="edited_quantity">
+              <input matInput type="number" [class.quantity-warning]="dispensed_item_amount > edited_quantity" [formControl]="itemQuantityEdit" [(ngModel)]="edited_quantity">
               <mat-error *ngIf="itemQuantityEdit.invalid">{{ getQuantityEditErrorMessage() }}</mat-error>
             </mat-form-field>
           </ng-template>
@@ -117,7 +115,7 @@
       </ng-container>
       <ng-template #without_tag></ng-template>
       <ng-template #edit_mode>
-        <button mat-icon-button (click)="submitChanges();$event.stopPropagation()" [disabled]="editDataInvalid()">
+        <button mat-icon-button (click)="submitChanges();$event.stopPropagation()" [disabled]="editDataInvalid() || dispensedItemValidatorInvalid()">
           <mat-icon>done</mat-icon>
         </button>
         <button mat-icon-button (click)="endEditMode();$event.stopPropagation()">

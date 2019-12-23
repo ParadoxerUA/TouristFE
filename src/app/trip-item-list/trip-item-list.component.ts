@@ -25,6 +25,7 @@ export class TripItemListComponent implements OnInit {
   edited_quantity: number;
   tag: number;
   edited_tag: number;
+  dispensed_item_amount: number;
 
   itemName = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
   itemNameEdit = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
@@ -245,6 +246,18 @@ export class TripItemListComponent implements OnInit {
     this.edited_weight = item.weight;
     this.edited_quantity = item.quantity;
     this.edited_tag = item.role_id;
+    this.dispensed_item_amount = 0;
+    if (item.users) {
+      item.users.forEach(user => this.dispensed_item_amount += user.amount);
+    }
+  }
+
+  dispensedItemValidatorInvalid() {
+    if (this.edited_quantity >= this.dispensed_item_amount) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   endEditMode() {
@@ -345,7 +358,7 @@ export class TripItemListComponent implements OnInit {
   // END block of code for grouping tags
 
   ngOnInit() {
-    this.itemService.togglePersonalInventory(0)
+    this.itemService.togglePersonalInventory(0);
     this.itemService.selectNewItem(null);
     this.tripItems = [];
     this.cancelChanges();
@@ -355,10 +368,10 @@ export class TripItemListComponent implements OnInit {
         .subscribe(status => {
           this.personalInventory = status
           this.getItems()})
-    )//; but why?
+    );
     this.subscription.add(
       this.delEvent.subscribe(() => this.getItems())
-    )
+    );
     this.roleService.newRole.subscribe(role => {
       if (role === null) {
         return;
