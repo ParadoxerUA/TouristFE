@@ -29,6 +29,7 @@ export class Item {
   role_id?: number;
   role_color?: string;
   owner_id?: number;
+  users?: Array<any>;
 }
 
 export class Role {
