@@ -27,7 +27,6 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Main page!!!!', window.location.href);
   }
 
 }

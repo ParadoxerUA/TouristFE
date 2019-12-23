@@ -18,9 +18,11 @@ export class TripDetailPageComponent implements OnInit {
   trip: Trip;
   trip_id = +this.route.snapshot.paramMap.get('trip_id');
   readyToRefresh: boolean = true;
+  feUrl: string;
   currentUser: User;
   eventsSubject: Subject<void> = new Subject<void>();
   public roleDelEvent;
+
 
   constructor(
     private tripService: TripService,
@@ -53,5 +55,6 @@ export class TripDetailPageComponent implements OnInit {
     .subscribe(response =>
       this.currentUser = response.body["data"]
       );
+    this.feUrl = window.location.origin;
   }
 }
