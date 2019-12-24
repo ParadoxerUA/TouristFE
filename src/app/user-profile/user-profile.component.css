@@ -31,8 +31,10 @@ mat-sidenav-container {
 
 mat-sidenav {
     padding: 16px;
-    background-color: #E1DDDD;
+    /*background-color: #E1DDDD;*/
+    background-image: url(../../assets/images/prof.jpeg);
     width: 350px;
+    font-size: 1rem;
 }
 
 

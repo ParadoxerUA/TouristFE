@@ -2,11 +2,11 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    top: 7vh;
+    top: 5vh;
     overflow: auto;
-    background-image: url(../../assets/images/gear.jpg);
+    background-image: url(../../assets/images/gear.jpeg);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size:   100% calc(100% - 3vh);
 
 }
 .left {
