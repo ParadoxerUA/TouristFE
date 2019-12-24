@@ -4,9 +4,9 @@
     position: fixed;
     top: 5vh;
     overflow: auto;
-    background-image: url(../../assets/images/gear.jpeg);
+    background-image: url(../../assets/images/gear.jpg);
     background-repeat: no-repeat;
-    background-size:   100% calc(100% - 3vh);
+    background-size:   100%;
 
 }
 .left {
