@@ -1,10 +1,11 @@
-<mat-card class="header-container mat-elevation-z0">
+<div class="root__container">
+<mat-card class="header-container zero-border">
   <mat-card-title>My trips</mat-card-title>
-  <button mat-mini-fab (click)="redirectToCreateTrip()" [disabled]="isDisabled()">
+  <button mat-mini-fab class="plus_button" (click)="redirectToCreateTrip()" [disabled]="isDisabled()">
     <i class="material-icons">add</i>
   </button>
 </mat-card>
-<mat-card class="list-container">
+<mat-card class="list-container zero-border">
   <mat-table [dataSource]="tripsDataSource">
     <ng-container matColumnDef="admin" class="sibling">
       <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
@@ -108,3 +109,4 @@
     <mat-row [className]="current_editable == null ? 'active-row' : 'disabled-row'" (click)="current_editable == null ? redirectToTripDetail(row.id) : null" *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </mat-card>
+</div>

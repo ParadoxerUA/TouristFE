@@ -54,7 +54,7 @@ export class TripUserListComponent implements OnInit, OnDestroy {
         }
       this.calculateLoadForUsers();
       });
-  }
+  } 
   processRoleDeletion($event): void {
     this.getUsers();
     this.roleDeleteEvent.emit($event);

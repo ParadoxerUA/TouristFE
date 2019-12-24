@@ -1,5 +1,5 @@
-<div class="trip_detail_container" *ngIf="trip && currentUser">
-  <mat-card class = 'card-with-map'>
+<div class="trip_detail_container" *ngIf="trip && currentUser"  >
+  <mat-card class = 'card-with-map zero-border'>
     <mat-card-title>
 <!--        <span>{{this.trip.description}}</span>-->
     </mat-card-title>
@@ -20,8 +20,8 @@
             </div>
             <div *ngIf="trip.trip_uuid">
                 <mat-label class="panel-text">
-                    <strong>Invite_link:</strong>localhost:4200/join?trip_uuid={{this.trip.trip_uuid}}
-                    <button mat-icon-button  ngxClipboard [cbContent]="'localhost:4200/join?trip_uuid='+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
+                    <strong>Invite_link:</strong>{{this.feUrl}}/join?trip_uuid={{this.trip.trip_uuid}}
+                    <button mat-icon-button  ngxClipboard [cbContent]="this.feUrl +'/join?trip_uuid='+this.trip.trip_uuid"><mat-icon>file_copy</mat-icon></button>
                     <button mat-icon-button  (click)="refreshInviteLink(this.trip_id)" [disabled]="!readyToRefresh"><mat-icon>refresh</mat-icon></button>
                 </mat-label>
             </div>
