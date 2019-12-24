@@ -2,6 +2,7 @@
   height: 65px;
   padding-top: 0px;
   margin-bottom: 0px;
+  border-radius: 0px !important;
 }
 .item-name-width {
   width: 30%;
